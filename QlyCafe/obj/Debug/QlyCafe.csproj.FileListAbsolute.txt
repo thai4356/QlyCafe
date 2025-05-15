@@ -1,0 +1,14 @@
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\QlyCafe.exe.config
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\QlyCafe.exe
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\QlyCafe.pdb
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.csproj.AssemblyReference.cache
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.Login.resources
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.Properties.Resources.resources
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.csproj.GenerateResource.cache
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.csproj.CoreCompileInputs.cache
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.exe
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.pdb
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.FormNguoiDung.resources
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.FormNguoiBan.resources
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.Quanly.FormQuanLy.resources
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.NguoiDung.FormGioHang.resources
