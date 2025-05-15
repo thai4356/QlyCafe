@@ -19,7 +19,7 @@ namespace QlyCafe
             FormNguoiDung form1 = new FormNguoiDung();
             form1.Show();
 
-            FormNguoiBan form2 = new FormNguoiBan();
+            Login form2 = new Login();
             Application.Run(form2); // This keeps the app alive
         }
     }

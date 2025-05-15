@@ -37,6 +37,9 @@ namespace QlyCafe
 
         private void btnDuyetDon_Click(object sender, EventArgs e)
         {
+            //string maNV = UserSession.MaNguoiDung;
+            //MessageBox.Show("Mã NV đang dùng: " + maNV);
+
             if (!CartSession.DonHangDangChoDuyet || CartSession.GioHangTam.Count == 0)
             {
                 MessageBox.Show("Không có đơn hàng nào chờ duyệt!", "Thông báo");
@@ -44,10 +47,11 @@ namespace QlyCafe
             }
 
             bool coSanPhamThieu = false;
+            decimal tongTien = 0;
 
+            // Kiểm tra & cập nhật số lượng từng sản phẩm
             foreach (var item in CartSession.GioHangTam)
             {
-                // Lấy số lượng tồn kho hiện tại
                 string sqlCheck = $"SELECT SoLuong FROM SanPham WHERE MaSP = '{item.MaSP}'";
                 DataTable dt = Function.GetDataToTable(sqlCheck);
 
@@ -66,22 +70,45 @@ namespace QlyCafe
                     continue;
                 }
 
-                // Cập nhật số lượng tồn kho
                 int soMoi = soLuongTon - item.SoLuong;
                 string sqlUpdate = $"UPDATE SanPham SET SoLuong = {soMoi} WHERE MaSP = '{item.MaSP}'";
                 Function.ExecuteNonQuery(sqlUpdate);
+
+                tongTien += item.ThanhTien;
             }
 
-            if (!coSanPhamThieu)
+            if (coSanPhamThieu)
             {
-                MessageBox.Show("Đã cập nhật số lượng sản phẩm thành công!");
+                MessageBox.Show("Có sản phẩm thiếu số lượng, hóa đơn không được tạo.");
+                return;
             }
 
-            // Xóa đơn chờ
+            string maHDB = "HDB" + DateTime.Now.Ticks.ToString().Substring(8, 6); // HDB+6 số cuối
+            string ngayBan = DateTime.Now.ToString("yyyy-MM-dd");
+            string maNV = UserSession.MaNguoiDung; // Nhân viên đang duyệt đơn
+            string maKH = "KH01"; // Giả sử khách hàng cố định, có thể sửa lại
+
+            // ✅ Thêm vào bảng HoaDonBan
+            string sqlInsertHDB = $@"
+            INSERT INTO HoaDonBan (MaHDB, NgayBan, MaNV, MaKH, TongTien)
+            VALUES ('{maHDB}', '{ngayBan}', '{maNV}', '{maKH}', {tongTien})";
+            Function.ExecuteNonQuery(sqlInsertHDB);
+
+            foreach (var item in CartSession.GioHangTam)
+            {
+                string sqlCT = $"INSERT INTO ChiTietHDB VALUES ('{maHDB}', '{item.MaSP}', {item.SoLuong}, {item.ThanhTien}, N'')";
+                Function.ExecuteNonQuery(sqlCT);
+            }
+
+
+            MessageBox.Show("Hóa đơn đã được tạo và tồn kho đã cập nhật!");
+
+
             CartSession.GioHangTam.Clear();
             CartSession.DonHangDangChoDuyet = false;
             LoadDonHangCho();
         }
+
 
         private void btnTuChoiDon_Click(object sender, EventArgs e)
         {

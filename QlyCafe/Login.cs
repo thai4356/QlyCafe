@@ -45,29 +45,33 @@ namespace QlyCafe
             if (dt.Rows.Count > 0)
             {
                 string role = dt.Rows[0]["VaiTro"].ToString();
+                string maLienKet = dt.Rows[0]["MaLienKet"].ToString();
+
+                UserSession.TenDangNhap = user;
+                UserSession.VaiTro = role;
+                UserSession.MaNguoiDung = maLienKet;
 
                 switch (role)
                 {
                     case "NguoiDung":
-                        FormNguoiDung f1 = new FormNguoiDung();
-                        f1.Show();
+                        new FormNguoiDung().Show();
                         break;
                     case "NguoiBan":
-                        FormNguoiBan f2 = new FormNguoiBan();
-                        f2.Show();
+                        new FormNguoiBan().Show();
                         break;
                     case "QuanLy":
-                        FormQuanLy f3 = new FormQuanLy();
-                        f3.Show();
+                        new FormQuanLy().Show();
                         break;
                 }
 
-                this.Hide(); // Ẩn FormLogin sau khi đăng nhập thành công
+                this.Hide();
             }
             else
             {
                 MessageBox.Show("Sai tên đăng nhập hoặc mật khẩu.", "Lỗi đăng nhập", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
     }
 }
