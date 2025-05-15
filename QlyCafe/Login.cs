@@ -72,6 +72,9 @@ namespace QlyCafe
             }
         }
 
+        private void Login_Load(object sender, EventArgs e)
+        {
 
+        }
     }
 }

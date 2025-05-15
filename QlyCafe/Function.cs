@@ -10,7 +10,7 @@ namespace QlyCafe
 {
     internal class Function
     {
-        private static string connString = "Data Source=LAPTOP-FRNPC1AU;Initial Catalog=QlyCafe;Integrated Security=True;";
+        private static string connString = "Data Source=DESKTOP-6P76JI8\\SQLEXPRESS;Initial Catalog=qlyCafe;Integrated Security=True;TrustServerCertificate=True";
         private static SqlConnection conn;
 
         public static void OpenConnection()
