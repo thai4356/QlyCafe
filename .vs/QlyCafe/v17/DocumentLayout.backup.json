@@ -3,11 +3,11 @@
   "WorkspaceRootPath": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\uchih\\AppData\\Local\\Temp\\py512go4..sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|C:\\Users\\uchih\\source\\repos\\QlyCafe\\qlycafe\\function.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|solutionrelative:qlycafe\\function.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\uchih\\AppData\\Local\\Temp\\py512go4..sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|"
     },
     {
       "AbsoluteMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|C:\\Users\\uchih\\source\\repos\\QlyCafe\\qlycafe\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -22,7 +22,7 @@
       "RelativeMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|solutionrelative:qlycafe\\cartitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|c:\\users\\uchih\\source\\repos\\qlycafe\\qlycafe\\nhanvien\\formnguoiban.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|C:\\Users\\uchih\\source\\repos\\QlyCafe\\qlycafe\\nhanvien\\formnguoiban.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|solutionrelative:qlycafe\\nhanvien\\formnguoiban.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -78,12 +78,6 @@
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\uchih\\source\\repos\\25A4041917_TranQuocThai\\25A4041917_TranQuocThai\\Form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\uchih\\AppData\\Local\\Temp\\py512go4..sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|CodeFrame"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\uchih\\AppData\\Local\\Temp\\py512go4..sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|ResultFrame"
     }
   ],
   "DocumentGroupContainers": [
@@ -93,7 +87,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 21,
           "Children": [
             {
               "$type": "Bookmark",
@@ -117,14 +111,14 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "SQLQuery1.sql ",
+              "DocumentIndex": 1,
+              "Title": "py512go4..sql",
               "DocumentMoniker": "C:\\Users\\uchih\\AppData\\Local\\Temp\\py512go4..sql",
               "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\Temp\\py512go4..sql",
-              "ToolTip": "SQLQuery1.sql *",
+              "ToolTip": "C:\\Users\\uchih\\AppData\\Local\\Temp\\py512go4..sql",
+              "RelativeToolTip": "..\\..\\..\\AppData\\Local\\Temp\\py512go4..sql",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2025-05-16T07:11:49.246Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-16T07:11:49.246Z"
             },
             {
               "$type": "Document",
@@ -136,8 +130,7 @@
               "RelativeToolTip": "QlyCafe\\UserSession.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAABdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T09:25:02.588Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-15T09:25:02.588Z"
             },
             {
               "$type": "Document",
@@ -149,8 +142,7 @@
               "RelativeToolTip": "QlyCafe\\NhanVien\\FormNguoiBan.cs",
               "ViewState": "AgIAAA4AAAAAAAAAAAAAwBsAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T08:48:28.746Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-15T08:48:28.746Z"
             },
             {
               "$type": "Document",
@@ -162,8 +154,7 @@
               "RelativeToolTip": "QlyCafe\\NguoiDung\\FormGioHang.cs",
               "ViewState": "AgIAABMAAAAAAAAAAAAQwDgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T08:36:35.269Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-15T08:36:35.269Z"
             },
             {
               "$type": "Document",
@@ -174,8 +165,7 @@
               "ToolTip": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\NguoiDung\\FormGioHang.cs [Design]",
               "RelativeToolTip": "QlyCafe\\NguoiDung\\FormGioHang.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T08:36:29.333Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2025-05-15T08:36:29.333Z"
             },
             {
               "$type": "Document",
@@ -187,8 +177,7 @@
               "RelativeToolTip": "QlyCafe\\CartSession.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T08:32:38.963Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-15T08:32:38.963Z"
             },
             {
               "$type": "Document",
@@ -200,8 +189,7 @@
               "RelativeToolTip": "QlyCafe\\CartItem.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T08:31:23.034Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-15T08:31:23.034Z"
             },
             {
               "$type": "Document",
@@ -213,8 +201,7 @@
               "RelativeToolTip": "QlyCafe\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T08:15:22.086Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-15T08:15:22.086Z"
             },
             {
               "$type": "Document",
@@ -226,8 +213,7 @@
               "RelativeToolTip": "QlyCafe\\NguoiDung\\FormNguoiDung.cs",
               "ViewState": "AgIAAEkAAAAAAAAAAAAuwF0AAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T08:10:06.904Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-15T08:10:06.904Z"
             },
             {
               "$type": "Document",
@@ -238,8 +224,7 @@
               "ToolTip": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\Quanly\\FormQuanLy.cs [Design]",
               "RelativeToolTip": "QlyCafe\\Quanly\\FormQuanLy.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T07:55:01.168Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2025-05-15T07:55:01.168Z"
             },
             {
               "$type": "Document",
@@ -251,8 +236,7 @@
               "RelativeToolTip": "QlyCafe\\NhanVien\\FormNguoiBan.Designer.cs",
               "ViewState": "AgIAAEQAAAAAAAAAAADwv1YAAABBAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T07:54:43.074Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-15T07:54:43.074Z"
             },
             {
               "$type": "Document",
@@ -275,8 +259,7 @@
               "RelativeToolTip": "QlyCafe\\NguoiDung\\FormNguoiDung.Designer.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T07:53:34.58Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-15T07:53:34.58Z"
             },
             {
               "$type": "Document",
@@ -287,8 +270,7 @@
               "ToolTip": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\NguoiDung\\FormNguoiDung.cs [Design]",
               "RelativeToolTip": "QlyCafe\\NguoiDung\\FormNguoiDung.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T07:53:29.286Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2025-05-15T07:53:29.286Z"
             },
             {
               "$type": "Document",
@@ -300,8 +282,7 @@
               "RelativeToolTip": "QlyCafe\\Login.Designer.cs",
               "ViewState": "AgIAAA0AAAAAAAAAAAAzwG4AAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T07:50:17.702Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-15T07:50:17.702Z"
             },
             {
               "$type": "Document",
@@ -313,18 +294,17 @@
               "RelativeToolTip": "QlyCafe\\Login.cs",
               "ViewState": "AgIAACYAAAAAAAAAAAAAwE0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T07:45:19.786Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-15T07:45:19.786Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Function.cs",
               "DocumentMoniker": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\Function.cs",
               "RelativeDocumentMoniker": "QlyCafe\\Function.cs",
               "ToolTip": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\Function.cs",
               "RelativeToolTip": "QlyCafe\\Function.cs",
-              "ViewState": "AgIAAAEAAAAAAAAAAAAwwAwAAABHAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-15T07:42:06.09Z",
               "EditorCaption": ""
@@ -339,8 +319,7 @@
               "RelativeToolTip": "..\\25A4041917_TranQuocThai\\25A4041917_TranQuocThai\\Function.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAADoAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T07:41:48.32Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-15T07:41:48.32Z"
             },
             {
               "$type": "Document",
@@ -352,8 +331,7 @@
               "RelativeToolTip": "..\\25A4041917_TranQuocThai\\25A4041917_TranQuocThai\\Form1.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T07:41:47.326Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-15T07:41:47.326Z"
             },
             {
               "$type": "Document",
@@ -364,8 +342,7 @@
               "ToolTip": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\Login.cs [Design]",
               "RelativeToolTip": "QlyCafe\\Login.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T07:41:13.992Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2025-05-15T07:41:13.992Z"
             }
           ]
         },
