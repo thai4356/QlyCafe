@@ -88,7 +88,6 @@ namespace QlyCafe
             string maNV = UserSession.MaNguoiDung; // Nhân viên đang duyệt đơn
             string maKH = "KH01"; // Giả sử khách hàng cố định, có thể sửa lại
 
-            // ✅ Thêm vào bảng HoaDonBan
             string sqlInsertHDB = $@"
             INSERT INTO HoaDonBan (MaHDB, NgayBan, MaNV, MaKH, TongTien)
             VALUES ('{maHDB}', '{ngayBan}', '{maNV}', '{maKH}', {tongTien})";
