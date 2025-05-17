@@ -3,6 +3,25 @@
   "WorkspaceRootPath": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\uchih\\AppData\\Local\\Temp\\py512go4..sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|C:\\Users\\uchih\\source\\repos\\QlyCafe\\qlycafe\\function.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|solutionrelative:qlycafe\\function.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|C:\\Users\\uchih\\source\\repos\\QlyCafe\\qlycafe\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|solutionrelative:qlycafe\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|C:\\Users\\uchih\\source\\repos\\QlyCafe\\qlycafe\\cartsession.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|solutionrelative:qlycafe\\cartsession.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|C:\\Users\\uchih\\source\\repos\\QlyCafe\\qlycafe\\cartitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|solutionrelative:qlycafe\\cartitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|c:\\users\\uchih\\source\\repos\\qlycafe\\qlycafe\\nhanvien\\formnguoiban.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|solutionrelative:qlycafe\\nhanvien\\formnguoiban.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -13,10 +32,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|C:\\Users\\uchih\\source\\repos\\QlyCafe\\qlycafe\\login.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|solutionrelative:qlycafe\\login.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|C:\\Users\\uchih\\source\\repos\\QlyCafe\\qlycafe\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|solutionrelative:qlycafe\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|C:\\Users\\uchih\\source\\repos\\QlyCafe\\qlycafe\\usersession.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -39,14 +54,6 @@
       "RelativeMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|solutionrelative:qlycafe\\nhanvien\\formnguoiban.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|C:\\Users\\uchih\\source\\repos\\QlyCafe\\qlycafe\\cartsession.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|solutionrelative:qlycafe\\cartsession.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|C:\\Users\\uchih\\source\\repos\\QlyCafe\\qlycafe\\cartitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|solutionrelative:qlycafe\\cartitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|C:\\Users\\uchih\\source\\repos\\QlyCafe\\qlycafe\\nhanvien\\formnguoiban.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|solutionrelative:qlycafe\\nhanvien\\formnguoiban.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -67,14 +74,16 @@
       "RelativeMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|solutionrelative:qlycafe\\login.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|C:\\Users\\uchih\\source\\repos\\QlyCafe\\qlycafe\\function.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{597D4962-C77F-493F-8C64-0F2AE3F4F85D}|QlyCafe\\QlyCafe.csproj|solutionrelative:qlycafe\\function.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\uchih\\source\\repos\\25A4041917_TranQuocThai\\25A4041917_TranQuocThai\\Function.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\uchih\\source\\repos\\25A4041917_TranQuocThai\\25A4041917_TranQuocThai\\Form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\uchih\\AppData\\Local\\Temp\\py512go4..sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|CodeFrame"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\uchih\\AppData\\Local\\Temp\\py512go4..sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|ResultFrame"
     }
   ],
   "DocumentGroupContainers": [
@@ -84,7 +93,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -108,7 +117,18 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
+              "Title": "SQLQuery1.sql ",
+              "DocumentMoniker": "C:\\Users\\uchih\\AppData\\Local\\Temp\\py512go4..sql",
+              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\Temp\\py512go4..sql",
+              "ToolTip": "SQLQuery1.sql *",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2025-05-16T07:11:49.246Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "UserSession.cs",
               "DocumentMoniker": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\UserSession.cs",
               "RelativeDocumentMoniker": "QlyCafe\\UserSession.cs",
@@ -116,24 +136,25 @@
               "RelativeToolTip": "QlyCafe\\UserSession.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAABdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T09:25:02.588Z"
+              "WhenOpened": "2025-05-15T09:25:02.588Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 5,
               "Title": "FormNguoiBan.cs",
               "DocumentMoniker": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\NhanVien\\FormNguoiBan.cs",
               "RelativeDocumentMoniker": "QlyCafe\\NhanVien\\FormNguoiBan.cs",
               "ToolTip": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\NhanVien\\FormNguoiBan.cs",
               "RelativeToolTip": "QlyCafe\\NhanVien\\FormNguoiBan.cs",
-              "ViewState": "AgIAAEMAAAAAAAAAAAAkwFgAAABOAAAAAAAAAA==",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAAwBsAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-15T08:48:28.746Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 9,
               "Title": "FormGioHang.cs",
               "DocumentMoniker": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\NguoiDung\\FormGioHang.cs",
               "RelativeDocumentMoniker": "QlyCafe\\NguoiDung\\FormGioHang.cs",
@@ -141,34 +162,37 @@
               "RelativeToolTip": "QlyCafe\\NguoiDung\\FormGioHang.cs",
               "ViewState": "AgIAABMAAAAAAAAAAAAQwDgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T08:36:35.269Z"
+              "WhenOpened": "2025-05-15T08:36:35.269Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 10,
               "Title": "FormGioHang.cs [Design]",
               "DocumentMoniker": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\NguoiDung\\FormGioHang.cs",
               "RelativeDocumentMoniker": "QlyCafe\\NguoiDung\\FormGioHang.cs",
               "ToolTip": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\NguoiDung\\FormGioHang.cs [Design]",
               "RelativeToolTip": "QlyCafe\\NguoiDung\\FormGioHang.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T08:36:29.333Z"
+              "WhenOpened": "2025-05-15T08:36:29.333Z",
+              "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 3,
               "Title": "CartSession.cs",
               "DocumentMoniker": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\CartSession.cs",
               "RelativeDocumentMoniker": "QlyCafe\\CartSession.cs",
               "ToolTip": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\CartSession.cs",
               "RelativeToolTip": "QlyCafe\\CartSession.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T08:32:38.963Z"
+              "WhenOpened": "2025-05-15T08:32:38.963Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 4,
               "Title": "CartItem.cs",
               "DocumentMoniker": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\CartItem.cs",
               "RelativeDocumentMoniker": "QlyCafe\\CartItem.cs",
@@ -176,11 +200,12 @@
               "RelativeToolTip": "QlyCafe\\CartItem.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T08:31:23.034Z"
+              "WhenOpened": "2025-05-15T08:31:23.034Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\Program.cs",
               "RelativeDocumentMoniker": "QlyCafe\\Program.cs",
@@ -188,11 +213,12 @@
               "RelativeToolTip": "QlyCafe\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T08:15:22.086Z"
+              "WhenOpened": "2025-05-15T08:15:22.086Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 14,
               "Title": "FormNguoiDung.cs",
               "DocumentMoniker": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\NguoiDung\\FormNguoiDung.cs",
               "RelativeDocumentMoniker": "QlyCafe\\NguoiDung\\FormNguoiDung.cs",
@@ -200,22 +226,24 @@
               "RelativeToolTip": "QlyCafe\\NguoiDung\\FormNguoiDung.cs",
               "ViewState": "AgIAAEkAAAAAAAAAAAAuwF0AAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T08:10:06.904Z"
+              "WhenOpened": "2025-05-15T08:10:06.904Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 16,
               "Title": "FormQuanLy.cs [Design]",
               "DocumentMoniker": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\Quanly\\FormQuanLy.cs",
               "RelativeDocumentMoniker": "QlyCafe\\Quanly\\FormQuanLy.cs",
               "ToolTip": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\Quanly\\FormQuanLy.cs [Design]",
               "RelativeToolTip": "QlyCafe\\Quanly\\FormQuanLy.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T07:55:01.168Z"
+              "WhenOpened": "2025-05-15T07:55:01.168Z",
+              "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 13,
               "Title": "FormNguoiBan.Designer.cs",
               "DocumentMoniker": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\NhanVien\\FormNguoiBan.Designer.cs",
               "RelativeDocumentMoniker": "QlyCafe\\NhanVien\\FormNguoiBan.Designer.cs",
@@ -223,11 +251,12 @@
               "RelativeToolTip": "QlyCafe\\NhanVien\\FormNguoiBan.Designer.cs",
               "ViewState": "AgIAAEQAAAAAAAAAAADwv1YAAABBAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T07:54:43.074Z"
+              "WhenOpened": "2025-05-15T07:54:43.074Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 12,
               "Title": "FormNguoiBan.cs [Design]",
               "DocumentMoniker": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\NhanVien\\FormNguoiBan.cs",
               "RelativeDocumentMoniker": "QlyCafe\\NhanVien\\FormNguoiBan.cs",
@@ -238,7 +267,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 15,
               "Title": "FormNguoiDung.Designer.cs",
               "DocumentMoniker": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\NguoiDung\\FormNguoiDung.Designer.cs",
               "RelativeDocumentMoniker": "QlyCafe\\NguoiDung\\FormNguoiDung.Designer.cs",
@@ -246,22 +275,24 @@
               "RelativeToolTip": "QlyCafe\\NguoiDung\\FormNguoiDung.Designer.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T07:53:34.58Z"
+              "WhenOpened": "2025-05-15T07:53:34.58Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 11,
               "Title": "FormNguoiDung.cs [Design]",
               "DocumentMoniker": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\NguoiDung\\FormNguoiDung.cs",
               "RelativeDocumentMoniker": "QlyCafe\\NguoiDung\\FormNguoiDung.cs",
               "ToolTip": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\NguoiDung\\FormNguoiDung.cs [Design]",
               "RelativeToolTip": "QlyCafe\\NguoiDung\\FormNguoiDung.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T07:53:29.286Z"
+              "WhenOpened": "2025-05-15T07:53:29.286Z",
+              "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 17,
               "Title": "Login.Designer.cs",
               "DocumentMoniker": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\Login.Designer.cs",
               "RelativeDocumentMoniker": "QlyCafe\\Login.Designer.cs",
@@ -274,7 +305,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 6,
               "Title": "Login.cs",
               "DocumentMoniker": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\Login.cs",
               "RelativeDocumentMoniker": "QlyCafe\\Login.cs",
@@ -287,19 +318,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 1,
               "Title": "Function.cs",
               "DocumentMoniker": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\Function.cs",
               "RelativeDocumentMoniker": "QlyCafe\\Function.cs",
               "ToolTip": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\Function.cs",
               "RelativeToolTip": "QlyCafe\\Function.cs",
-              "ViewState": "AgIAAAEAAAAAAAAAAAAwwDkAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAwwAwAAABHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T07:42:06.09Z"
+              "WhenOpened": "2025-05-15T07:42:06.09Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "Function.cs",
               "DocumentMoniker": "C:\\Users\\uchih\\source\\repos\\25A4041917_TranQuocThai\\25A4041917_TranQuocThai\\Function.cs",
               "RelativeDocumentMoniker": "..\\25A4041917_TranQuocThai\\25A4041917_TranQuocThai\\Function.cs",
@@ -307,11 +339,12 @@
               "RelativeToolTip": "..\\25A4041917_TranQuocThai\\25A4041917_TranQuocThai\\Function.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAADoAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T07:41:48.32Z"
+              "WhenOpened": "2025-05-15T07:41:48.32Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 19,
               "Title": "Form1.cs",
               "DocumentMoniker": "C:\\Users\\uchih\\source\\repos\\25A4041917_TranQuocThai\\25A4041917_TranQuocThai\\Form1.cs",
               "RelativeDocumentMoniker": "..\\25A4041917_TranQuocThai\\25A4041917_TranQuocThai\\Form1.cs",
@@ -319,11 +352,12 @@
               "RelativeToolTip": "..\\25A4041917_TranQuocThai\\25A4041917_TranQuocThai\\Form1.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T07:41:47.326Z"
+              "WhenOpened": "2025-05-15T07:41:47.326Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 7,
               "Title": "Login.cs [Design]",
               "DocumentMoniker": "C:\\Users\\uchih\\source\\repos\\QlyCafe\\QlyCafe\\Login.cs",
               "RelativeDocumentMoniker": "QlyCafe\\Login.cs",
