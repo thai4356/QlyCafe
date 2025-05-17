@@ -1,7 +1,7 @@
 Database/
 .vs/
 /.vs
-
+.idea/
 *.suo
 *.user
 *.sln.docstates
