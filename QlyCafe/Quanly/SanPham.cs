@@ -889,15 +889,15 @@ namespace QlyCafe.Quanly
 
                                 // ----- INSERT VÀO CSDL -----
                                 SqlParameter[] parameters = new SqlParameter[] {
-                            new SqlParameter("@MaSP", SqlDbType.VarChar, 10) { Value = maSP },
-                            new SqlParameter("@TenSP", SqlDbType.NVarChar, 100) { Value = tenSP },
-                            new SqlParameter("@MaLoai", SqlDbType.VarChar, 10) { Value = (object)maLoai ?? DBNull.Value },
-                            new SqlParameter("@GiaNhap", SqlDbType.Decimal) { Precision = 10, Scale = 2, Value = giaNhap },
-                            new SqlParameter("@GiaBan", SqlDbType.Decimal) { Precision = 10, Scale = 2, Value = giaBan },
-                            new SqlParameter("@SoLuong", SqlDbType.Int) { Value = soLuong },
-                            new SqlParameter("@MaCongDung", SqlDbType.VarChar, 10) { Value = (object)maCongDung ?? DBNull.Value },
-                            new SqlParameter("@HinhAnh", SqlDbType.NVarChar, 255) { Value = string.IsNullOrWhiteSpace(hinhAnh) ? DBNull.Value : (object)hinhAnh }
-                        };
+                                    new SqlParameter("@MaSP", SqlDbType.VarChar, 10) { Value = maSP },
+                                    new SqlParameter("@TenSP", SqlDbType.NVarChar, 100) { Value = tenSP },
+                                    new SqlParameter("@MaLoai", SqlDbType.VarChar, 10) { Value = (object)maLoai ?? DBNull.Value },
+                                    new SqlParameter("@GiaNhap", SqlDbType.Decimal) { Precision = 10, Scale = 2, Value = giaNhap },
+                                    new SqlParameter("@GiaBan", SqlDbType.Decimal) { Precision = 10, Scale = 2, Value = giaBan },
+                                    new SqlParameter("@SoLuong", SqlDbType.Int) { Value = soLuong },
+                                    new SqlParameter("@MaCongDung", SqlDbType.VarChar, 10) { Value = (object)maCongDung ?? DBNull.Value },
+                                    new SqlParameter("@HinhAnh", SqlDbType.NVarChar, 255) { Value = string.IsNullOrWhiteSpace(hinhAnh) ? DBNull.Value : (object)hinhAnh }
+                                };
                                 Function.RunSql(sqlInsertSanPham, parameters);
                                 importedCount++;
                                 importDetailsLog.Add($"Dòng {currentRowNumber} (MaSP: {maSP}): Nhập thành công.");

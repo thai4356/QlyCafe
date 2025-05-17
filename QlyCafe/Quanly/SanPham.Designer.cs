@@ -268,6 +268,7 @@
             this.picHinhAnhSP.Location = new System.Drawing.Point(157, 315);
             this.picHinhAnhSP.Name = "picHinhAnhSP";
             this.picHinhAnhSP.Size = new System.Drawing.Size(334, 215);
+            this.picHinhAnhSP.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picHinhAnhSP.TabIndex = 16;
             this.picHinhAnhSP.TabStop = false;
             // 
