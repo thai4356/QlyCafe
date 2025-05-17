@@ -97,7 +97,7 @@ namespace QlyCafe.Quanly
             string sql = "SELECT MaNCC,TenNCC,Diachi,SDT FROM NhaCungCap";
             dtNCC = Function.GetDataToTable(sql);
             //Lưu số bản ghi vào biến
-            maNCCDem = dtNCC.Rows.Count + 1;
+            maNCCDem = Function.CountRecords("Select Count(MaNCC) From NhaCungCap") + 1;
             Console.WriteLine($"SO Ban Ghi Hien Tai: {maNCCDem}");
             DataGridViewNCC.DataSource = dtNCC;
             CustomizeDataGridViewColumn(DataGridViewNCC);
@@ -119,8 +119,9 @@ namespace QlyCafe.Quanly
             };
 
             DataTable dtNhaCungCap = Function.GetDataToTable(sqlSearch, param);
-            maNCCDem = dtNhaCungCap.Rows.Count + 1;
-            Console.WriteLine($"SO Ban Ghi Hien Tai: {maNCCDem}");
+            int maNCCSearch = dtNhaCungCap.Rows.Count + 1;
+            Console.WriteLine($"SO Ban Ghi tat ca: {maNCCDem}");
+            Console.WriteLine($"SO Ban Ghi Hien Tai: {maNCCSearch}");
             DataGridViewNCC.DataSource = dtNhaCungCap;
 
             CustomizeDataGridViewColumn(DataGridViewNCC);
@@ -171,6 +172,7 @@ namespace QlyCafe.Quanly
             txtTenNhaCC.Text = string.Empty;
             txtDiaChi.Text = string.Empty;
             txtSoDienThoai.Text = string.Empty;
+            txtSearch.Text = string.Empty;
         }
 
         private void btnLuu_Click(object sender, EventArgs e)
@@ -391,9 +393,7 @@ namespace QlyCafe.Quanly
                 int importedCount = 0;
                 int skippedCount = 0;
                 int errorCount = 0;
-                // Không cần List<string> skippedDetails và errorDetails nữa nếu chỉ log ra Console
-                // Hoặc vẫn giữ nếu muốn hiển thị một phần trong MessageBox
-
+                
                 string sqlInsert = "INSERT INTO dbo.NhaCungCap (MaNCC, TenNCC, DiaChi, SDT) VALUES (@MaNCC, @TenNCC, @DiaChi, @SDT)";
                 string sqlCheckKey = "SELECT COUNT(*) FROM dbo.NhaCungCap WHERE MaNCC = @MaNCC";
 

@@ -67,3 +67,4 @@ D:\dotnet development\QlyCafe\QlyCafe\obj\Debug\QlyCafe.csproj.Up2Date
 D:\dotnet development\QlyCafe\QlyCafe\bin\Debug\ClosedXML.dll
 D:\dotnet development\QlyCafe\QlyCafe\bin\Debug\ClosedXML.pdb
 D:\dotnet development\QlyCafe\QlyCafe\bin\Debug\ClosedXML.xml
+D:\dotnet development\QlyCafe\QlyCafe\obj\Debug\QlyCafe.Quanly.SanPham.resources

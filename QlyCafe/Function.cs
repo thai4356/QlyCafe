@@ -86,6 +86,44 @@ namespace QlyCafe
             return dataTable;
         }
 
+        public static void FillCombo(ComboBox cbo, string displayMember, string valueMember, string sql, params SqlParameter[] parameters)
+        {
+            DataTable comboDataTable = GetDataToTable(sql, parameters);
+            cbo.DataSource = comboDataTable;
+            cbo.DisplayMember = displayMember;
+            cbo.ValueMember = valueMember;
+            cbo.SelectedIndex = -1; // Reset selection
+        }
+
+        public static string GetFieldValue(string sql, params SqlParameter[] parameters) // Đổi tên GetFieldValues thành GetFieldValue cho rõ ràng hơn vì nó trả về một giá trị
+        {
+            string value = "";
+            using (SqlConnection connection = new SqlConnection(connString))
+            {
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    if (parameters != null && parameters.Length > 0)
+                    {
+                        command.Parameters.AddRange(parameters);
+                    }
+                    try
+                    {
+                        connection.Open();
+                        object result = command.ExecuteScalar();
+                        if (result != null)
+                        {
+                            value = result.ToString();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("DataService - Lỗi khi lấy giá trị: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            return value;
+        }
+
         public static void RunSql(string sql, params SqlParameter[] parameters)
         {
             using (SqlConnection connection = new SqlConnection(connString))
@@ -113,9 +151,9 @@ namespace QlyCafe
             }
         }
 
-        public static bool CheckKey(string sql, params SqlParameter[] parameters)
+        public static int CountRecords(string sql, params SqlParameter[] parameters)
         {
-            bool exists = false;
+            int count = 0;
             using (SqlConnection connection = new SqlConnection(connString))
             {
                 using (SqlCommand command = new SqlCommand(sql, connection))
@@ -128,19 +166,28 @@ namespace QlyCafe
                     {
                         connection.Open();
                         object result = command.ExecuteScalar();
-                        if (result != null && Convert.ToInt32(result) > 0)
+                        if (result != null && int.TryParse(result.ToString(), out count))
                         {
-                            exists = true;
+                            return count;
                         }
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("DataService - Lỗi khi kiểm tra khóa: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("DataService - Lỗi khi tìm kiếm số bản ghi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
-            return exists;
+            return count;
         }
+
+        public static bool CheckKey(string sql, params SqlParameter[] parameters)
+        {
+            int recordCount = CountRecords(sql,parameters);
+            return recordCount > 0;
+            
+        }
+
+
 
     }
 }

@@ -31,11 +31,11 @@ namespace QlyCafe
         }
 
         static void test() {
-            //NhaCungCap ncc = new NhaCungCap();
-            //Application.Run(ncc);
+            NhaCungCap ncc = new NhaCungCap();
+            Application.Run(ncc);
 
-            SanPham sp = new SanPham();
-            Application.Run(sp);
+            //SanPham sp = new SanPham();
+            //Application.Run(sp);
         }
     }
 }
