@@ -140,6 +140,12 @@
     <Compile Include="Quanly\SanPham.Designer.cs">
       <DependentUpon>SanPham.cs</DependentUpon>
     </Compile>
+    <Compile Include="Quanly\TimHDNhap.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Quanly\TimHDNhap.Designer.cs">
+      <DependentUpon>TimHDNhap.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserSession.cs" />
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
@@ -173,6 +179,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Quanly\SanPham.resx">
       <DependentUpon>SanPham.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Quanly\TimHDNhap.resx">
+      <DependentUpon>TimHDNhap.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
