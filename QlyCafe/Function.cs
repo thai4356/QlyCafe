@@ -11,7 +11,7 @@ namespace QlyCafe
 {
     internal class Function
     {
-        private static string connString = "Data Source=DESKTOP-6P76JI8\\SQLEXPRESS;Initial Catalog=qlyCafe;Integrated Security=True;TrustServerCertificate=True";
+        public static string connString = "Data Source=DESKTOP-6P76JI8\\SQLEXPRESS;Initial Catalog=qlyCafe;Integrated Security=True;TrustServerCertificate=True";
         private static SqlConnection conn;
 
         public static void OpenConnection()
@@ -124,32 +124,47 @@ namespace QlyCafe
             return value;
         }
 
-        public static void RunSql(string sql, params SqlParameter[] parameters)
+        /// <summary>
+        /// Thực thi một câu lệnh INSERT/UPDATE/DELETE, không có transaction riêng.
+        /// </summary>
+        public static void ExecuteNonQuery(string sql, params SqlParameter[] parameters)
         {
-            using (SqlConnection connection = new SqlConnection(connString))
+            using (var conn = new SqlConnection(connString))
+            using (var cmd = new SqlCommand(sql, conn))
             {
-                using (SqlCommand command = new SqlCommand(sql, connection))
+                if (parameters?.Any() == true)
+                    cmd.Parameters.AddRange(parameters);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
+        /// Thực thi nhiều câu lệnh trong cùng một transaction.
+        /// </summary>
+        public static void ExecuteTransaction(Action<SqlConnection, SqlTransaction> body)
+        {
+            using (var conn = new SqlConnection(connString))
+            {
+                conn.Open();
+                using (var tx = conn.BeginTransaction())
                 {
-                    if (parameters != null && parameters.Length > 0)
-                    {
-                        command.Parameters.AddRange(parameters);
-                    }
                     try
                     {
-                        connection.Open();
-                        command.ExecuteNonQuery();
+                        body(conn, tx);
+                        tx.Commit();
                     }
-                    catch (SqlException ex)
+                    catch
                     {
-                        MessageBox.Show("DataService - Lỗi SQL: " + ex.Message + "\nSố lỗi: " + ex.Number, "Lỗi Thực Thi SQL", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("DataService - Lỗi không xác định: " + ex.Message, "Lỗi Thực Thi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        tx.Rollback();
+                        throw;
                     }
                 }
             }
         }
+
+        public static void RunSql(string sql, params SqlParameter[] parameters)
+            => ExecuteNonQuery(sql, parameters);
 
         public static int CountRecords(string sql, params SqlParameter[] parameters)
         {

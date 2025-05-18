@@ -209,6 +209,11 @@ namespace QlyCafe.Quanly
                 MessageBox.Show("Thêm mới nhà cung cấp thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDataGridView();
                 ResetValues();
+
+                btnSua.Enabled = true;
+                btnXoa.Enabled = true;
+                btnBoqua.Enabled = true;
+                btnLuu.Enabled = false;
             }
 
             else
