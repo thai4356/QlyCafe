@@ -34,8 +34,14 @@ namespace QlyCafe
             //NhaCungCap ncc = new NhaCungCap();
             //Application.Run(ncc);
 
-            SanPham sp = new SanPham();
-            Application.Run(sp);
+            //SanPham sp = new SanPham();
+            //Application.Run(sp);
+
+            //HoaDonNhap hdn = new HoaDonNhap();
+            //Application.Run(hdn);
+
+            TimHDNhap thdn = new TimHDNhap();
+            Application.Run(thdn);
         }
     }
 }

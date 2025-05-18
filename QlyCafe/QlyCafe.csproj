@@ -122,6 +122,12 @@
     <Compile Include="Quanly\FormQuanLy.Designer.cs">
       <DependentUpon>FormQuanLy.cs</DependentUpon>
     </Compile>
+    <Compile Include="Quanly\HoaDonNhap.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Quanly\HoaDonNhap.Designer.cs">
+      <DependentUpon>HoaDonNhap.cs</DependentUpon>
+    </Compile>
     <Compile Include="Quanly\NhaCungCap.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,6 +139,12 @@
     </Compile>
     <Compile Include="Quanly\SanPham.Designer.cs">
       <DependentUpon>SanPham.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Quanly\TimHDNhap.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Quanly\TimHDNhap.Designer.cs">
+      <DependentUpon>TimHDNhap.cs</DependentUpon>
     </Compile>
     <Compile Include="UserSession.cs" />
     <EmbeddedResource Include="Login.resx">
@@ -159,11 +171,17 @@
     <EmbeddedResource Include="Quanly\FormQuanLy.resx">
       <DependentUpon>FormQuanLy.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Quanly\HoaDonNhap.resx">
+      <DependentUpon>HoaDonNhap.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Quanly\NhaCungCap.resx">
       <DependentUpon>NhaCungCap.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Quanly\SanPham.resx">
       <DependentUpon>SanPham.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Quanly\TimHDNhap.resx">
+      <DependentUpon>TimHDNhap.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -183,16 +201,11 @@
     <Folder Include="Images\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-
   <Target Name="CopyProjectImagesToOutput" AfterTargets="Build">
     <ItemGroup>
       <ProjectImageFiles Include="$(MSBuildProjectDirectory)\Images\**\*.*" />
     </ItemGroup>
-    <Copy
-        SourceFiles="@(ProjectImageFiles)"
-        DestinationFiles="@(ProjectImageFiles->'$(OutputPath)images\%(RecursiveDir)%(Filename)%(Extension)')"
-        SkipUnchangedFiles="true"
-        OverwriteReadOnlyFiles="true" />
+    <Copy SourceFiles="@(ProjectImageFiles)" DestinationFiles="@(ProjectImageFiles->'$(OutputPath)images\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" />
     <Message Text="Đã copy các file ảnh từ thư mục Project\Images sang $(OutputPath)images (chữ thường i)" Importance="high" />
   </Target>
 </Project>

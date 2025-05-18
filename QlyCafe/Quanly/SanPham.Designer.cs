@@ -35,6 +35,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.txtSoLuong = new System.Windows.Forms.TextBox();
+            this.txtGiaBan = new System.Windows.Forms.TextBox();
+            this.txtGiaNhap = new System.Windows.Forms.TextBox();
             this.btnThoat = new System.Windows.Forms.Button();
             this.btnXoa = new System.Windows.Forms.Button();
             this.btnBoQua = new System.Windows.Forms.Button();
@@ -44,9 +47,6 @@
             this.btnChonAnh = new System.Windows.Forms.Button();
             this.txtDuongDan = new System.Windows.Forms.TextBox();
             this.picHinhAnhSP = new System.Windows.Forms.PictureBox();
-            this.numSoLuong = new System.Windows.Forms.NumericUpDown();
-            this.numGiaBan = new System.Windows.Forms.NumericUpDown();
-            this.numGiaNhap = new System.Windows.Forms.NumericUpDown();
             this.cboCongDung = new System.Windows.Forms.ComboBox();
             this.cboLoaiSP = new System.Windows.Forms.ComboBox();
             this.txtTenSP = new System.Windows.Forms.TextBox();
@@ -64,9 +64,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvSanPham)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picHinhAnhSP)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSoLuong)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numGiaBan)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numGiaNhap)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -93,6 +90,7 @@
             this.btnNhapTuExcel.TabIndex = 4;
             this.btnNhapTuExcel.Text = "Nhập từ Excel";
             this.btnNhapTuExcel.UseVisualStyleBackColor = true;
+            this.btnNhapTuExcel.Click += new System.EventHandler(this.btnNhapTuExcel_Click);
             // 
             // btnXuatRaExcel
             // 
@@ -102,6 +100,7 @@
             this.btnXuatRaExcel.TabIndex = 3;
             this.btnXuatRaExcel.Text = "Xuất ra Excel";
             this.btnXuatRaExcel.UseVisualStyleBackColor = true;
+            this.btnXuatRaExcel.Click += new System.EventHandler(this.btnXuatRaExcel_Click);
             // 
             // dgvSanPham
             // 
@@ -131,9 +130,13 @@
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(518, 27);
             this.txtSearch.TabIndex = 0;
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.txtSoLuong);
+            this.groupBox2.Controls.Add(this.txtGiaBan);
+            this.groupBox2.Controls.Add(this.txtGiaNhap);
             this.groupBox2.Controls.Add(this.btnThoat);
             this.groupBox2.Controls.Add(this.btnXoa);
             this.groupBox2.Controls.Add(this.btnBoQua);
@@ -143,9 +146,6 @@
             this.groupBox2.Controls.Add(this.btnChonAnh);
             this.groupBox2.Controls.Add(this.txtDuongDan);
             this.groupBox2.Controls.Add(this.picHinhAnhSP);
-            this.groupBox2.Controls.Add(this.numSoLuong);
-            this.groupBox2.Controls.Add(this.numGiaBan);
-            this.groupBox2.Controls.Add(this.numGiaNhap);
             this.groupBox2.Controls.Add(this.cboCongDung);
             this.groupBox2.Controls.Add(this.cboLoaiSP);
             this.groupBox2.Controls.Add(this.txtTenSP);
@@ -166,6 +166,27 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Thông tin chi tiết sản phẩm";
             // 
+            // txtSoLuong
+            // 
+            this.txtSoLuong.Location = new System.Drawing.Point(156, 266);
+            this.txtSoLuong.Name = "txtSoLuong";
+            this.txtSoLuong.Size = new System.Drawing.Size(168, 27);
+            this.txtSoLuong.TabIndex = 27;
+            // 
+            // txtGiaBan
+            // 
+            this.txtGiaBan.Location = new System.Drawing.Point(156, 223);
+            this.txtGiaBan.Name = "txtGiaBan";
+            this.txtGiaBan.Size = new System.Drawing.Size(168, 27);
+            this.txtGiaBan.TabIndex = 26;
+            // 
+            // txtGiaNhap
+            // 
+            this.txtGiaNhap.Location = new System.Drawing.Point(156, 186);
+            this.txtGiaNhap.Name = "txtGiaNhap";
+            this.txtGiaNhap.Size = new System.Drawing.Size(168, 27);
+            this.txtGiaNhap.TabIndex = 25;
+            // 
             // btnThoat
             // 
             this.btnThoat.Location = new System.Drawing.Point(320, 696);
@@ -174,6 +195,7 @@
             this.btnThoat.TabIndex = 24;
             this.btnThoat.Text = "Thoát";
             this.btnThoat.UseVisualStyleBackColor = true;
+            this.btnThoat.Click += new System.EventHandler(this.btnThoat_Click);
             // 
             // btnXoa
             // 
@@ -183,6 +205,7 @@
             this.btnXoa.TabIndex = 23;
             this.btnXoa.Text = "Xóa";
             this.btnXoa.UseVisualStyleBackColor = true;
+            this.btnXoa.Click += new System.EventHandler(this.btnXoa_Click);
             // 
             // btnBoQua
             // 
@@ -192,6 +215,7 @@
             this.btnBoQua.TabIndex = 22;
             this.btnBoQua.Text = "Bỏ qua";
             this.btnBoQua.UseVisualStyleBackColor = true;
+            this.btnBoQua.Click += new System.EventHandler(this.btnBoQua_Click);
             // 
             // btnSua
             // 
@@ -201,6 +225,7 @@
             this.btnSua.TabIndex = 21;
             this.btnSua.Text = "Sửa";
             this.btnSua.UseVisualStyleBackColor = true;
+            this.btnSua.Click += new System.EventHandler(this.btnSua_Click);
             // 
             // btnLuu
             // 
@@ -210,6 +235,7 @@
             this.btnLuu.TabIndex = 20;
             this.btnLuu.Text = "Lưu";
             this.btnLuu.UseVisualStyleBackColor = true;
+            this.btnLuu.Click += new System.EventHandler(this.btnLuu_Click);
             // 
             // btnThem
             // 
@@ -219,6 +245,7 @@
             this.btnThem.TabIndex = 19;
             this.btnThem.Text = "Thêm mới";
             this.btnThem.UseVisualStyleBackColor = true;
+            this.btnThem.Click += new System.EventHandler(this.btnThem_Click);
             // 
             // btnChonAnh
             // 
@@ -228,6 +255,7 @@
             this.btnChonAnh.TabIndex = 18;
             this.btnChonAnh.Text = "Chọn ảnh";
             this.btnChonAnh.UseVisualStyleBackColor = true;
+            this.btnChonAnh.Click += new System.EventHandler(this.btnChonAnh_Click);
             // 
             // txtDuongDan
             // 
@@ -241,32 +269,13 @@
             this.picHinhAnhSP.Location = new System.Drawing.Point(157, 315);
             this.picHinhAnhSP.Name = "picHinhAnhSP";
             this.picHinhAnhSP.Size = new System.Drawing.Size(334, 215);
+            this.picHinhAnhSP.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picHinhAnhSP.TabIndex = 16;
             this.picHinhAnhSP.TabStop = false;
             // 
-            // numSoLuong
-            // 
-            this.numSoLuong.Location = new System.Drawing.Point(157, 266);
-            this.numSoLuong.Name = "numSoLuong";
-            this.numSoLuong.Size = new System.Drawing.Size(120, 27);
-            this.numSoLuong.TabIndex = 15;
-            // 
-            // numGiaBan
-            // 
-            this.numGiaBan.Location = new System.Drawing.Point(158, 223);
-            this.numGiaBan.Name = "numGiaBan";
-            this.numGiaBan.Size = new System.Drawing.Size(120, 27);
-            this.numGiaBan.TabIndex = 14;
-            // 
-            // numGiaNhap
-            // 
-            this.numGiaNhap.Location = new System.Drawing.Point(158, 186);
-            this.numGiaNhap.Name = "numGiaNhap";
-            this.numGiaNhap.Size = new System.Drawing.Size(120, 27);
-            this.numGiaNhap.TabIndex = 13;
-            // 
             // cboCongDung
             // 
+            this.cboCongDung.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboCongDung.FormattingEnabled = true;
             this.cboCongDung.Location = new System.Drawing.Point(157, 148);
             this.cboCongDung.Name = "cboCongDung";
@@ -275,6 +284,7 @@
             // 
             // cboLoaiSP
             // 
+            this.cboLoaiSP.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboLoaiSP.FormattingEnabled = true;
             this.cboLoaiSP.Location = new System.Drawing.Point(157, 110);
             this.cboLoaiSP.Name = "cboLoaiSP";
@@ -394,9 +404,6 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picHinhAnhSP)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSoLuong)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numGiaBan)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numGiaNhap)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -430,10 +437,10 @@
         private System.Windows.Forms.Button btnChonAnh;
         private System.Windows.Forms.TextBox txtDuongDan;
         private System.Windows.Forms.PictureBox picHinhAnhSP;
-        private System.Windows.Forms.NumericUpDown numSoLuong;
-        private System.Windows.Forms.NumericUpDown numGiaBan;
-        private System.Windows.Forms.NumericUpDown numGiaNhap;
         private System.Windows.Forms.Button btnNhapTuExcel;
         private System.Windows.Forms.Button btnXuatRaExcel;
+        private System.Windows.Forms.TextBox txtSoLuong;
+        private System.Windows.Forms.TextBox txtGiaBan;
+        private System.Windows.Forms.TextBox txtGiaNhap;
     }
 }
