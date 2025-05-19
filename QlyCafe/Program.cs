@@ -40,8 +40,11 @@ namespace QlyCafe
             //HoaDonNhap hdn = new HoaDonNhap();
             //Application.Run(hdn);
 
-            TimHDNhap thdn = new TimHDNhap();
-            Application.Run(thdn);
+            //TimHDNhap thdn = new TimHDNhap();
+            //Application.Run(thdn);
+
+            TimHDBan thb = new TimHDBan();
+            Application.Run(thb);
         }
     }
 }

@@ -122,6 +122,12 @@
     <Compile Include="Quanly\FormQuanLy.Designer.cs">
       <DependentUpon>FormQuanLy.cs</DependentUpon>
     </Compile>
+    <Compile Include="Quanly\HoaDonBan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Quanly\HoaDonBan.Designer.cs">
+      <DependentUpon>HoaDonBan.cs</DependentUpon>
+    </Compile>
     <Compile Include="Quanly\HoaDonNhap.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -176,6 +182,9 @@
     </Compile>
     <EmbeddedResource Include="Quanly\FormQuanLy.resx">
       <DependentUpon>FormQuanLy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Quanly\HoaDonBan.resx">
+      <DependentUpon>HoaDonBan.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Quanly\HoaDonNhap.resx">
       <DependentUpon>HoaDonNhap.cs</DependentUpon>
