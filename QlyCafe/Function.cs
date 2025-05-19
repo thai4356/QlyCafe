@@ -139,6 +139,36 @@ namespace QlyCafe
             }
         }
 
+        // === HÀM MỚI ExecuteNonQuery HỖ TRỢ TRANSACTION ===
+        /// <summary>
+        /// Thực thi một câu lệnh SQL (INSERT, UPDATE, DELETE) sử dụng một SqlConnection và SqlTransaction đã có.
+        /// </summary>
+        /// <param name="sql">Câu lệnh SQL.</param>
+        /// <param name="connection">Đối tượng SqlConnection đang mở và đã bắt đầu transaction.</param>
+        /// <param name="transaction">Đối tượng SqlTransaction đang được sử dụng.</param>
+        /// <param name="parameters">Mảng các SqlParameter (tùy chọn).</param>
+        public static void ExecuteNonQuery(string sql, SqlConnection connection, SqlTransaction transaction, params SqlParameter[] parameters)
+        {
+            if (connection == null || connection.State != ConnectionState.Open)
+            {
+                throw new ArgumentException("SqlConnection phải hợp lệ và đang mở trong ngữ cảnh transaction.");
+            }
+            if (transaction == null)
+            {
+                throw new ArgumentException("SqlTransaction không thể null khi thực thi trong ngữ cảnh transaction.");
+            }
+
+            // SqlCommand sẽ được gắn với connection và transaction này
+            using (SqlCommand command = new SqlCommand(sql, connection, transaction))
+            {
+                if (parameters != null && parameters.Length > 0)
+                {
+                    command.Parameters.AddRange(parameters);
+                }
+                command.ExecuteNonQuery();
+            }
+        }
+
         /// <summary>
         /// Thực thi nhiều câu lệnh trong cùng một transaction.
         /// </summary>

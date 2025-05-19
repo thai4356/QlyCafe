@@ -274,6 +274,7 @@
             this.btnThemDong.TabIndex = 12;
             this.btnThemDong.Text = "Thêm mới dòng";
             this.btnThemDong.UseVisualStyleBackColor = true;
+            this.btnThemDong.Click += new System.EventHandler(this.btnThemDong_Click);
             // 
             // txtDonGia
             // 
@@ -449,6 +450,7 @@
             this.btnLuuHDN.TabIndex = 17;
             this.btnLuuHDN.Text = "Lưu hóa đơn";
             this.btnLuuHDN.UseVisualStyleBackColor = true;
+            this.btnLuuHDN.Click += new System.EventHandler(this.btnLuuHDN_Click);
             // 
             // btnHuyHDN
             // 

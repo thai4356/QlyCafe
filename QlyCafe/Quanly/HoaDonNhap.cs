@@ -62,6 +62,27 @@ namespace QlyCafe.Quanly
             {
                 // Chế độ chuẩn bị thêm hóa đơn mới (form vừa được mở, chưa nhấn nút "Thêm HĐN")
                 ResetValuesToInitialState(); // Đưa form về trạng thái trắng, sẵn sàng
+                                             // Trong HoaDonNhap_Load():
+                                             // dtChiTietHDN sẽ được khởi tạo và gán DataSource cho dgvChiTietHDN   
+                //txtMaHDN.Text =  GenerateMaHDN();
+                if (dtChiTietHDN == null) // Khởi tạo và định nghĩa cột cho dtChiTietHDN nếu chưa có
+                {
+                    dtChiTietHDN = new DataTable("ChiTietHDN_Table");
+                    dtChiTietHDN.Columns.Add("MaSP", typeof(string));
+                    dtChiTietHDN.Columns.Add("TenSP", typeof(string));
+                    dtChiTietHDN.Columns.Add("SoLuong", typeof(decimal));
+                    dtChiTietHDN.Columns.Add("DonGia", typeof(decimal));
+                    dtChiTietHDN.Columns.Add("KhuyenMai", typeof(string));
+                    dtChiTietHDN.Columns.Add("ThanhTien", typeof(decimal));
+                }
+                // Gán dtChiTietHDN làm nguồn dữ liệu cho DataGridView.
+                // Việc này chỉ cần làm một lần.
+                if (dgvChiTietHDN.DataSource == null) // Chỉ gán nếu chưa được gán
+                {
+                    dgvChiTietHDN.DataSource = dtChiTietHDN;
+                }
+
+                CustomizeDgvChiTietHDN();
             }
         }
 
@@ -142,6 +163,27 @@ namespace QlyCafe.Quanly
             dgvChiTietHDN.MultiSelect = false;
         }
 
+        private void SetInitialButtonStatesAndControls() // Đổi tên và mục đích rõ ràng hơn
+        {
+            SetControlsEnabledState(false); // Vô hiệu hóa các vùng nhập liệu chính
+
+            btnThemHDN.Enabled = true;    // LUÔN BẬT
+            btnLuuHDN.Enabled = false;
+            btnHuyHDN.Enabled = false;
+            btnInHDN.Enabled = false;
+            btnDong.Enabled = true;
+
+            btnThemDong.Enabled = false;
+            btnSuaDong.Enabled = false;
+            btnXoaDong.Enabled = false;
+            btnHuyBoDong.Enabled = false;
+
+            cboMaHDNSearch.Enabled = true;
+            if (cboMaHDNSearch.Items.Count > 0) cboMaHDNSearch.SelectedIndex = -1;
+        }
+
+        
+
         private void ResetChiTietSanPhamFields()
         {
             cboMaSP.SelectedIndex = -1;
@@ -170,35 +212,14 @@ namespace QlyCafe.Quanly
 
             ResetChiTietSanPhamFields();
 
-            // Xóa dữ liệu chi tiết hóa đơn
             if (dtChiTietHDN != null)
             {
-                dtChiTietHDN.Rows.Clear(); // Sử dụng Rows.Clear() để giữ lại cấu trúc cột nếu có
+                dtChiTietHDN.Rows.Clear();
             }
-            dgvChiTietHDN.DataSource = null; // Gán lại DataSource sau nếu dtChiTietHDN là nguồn chính
-            if (dtChiTietHDN != null && dtChiTietHDN.Columns.Count > 0) // Chỉ gán lại nếu dtChiTietHDN có cấu trúc
-            {
-                dgvChiTietHDN.DataSource = dtChiTietHDN;
-            }
-
+            // dgvChiTietHDN sẽ tự cập nhật
 
             maHDNToLoad = null;
-
-            // Trạng thái nút và controls ban đầu
-            SetControlsEnabledState(false); // Disable các group box nhập liệu
-            btnThemHDN.Enabled = true;
-            btnLuuHDN.Enabled = false;
-            btnHuyHDN.Enabled = false; // Hủy hóa đơn (xóa khỏi CSDL)
-            btnInHDN.Enabled = false;
-            btnDong.Enabled = true; // Nút Đóng form luôn enabled
-
-            btnThemDong.Enabled = false;
-            btnSuaDong.Enabled = false;
-            btnXoaDong.Enabled = false;
-            btnHuyBoDong.Enabled = false; // Hủy thao tác trên dòng chi tiết
-
-            cboMaHDNSearch.Enabled = true;
-            cboMaHDNSearch.SelectedIndex = -1;
+            SetInitialButtonStatesAndControls(); // Gọi hàm mới để thiết lập trạng thái nút
         }
 
         /// <summary>
@@ -227,19 +248,17 @@ namespace QlyCafe.Quanly
         {
             SetControlsEnabledState(true);
 
-            btnThemHDN.Enabled = false; // Đã nhấn "Thêm HĐN" hoặc đang sửa HĐN cũ
+            btnThemHDN.Enabled = true;    // LUÔN BẬT
             btnLuuHDN.Enabled = true;
-            // Nút Hủy HĐN:
-            // Nếu là hóa đơn mới (chưa lưu), nút này có thể là "Hủy thao tác" (ResetValuesToInitialState)
-            // Nếu là hóa đơn cũ, nút này là "Xóa Hóa Đơn" (khỏi CSDL)
             btnHuyHDN.Enabled = true;
-            btnInHDN.Enabled = isEditingOldInvoice; // Chỉ in được hóa đơn đã tồn tại
+            btnInHDN.Enabled = isEditingOldInvoice;
 
-            btnThemDong.Enabled = true;
-            // btnSuaDong, btnXoaDong sẽ được bật khi chọn dòng trong DataGridView
-            // btnHuyBoDong sẽ bật khi đang sửa dòng
+            btnThemDong.Enabled = true;  // BẬT KHI BẮT ĐẦU THAO TÁC HÓA ĐƠN
+            btnSuaDong.Enabled = false;  // Sẽ bật khi chọn dòng
+            btnXoaDong.Enabled = false;  // Sẽ bật khi chọn dòng
+            btnHuyBoDong.Enabled = false; // Sẽ bật khi chọn dòng và bắt đầu sửa
 
-            cboMaHDNSearch.Enabled = false; // Không cho tìm hóa đơn khác khi đang làm việc
+            cboMaHDNSearch.Enabled = !btnLuuHDN.Enabled; // Tắt tìm kiếm khi đang có hóa đơn chưa lưu
         }
 
         private void LoadThongTinHoaDon(string maHDN)
@@ -327,22 +346,58 @@ namespace QlyCafe.Quanly
         {
             if (cboMaSP.SelectedValue != null && cboMaSP.SelectedIndex != -1)
             {
+                string maSPChon = cboMaSP.SelectedValue.ToString();
+
+                // 1. Cập nhật Tên Sản Phẩm (txtTenSP)
                 DataRowView drv = cboMaSP.SelectedItem as DataRowView;
                 if (drv != null)
                 {
                     txtTenSP.Text = drv["TenSP"].ToString();
                 }
-                // Có thể load luôn đơn giá nhập mặc định của sản phẩm vào txtDonGia nếu muốn
-                // string donGiaNhap = Function.GetFieldValue("SELECT GiaNhap FROM dbo.SanPham WHERE MaSP = @MaSP", new SqlParameter("@MaSP", cboMaSP.SelectedValue.ToString()));
-                // txtDonGia.Text = string.IsNullOrEmpty(donGiaNhap) ? "0" : Convert.ToDecimal(donGiaNhap).ToString("N0");
+                else // Trường hợp dự phòng nếu không lấy được từ DataRowView
+                {
+                    txtTenSP.Text = Function.GetFieldValue("SELECT TenSP FROM dbo.SanPham WHERE MaSP = @MaSP",
+                                                         new SqlParameter("@MaSP", maSPChon));
+                }
+
+                // 2. LẤY VÀ CẬP NHẬT ĐƠN GIÁ NHẬP (txtDonGia) TỪ BẢNG SANPHAM
+                string giaNhapStr = Function.GetFieldValue("SELECT GiaNhap FROM dbo.SanPham WHERE MaSP = @MaSP",
+                                                         new SqlParameter("@MaSP", maSPChon));
+
+                decimal giaNhapDecimal;
+                if (decimal.TryParse(giaNhapStr, NumberStyles.Any, CultureInfo.InvariantCulture, out giaNhapDecimal))
+                {
+                    // Hiển thị giá nhập. Người dùng có thể chỉnh sửa giá này nếu cần thiết
+                    // cho lần nhập hàng cụ thể này.
+                    // Hiển thị số thuần, không định dạng, để dễ sửa.
+                    txtDonGia.Text = giaNhapDecimal.ToString(CultureInfo.InvariantCulture);
+                }
+                else
+                {
+                    txtDonGia.Text = "0"; // Nếu không có giá nhập hoặc lỗi, đặt là 0 và cho phép người dùng nhập
+                                          // Có thể hiển thị một cảnh báo nhỏ hoặc log lỗi ở đây nếu giá nhập không tìm thấy
+                                          // MessageBox.Show($"Không tìm thấy giá nhập cho sản phẩm {maSPChon}. Vui lòng nhập thủ công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                // 3. Reset các trường khác để người dùng nhập mới cho sản phẩm này
+                txtSoLuong.Text = "1"; // Đặt số lượng mặc định là 1 (hoặc 0 tùy ý bạn)
+                txtKhuyenMai.Text = ""; // Xóa khuyến mãi cũ (hoặc đặt mặc định là "0%" )
+
+                // txtThanhTienDong sẽ tự động cập nhật do sự kiện TextChanged của txtDonGia và txtSoLuong
+                // đã được gán để gọi TinhThanhTienDong().
+                // Nếu muốn chắc chắn nó cập nhật ngay, có thể gọi TinhThanhTienDong() ở đây.
+                TinhThanhTienDong(); // Gọi để tính lại thành tiền với đơn giá mới và số lượng mặc định
+
+                txtSoLuong.Focus(); // Đưa focus vào Số lượng để người dùng nhập tiếp
             }
-            else
+            else // Nếu không có sản phẩm nào được chọn (ví dụ, chọn dòng trống)
             {
                 txtTenSP.Text = "";
-                // txtDonGia.Text = "0";
+                txtDonGia.Text = "0";
+                txtSoLuong.Text = "0";
+                txtKhuyenMai.Text = "";
+                txtThanhTienDong.Text = "0"; // Cũng reset thành tiền dòng
             }
-            // Tự động tính lại thành tiền dòng khi mã sản phẩm thay đổi (nếu số lượng, đơn giá đã có)
-             TinhThanhTienDong();
         }
 
         private void UpdateTongTienBangChu()
@@ -528,7 +583,7 @@ namespace QlyCafe.Quanly
         private void dgvChiTietHDN_SelectionChanged(object sender, EventArgs e)
         {
             // Kiểm tra xem có dòng nào được chọn không và DataGridView có dữ liệu không
-            if (dgvChiTietHDN.CurrentRow != null && dgvChiTietHDN.CurrentRow.Index != -1 && dgvChiTietHDN.CurrentRow.DataBoundItem != null)
+            if (dgvChiTietHDN.SelectedRows.Count > 0 && dgvChiTietHDN.CurrentRow != null && dgvChiTietHDN.CurrentRow.DataBoundItem != null)
             {
                 DataGridViewRow selectedRow = dgvChiTietHDN.CurrentRow;
 
@@ -622,9 +677,265 @@ namespace QlyCafe.Quanly
             }
         }
 
+        public static string GenerateMaHDN()
+        {
+            // Tạo mã theo định dạng: HDN_ddMMyyyy_HHmmss
+            return "HDN_" + DateTime.Now.ToString("ddMMyyyy_HHmmss");
+        }
+
         private void btnThemHDN_Click(object sender, EventArgs e)
         {
+            // Kiểm tra xem có dữ liệu chưa lưu trên form không (nếu txtMaHDN không rỗng và chưa phải là HĐN cũ đang load)
+            if (!string.IsNullOrWhiteSpace(txtMaHDN.Text) && string.IsNullOrEmpty(maHDNToLoad) && dtChiTietHDN.Rows.Count > 0)
+            {
+                DialogResult confirm = MessageBox.Show("Bạn có hóa đơn đang làm dở. Bạn có muốn hủy hóa đơn này và tạo một hóa đơn mới không?",
+                                                       "Xác nhận tạo mới",
+                                                       MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (confirm == DialogResult.No)
+                {
+                    return; // Người dùng không muốn hủy, không làm gì cả
+                }
+            }
+            // Nếu là HĐN cũ đang được load (maHDNToLoad có giá trị) và người dùng nhấn Thêm mới
+            else if (!string.IsNullOrEmpty(maHDNToLoad))
+            {
+                DialogResult confirm = MessageBox.Show("Bạn đang xem/sửa một hóa đơn cũ. Bạn có muốn bỏ qua và tạo một hóa đơn mới không?",
+                                                      "Xác nhận tạo mới",
+                                                      MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (confirm == DialogResult.No)
+                {
+                    return;
+                }
+            }
 
+
+            ResetValuesToInitialState(); // Reset form về trạng thái ban đầu
+
+            txtMaHDN.Text = GenerateMaHDN(); // Sinh mã mới
+
+            // Thiết lập trạng thái cho việc nhập hóa đơn mới
+            // isEditingOldInvoice là false vì đây là hóa đơn mới
+            SetActiveProcessingButtonStates(false);
+
+            dpNgayNhap.Focus();
+        }
+
+        private void btnThemDong_Click(object sender, EventArgs e)
+        {
+            // 1. KIỂM TRA ĐIỀU KIỆN ĐẦU VÀO (như code trước)
+            if (string.IsNullOrWhiteSpace(txtMaHDN.Text))
+            {
+                MessageBox.Show("Vui lòng tạo hoặc chọn một hóa đơn nhập trước khi thêm sản phẩm.", "Chưa có Hóa Đơn", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                btnThemHDN.Focus();
+                return;
+            }
+            if (cboMaSP.SelectedValue == null || cboMaSP.SelectedIndex == -1)
+            {
+                MessageBox.Show("Bạn phải chọn một sản phẩm để thêm vào hóa đơn.", "Chưa chọn sản phẩm", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cboMaSP.Focus();
+                return;
+            }
+            decimal soLuong;
+            if (!decimal.TryParse(txtSoLuong.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out soLuong) || soLuong <= 0)
+            {
+                MessageBox.Show("Số lượng phải là một số dương hợp lệ.", "Số lượng không hợp lệ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtSoLuong.Focus();
+                txtSoLuong.SelectAll();
+                return;
+            }
+            decimal donGia;
+            if (!decimal.TryParse(txtDonGia.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out donGia) || donGia < 0)
+            {
+                MessageBox.Show("Đơn giá phải là một số không âm hợp lệ.", "Đơn giá không hợp lệ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtDonGia.Focus();
+                txtDonGia.SelectAll();
+                return;
+            }
+            decimal thanhTienDong;
+            if (!decimal.TryParse(txtThanhTienDong.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out thanhTienDong))
+            {
+                MessageBox.Show("Thành tiền dòng không hợp lệ. Vui lòng kiểm tra lại Số lượng, Đơn giá và Khuyến mãi.", "Thành tiền không hợp lệ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            string maSPDaChon = cboMaSP.SelectedValue.ToString();
+            string tenSPDaChon = txtTenSP.Text;
+            string khuyenMai = txtKhuyenMai.Text.Trim();
+
+            // 2. KIỂM TRA MÃ SẢN PHẨM TRÙNG (như code trước)
+            if (dtChiTietHDN != null)
+            {
+                foreach (DataRow existingRow in dtChiTietHDN.Rows)
+                {
+                    if (existingRow.RowState != DataRowState.Deleted &&
+                        existingRow["MaSP"].ToString().Equals(maSPDaChon, StringComparison.OrdinalIgnoreCase))
+                    {
+                        MessageBox.Show($"Sản phẩm '{tenSPDaChon}' (Mã: {maSPDaChon}) đã tồn tại trong hóa đơn này.\n" +
+                                        "Bạn có thể chọn dòng đó và nhấn 'Sửa dòng' để thay đổi số lượng hoặc thông tin khác.",
+                                        "Sản phẩm đã tồn tại", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+            }
+
+            // 3. THÊM DÒNG MỚI VÀO DATATABLE dtChiTietHDN (như code trước)
+            if (dtChiTietHDN == null) { Console.WriteLine("dtChiTietHDN is null"); return; }
+            try
+            {
+                DataRow newRow = dtChiTietHDN.NewRow();
+                newRow["MaSP"] = maSPDaChon;
+                newRow["TenSP"] = tenSPDaChon;
+                newRow["SoLuong"] = soLuong;
+                newRow["DonGia"] = donGia;
+                newRow["KhuyenMai"] = khuyenMai;
+                newRow["ThanhTien"] = thanhTienDong;
+                dtChiTietHDN.Rows.Add(newRow);
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); return; }
+
+            // 4. CẬP NHẬT TỔNG TIỀN CỦA TOÀN BỘ HÓA ĐƠN
+            CapNhatTongTienHoaDon();
+
+            // 5. RESET CÁC CONTROLS NHẬP LIỆU CHI TIẾT SẢN PHẨM
+            ResetChiTietSanPhamFields();
+
+            // 6. BỎ CHỌN TẤT CẢ CÁC DÒNG TRONG DATAGRIDVIEW
+            // Điều này sẽ kích hoạt sự kiện SelectionChanged, và vì không có dòng nào được chọn,
+            // nhánh 'else' của SelectionChanged sẽ chạy, đặt btnThemDong.Enabled = true.
+            dgvChiTietHDN.ClearSelection();
+
+            // Các dòng sau không còn cần thiết vì SelectionChanged sẽ xử lý:
+            // btnSuaDong.Enabled = false;
+            // btnXoaDong.Enabled = false;
+            // btnHuyBoDong.Enabled = false;
+            // Quan trọng: Phải đảm bảo btnThemDong được bật lại bởi SelectionChanged
+            // (xem lại hàm dgvChiTietHDN_SelectionChanged)
+
+            // 7. Đặt focus lại
+            cboMaSP.Focus();
+        }
+
+        private void btnLuuHDN_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(maHDNToLoad))
+            {
+                MessageBox.Show("Chức năng sửa hóa đơn cũ chưa được triển khai trong ví dụ này.\n" +
+                                "Hàm này hiện tại tập trung vào việc lưu hóa đơn mới.",
+                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // TODO: Triển khai logic SỬA hóa đơn nếu cần.
+                // Ví dụ:
+                // CapNhatHoaDonCu();
+                return;
+            }
+
+            // --- BẮT ĐẦU LƯU HÓA ĐƠN MỚI ---
+
+            // 1. KIỂM TRA DỮ LIỆU ĐẦU VÀO CHO THÔNG TIN CHUNG
+            string maHDN = txtMaHDN.Text.Trim();
+            if (string.IsNullOrWhiteSpace(maHDN))
+            {
+                MessageBox.Show("Mã hóa đơn nhập không được để trống.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Nút Thêm HĐN nên đã tạo mã này, trường hợp này ít xảy ra nếu logic đúng.
+                btnThemHDN.Focus();
+                return;
+            }
+
+            if (cboMaNV.SelectedValue == null || cboMaNV.SelectedIndex == -1)
+            {
+                MessageBox.Show("Vui lòng chọn nhân viên lập hóa đơn.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                cboMaNV.Focus();
+                return;
+            }
+            string maNV = cboMaNV.SelectedValue.ToString();
+
+            if (cboMaNCC.SelectedValue == null || cboMaNCC.SelectedIndex == -1)
+            {
+                MessageBox.Show("Vui lòng chọn nhà cung cấp.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                cboMaNCC.Focus();
+                return;
+            }
+            string maNCC = cboMaNCC.SelectedValue.ToString();
+
+            DateTime ngayNhap = dpNgayNhap.Value;
+
+            // Kiểm tra xem có ít nhất một dòng chi tiết sản phẩm không
+            if (dtChiTietHDN == null || dtChiTietHDN.Rows.Count == 0)
+            {
+                MessageBox.Show("Hóa đơn nhập phải có ít nhất một chi tiết sản phẩm.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                btnThemDong.Focus(); // Hướng người dùng đến việc thêm dòng chi tiết
+                return;
+            }
+
+            // Tính lại tổng tiền từ dtChiTietHDN để đảm bảo chính xác trước khi lưu
+            CapNhatTongTienHoaDon(); // Hàm này sẽ cập nhật txtTongTien.Text
+            decimal tongTienDecimal;
+            if (!decimal.TryParse(txtTongTien.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out tongTienDecimal))
+            {
+                MessageBox.Show("Tổng tiền hóa đơn không hợp lệ. Vui lòng kiểm tra lại chi tiết hóa đơn.", "Lỗi Tổng Tiền", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return; // Không lưu nếu tổng tiền không hợp lệ
+            }
+
+            try
+            {
+                Function.ExecuteTransaction((conn, trans) => // conn và trans được cung cấp bởi ExecuteTransaction
+                {
+                    // a. Lưu thông tin chung vào bảng HoaDonNhap
+                    string sqlInsertHDN = @"INSERT INTO dbo.HoaDonNhap (MaHDN, NgayNhap, MaNV, MaNCC, TongTien, IsDeleted)
+                               VALUES (@MaHDN, @NgayNhap, @MaNV, @MaNCC, @TongTien, 0)";
+                    SqlParameter[] paramsHDN =
+                    {
+                        new SqlParameter("@MaHDN", maHDN),
+                        new SqlParameter("@NgayNhap", ngayNhap.Date),
+                        new SqlParameter("@MaNV", maNV),
+                        new SqlParameter("@MaNCC", maNCC),
+                        new SqlParameter("@TongTien", tongTienDecimal)
+                    };
+                    // Gọi hàm ExecuteNonQuery mới, truyền conn và trans vào
+                    Function.ExecuteNonQuery(sqlInsertHDN, conn, trans, paramsHDN);
+
+
+                    // b. Lưu các dòng chi tiết từ dtChiTietHDN vào bảng ChiTietHDN
+                    string sqlInsertChiTiet = @"INSERT INTO dbo.ChiTietHDN (MaHDN, MaSP, SoLuong, DonGia, KhuyenMai, ThanhTien)
+                                    VALUES (@MaHDN_CT, @MaSP_CT, @SoLuong_CT, @DonGia_CT, @KhuyenMai_CT, @ThanhTien_CT)";
+                    foreach (DataRow drChiTiet in dtChiTietHDN.Rows)
+                    {
+                        if (drChiTiet.RowState == DataRowState.Deleted) continue;
+
+                        SqlParameter[] paramsChiTiet =
+                        {
+                new SqlParameter("@MaHDN_CT", maHDN),
+                new SqlParameter("@MaSP_CT", drChiTiet["MaSP"].ToString()),
+                new SqlParameter("@SoLuong_CT", Convert.ToDecimal(drChiTiet["SoLuong"])),
+                new SqlParameter("@DonGia_CT", Convert.ToDecimal(drChiTiet["DonGia"])),
+                new SqlParameter("@KhuyenMai_CT", drChiTiet["KhuyenMai"] == DBNull.Value ? (object)DBNull.Value : drChiTiet["KhuyenMai"].ToString()),
+                new SqlParameter("@ThanhTien_CT", Convert.ToDecimal(drChiTiet["ThanhTien"]))
+            };
+                        // Gọi hàm ExecuteNonQuery mới
+                        Function.ExecuteNonQuery(sqlInsertChiTiet, conn, trans, paramsChiTiet);
+
+                        // c. Cập nhật số lượng tồn kho trong bảng SanPham
+                        string sqlUpdateKho = @"UPDATE dbo.SanPham
+                                    SET SoLuong = SoLuong + @SoLuongNhap
+                                    WHERE MaSP = @MaSPKho";
+                        SqlParameter[] paramsKho =
+                        {
+                new SqlParameter("@SoLuongNhap", Convert.ToDecimal(drChiTiet["SoLuong"])),
+                new SqlParameter("@MaSPKho", drChiTiet["MaSP"].ToString())
+            };
+                        // Gọi hàm ExecuteNonQuery mới
+                        Function.ExecuteNonQuery(sqlUpdateKho, conn, trans, paramsKho);
+                    }
+                }); // Kết thúc Function.ExecuteTransaction
+
+                MessageBox.Show("Lưu hóa đơn nhập thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ResetValuesToInitialState();
+                Function.FillCombo(cboMaHDNSearch, "MaHDN", "MaHDN", "SELECT MaHDN FROM dbo.HoaDonNhap WHERE IsDeleted = 0 ORDER BY NgayNhap DESC, MaHDN DESC");
+                cboMaHDNSearch.SelectedIndex = -1;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Đã xảy ra lỗi trong quá trình lưu hóa đơn nhập:\n" + ex.Message,
+                                "Lỗi Lưu Hóa Đơn", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
