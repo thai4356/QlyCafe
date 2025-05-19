@@ -66,12 +66,14 @@
             this.label14 = new System.Windows.Forms.Label();
             this.btnInHDB = new System.Windows.Forms.Button();
             this.btnLuuHDB = new System.Windows.Forms.Button();
-            this.btnHuyHDN = new System.Windows.Forms.Button();
+            this.btnHuyHDB = new System.Windows.Forms.Button();
             this.btnThemHDB = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.dgvChiTietHDB = new System.Windows.Forms.DataGridView();
-            this.cboMaHDNSearch = new System.Windows.Forms.ComboBox();
+            this.cboMaHDBSearch = new System.Windows.Forms.ComboBox();
             this.label16 = new System.Windows.Forms.Label();
+            this.txtSDT = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -80,6 +82,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.txtSDT);
+            this.groupBox1.Controls.Add(this.label15);
             this.groupBox1.Controls.Add(this.txtTenKH);
             this.groupBox1.Controls.Add(this.txtTenNV);
             this.groupBox1.Controls.Add(this.cboMaKH);
@@ -103,10 +107,10 @@
             // 
             // txtTenKH
             // 
-            this.txtTenKH.Location = new System.Drawing.Point(723, 108);
+            this.txtTenKH.Location = new System.Drawing.Point(469, 107);
             this.txtTenKH.Name = "txtTenKH";
             this.txtTenKH.ReadOnly = true;
-            this.txtTenKH.Size = new System.Drawing.Size(224, 22);
+            this.txtTenKH.Size = new System.Drawing.Size(150, 22);
             this.txtTenKH.TabIndex = 11;
             // 
             // txtTenNV
@@ -121,19 +125,21 @@
             // 
             this.cboMaKH.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboMaKH.FormattingEnabled = true;
-            this.cboMaKH.Location = new System.Drawing.Point(172, 105);
+            this.cboMaKH.Location = new System.Drawing.Point(135, 104);
             this.cboMaKH.Name = "cboMaKH";
             this.cboMaKH.Size = new System.Drawing.Size(136, 24);
             this.cboMaKH.TabIndex = 9;
+            this.cboMaKH.SelectedIndexChanged += new System.EventHandler(this.cboMaKH_SelectedIndexChanged);
             // 
             // cboMaNV
             // 
             this.cboMaNV.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboMaNV.FormattingEnabled = true;
-            this.cboMaNV.Location = new System.Drawing.Point(172, 70);
+            this.cboMaNV.Location = new System.Drawing.Point(135, 70);
             this.cboMaNV.Name = "cboMaNV";
             this.cboMaNV.Size = new System.Drawing.Size(136, 24);
             this.cboMaNV.TabIndex = 8;
+            this.cboMaNV.SelectedIndexChanged += new System.EventHandler(this.cboMaNV_SelectedIndexChanged);
             // 
             // dpNgayBan
             // 
@@ -146,7 +152,7 @@
             // 
             // txtMaHDB
             // 
-            this.txtMaHDB.Location = new System.Drawing.Point(172, 34);
+            this.txtMaHDB.Location = new System.Drawing.Point(135, 34);
             this.txtMaHDB.Margin = new System.Windows.Forms.Padding(2);
             this.txtMaHDB.Name = "txtMaHDB";
             this.txtMaHDB.ReadOnly = true;
@@ -156,17 +162,18 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(580, 108);
+            this.label5.Location = new System.Drawing.Point(346, 107);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(104, 16);
             this.label5.TabIndex = 5;
             this.label5.Text = "Tên Khách hàng";
+            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(28, 105);
+            this.label6.Location = new System.Drawing.Point(31, 105);
             this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(99, 16);
@@ -186,7 +193,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(54, 70);
+            this.label4.Location = new System.Drawing.Point(41, 70);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(89, 16);
@@ -209,9 +216,9 @@
             this.label1.Location = new System.Drawing.Point(26, 34);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(114, 16);
+            this.label1.Size = new System.Drawing.Size(108, 16);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Mã Hóa đơn nhập";
+            this.label1.Text = "Mã Hóa đơn Bán";
             // 
             // groupBox2
             // 
@@ -246,6 +253,7 @@
             this.btnHuyBoDong.TabIndex = 15;
             this.btnHuyBoDong.Text = "Hủy bỏ";
             this.btnHuyBoDong.UseVisualStyleBackColor = true;
+            this.btnHuyBoDong.Click += new System.EventHandler(this.btnHuyBoDong_Click);
             // 
             // btnSuaDong
             // 
@@ -255,6 +263,7 @@
             this.btnSuaDong.TabIndex = 13;
             this.btnSuaDong.Text = "Sửa dòng";
             this.btnSuaDong.UseVisualStyleBackColor = true;
+            this.btnSuaDong.Click += new System.EventHandler(this.btnSuaDong_Click);
             // 
             // btnXoaDong
             // 
@@ -264,6 +273,7 @@
             this.btnXoaDong.TabIndex = 14;
             this.btnXoaDong.Text = "Xóa dòng";
             this.btnXoaDong.UseVisualStyleBackColor = true;
+            this.btnXoaDong.Click += new System.EventHandler(this.btnXoaDong_Click);
             // 
             // btnThemDong
             // 
@@ -273,6 +283,7 @@
             this.btnThemDong.TabIndex = 12;
             this.btnThemDong.Text = "Thêm mới dòng";
             this.btnThemDong.UseVisualStyleBackColor = true;
+            this.btnThemDong.Click += new System.EventHandler(this.btnThemDong_Click);
             // 
             // txtDonGia
             // 
@@ -280,6 +291,7 @@
             this.txtDonGia.Name = "txtDonGia";
             this.txtDonGia.Size = new System.Drawing.Size(150, 22);
             this.txtDonGia.TabIndex = 11;
+            this.txtDonGia.TextChanged += new System.EventHandler(this.txtChiTietSP_TextChanged);
             // 
             // txtThanhTienDong
             // 
@@ -302,6 +314,7 @@
             this.txtKhuyenMai.Name = "txtKhuyenMai";
             this.txtKhuyenMai.Size = new System.Drawing.Size(150, 22);
             this.txtKhuyenMai.TabIndex = 8;
+            this.txtKhuyenMai.TextChanged += new System.EventHandler(this.txtChiTietSP_TextChanged);
             // 
             // txtSoLuong
             // 
@@ -309,6 +322,7 @@
             this.txtSoLuong.Name = "txtSoLuong";
             this.txtSoLuong.Size = new System.Drawing.Size(126, 22);
             this.txtSoLuong.TabIndex = 7;
+            this.txtSoLuong.TextChanged += new System.EventHandler(this.txtChiTietSP_TextChanged);
             // 
             // cboMaSP
             // 
@@ -318,6 +332,7 @@
             this.cboMaSP.Name = "cboMaSP";
             this.cboMaSP.Size = new System.Drawing.Size(126, 24);
             this.cboMaSP.TabIndex = 6;
+            this.cboMaSP.SelectedIndexChanged += new System.EventHandler(this.cboMaSP_SelectedIndexChanged);
             // 
             // label12
             // 
@@ -382,7 +397,7 @@
             this.groupBox3.Controls.Add(this.label14);
             this.groupBox3.Controls.Add(this.btnInHDB);
             this.groupBox3.Controls.Add(this.btnLuuHDB);
-            this.groupBox3.Controls.Add(this.btnHuyHDN);
+            this.groupBox3.Controls.Add(this.btnHuyHDB);
             this.groupBox3.Controls.Add(this.btnThemHDB);
             this.groupBox3.Controls.Add(this.label13);
             this.groupBox3.Controls.Add(this.dgvChiTietHDB);
@@ -401,6 +416,7 @@
             this.btnSuaHDB.TabIndex = 23;
             this.btnSuaHDB.Text = "Sửa Hóa đơn";
             this.btnSuaHDB.UseVisualStyleBackColor = true;
+            this.btnSuaHDB.Click += new System.EventHandler(this.btnSuaHDB_Click);
             // 
             // btnDong
             // 
@@ -410,6 +426,7 @@
             this.btnDong.TabIndex = 22;
             this.btnDong.Text = "Đóng";
             this.btnDong.UseVisualStyleBackColor = true;
+            this.btnDong.Click += new System.EventHandler(this.btnDong_Click);
             // 
             // lblTongTienBangChu
             // 
@@ -445,6 +462,7 @@
             this.btnInHDB.TabIndex = 19;
             this.btnInHDB.Text = "In hóa đơn";
             this.btnInHDB.UseVisualStyleBackColor = true;
+            this.btnInHDB.Click += new System.EventHandler(this.btnInHDB_Click);
             // 
             // btnLuuHDB
             // 
@@ -454,15 +472,17 @@
             this.btnLuuHDB.TabIndex = 17;
             this.btnLuuHDB.Text = "Lưu hóa đơn";
             this.btnLuuHDB.UseVisualStyleBackColor = true;
+            this.btnLuuHDB.Click += new System.EventHandler(this.btnLuuHDB_Click);
             // 
-            // btnHuyHDN
+            // btnHuyHDB
             // 
-            this.btnHuyHDN.Location = new System.Drawing.Point(654, 348);
-            this.btnHuyHDN.Name = "btnHuyHDN";
-            this.btnHuyHDN.Size = new System.Drawing.Size(110, 31);
-            this.btnHuyHDN.TabIndex = 18;
-            this.btnHuyHDN.Text = "Hủy hóa đơn";
-            this.btnHuyHDN.UseVisualStyleBackColor = true;
+            this.btnHuyHDB.Location = new System.Drawing.Point(654, 348);
+            this.btnHuyHDB.Name = "btnHuyHDB";
+            this.btnHuyHDB.Size = new System.Drawing.Size(110, 31);
+            this.btnHuyHDB.TabIndex = 18;
+            this.btnHuyHDB.Text = "Hủy hóa đơn";
+            this.btnHuyHDB.UseVisualStyleBackColor = true;
+            this.btnHuyHDB.Click += new System.EventHandler(this.btnHuyHDB_Click);
             // 
             // btnThemHDB
             // 
@@ -472,6 +492,7 @@
             this.btnThemHDB.TabIndex = 16;
             this.btnThemHDB.Text = "Tạo mới hóa đơn";
             this.btnThemHDB.UseVisualStyleBackColor = true;
+            this.btnThemHDB.Click += new System.EventHandler(this.btnThemHDB_Click);
             // 
             // label13
             // 
@@ -491,15 +512,18 @@
             this.dgvChiTietHDB.RowTemplate.Height = 24;
             this.dgvChiTietHDB.Size = new System.Drawing.Size(966, 238);
             this.dgvChiTietHDB.TabIndex = 0;
+            this.dgvChiTietHDB.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvChiTietHDB_CellClick);
+            this.dgvChiTietHDB.SelectionChanged += new System.EventHandler(this.dgvChiTietHDB_SelectionChanged);
             // 
-            // cboMaHDNSearch
+            // cboMaHDBSearch
             // 
-            this.cboMaHDNSearch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboMaHDNSearch.FormattingEnabled = true;
-            this.cboMaHDNSearch.Location = new System.Drawing.Point(203, 729);
-            this.cboMaHDNSearch.Name = "cboMaHDNSearch";
-            this.cboMaHDNSearch.Size = new System.Drawing.Size(221, 24);
-            this.cboMaHDNSearch.TabIndex = 10;
+            this.cboMaHDBSearch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboMaHDBSearch.FormattingEnabled = true;
+            this.cboMaHDBSearch.Location = new System.Drawing.Point(203, 729);
+            this.cboMaHDBSearch.Name = "cboMaHDBSearch";
+            this.cboMaHDBSearch.Size = new System.Drawing.Size(221, 24);
+            this.cboMaHDBSearch.TabIndex = 10;
+            this.cboMaHDBSearch.SelectedIndexChanged += new System.EventHandler(this.cboMaHDBSearch_SelectedIndexChanged);
             // 
             // label16
             // 
@@ -510,18 +534,37 @@
             this.label16.TabIndex = 9;
             this.label16.Text = "Tìm kiếm hóa đơn theo mã";
             // 
+            // txtSDT
+            // 
+            this.txtSDT.Location = new System.Drawing.Point(797, 110);
+            this.txtSDT.Name = "txtSDT";
+            this.txtSDT.ReadOnly = true;
+            this.txtSDT.Size = new System.Drawing.Size(150, 22);
+            this.txtSDT.TabIndex = 13;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(670, 110);
+            this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(85, 16);
+            this.label15.TabIndex = 12;
+            this.label15.Text = "Số điện thoại";
+            // 
             // HoaDonBan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(996, 730);
-            this.Controls.Add(this.cboMaHDNSearch);
+            this.ClientSize = new System.Drawing.Size(1015, 772);
+            this.Controls.Add(this.cboMaHDBSearch);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "HoaDonBan";
             this.Text = "HoaDonBan";
+            this.Load += new System.EventHandler(this.HoaDonBan_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -574,11 +617,13 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Button btnInHDB;
         private System.Windows.Forms.Button btnLuuHDB;
-        private System.Windows.Forms.Button btnHuyHDN;
+        private System.Windows.Forms.Button btnHuyHDB;
         private System.Windows.Forms.Button btnThemHDB;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.DataGridView dgvChiTietHDB;
-        private System.Windows.Forms.ComboBox cboMaHDNSearch;
+        private System.Windows.Forms.ComboBox cboMaHDBSearch;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox txtSDT;
+        private System.Windows.Forms.Label label15;
     }
 }

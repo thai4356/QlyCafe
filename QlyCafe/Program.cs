@@ -45,6 +45,8 @@ namespace QlyCafe
 
             TimHDBan thb = new TimHDBan();
             Application.Run(thb);
+
+
         }
     }
 }
