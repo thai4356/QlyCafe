@@ -410,6 +410,7 @@
             this.btnDong.TabIndex = 22;
             this.btnDong.Text = "Đóng";
             this.btnDong.UseVisualStyleBackColor = true;
+            this.btnDong.Click += new System.EventHandler(this.btnDong_Click);
             // 
             // lblTongTienBangChu
             // 
@@ -445,6 +446,7 @@
             this.btnInHDN.TabIndex = 19;
             this.btnInHDN.Text = "In hóa đơn";
             this.btnInHDN.UseVisualStyleBackColor = true;
+            this.btnInHDN.Click += new System.EventHandler(this.btnInHDN_Click);
             // 
             // btnLuuHDN
             // 
@@ -505,6 +507,7 @@
             this.cboMaHDNSearch.Name = "cboMaHDNSearch";
             this.cboMaHDNSearch.Size = new System.Drawing.Size(221, 26);
             this.cboMaHDNSearch.TabIndex = 8;
+            this.cboMaHDNSearch.SelectedIndexChanged += new System.EventHandler(this.cboMaHDNSearch_SelectedIndexChanged);
             // 
             // label16
             // 
