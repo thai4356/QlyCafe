@@ -13,11 +13,13 @@ namespace QlyCafe
 {
     public partial class FormNguoiDung : Form
     {
-        public FormNguoiDung()
+        public FormNguoiDung(int so)
         {
-            InitializeComponent();
+            InitializeComponent(); 
+            label.Text = "Đơn hàng cho bàn số " + so;
             LoadProducts();
         }
+
 
         private void LoadProducts()
         {
@@ -97,5 +99,14 @@ namespace QlyCafe
             gh.ShowDialog();
         }
 
+        private void btn_exit_Click(object sender, EventArgs e)
+        {
+            Function.Logout(this);
+        }
+
+        private void FormNguoiDung_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -11,7 +11,7 @@ namespace QlyCafe
 {
     internal class Function
     {
-        private static string connString = "Data Source=DESKTOP-6P76JI8\\SQLEXPRESS;Initial Catalog=qlyCafe;Integrated Security=True;TrustServerCertificate=True";
+        private static string connString = "Data Source=LAPTOP-FRNPC1AU;Initial Catalog=qlyCafe;Integrated Security=True;Encrypt=True;TrustServerCertificate=True";
         private static SqlConnection conn;
 
         public static void OpenConnection()
@@ -187,7 +187,24 @@ namespace QlyCafe
             
         }
 
+        public static void Logout(Form currentForm)
+        {
+            DialogResult result = MessageBox.Show("Bạn có chắc chắn muốn đăng xuất?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                // Reset session nếu cần
+                UserSession.TenDangNhap = null;
+                UserSession.VaiTro = null;
+                UserSession.MaNguoiDung = null;
 
+                // Mở lại form Login
+                Login loginForm = new Login();
+                loginForm.Show();
+
+                // Đóng form hiện tại
+                currentForm.Close();
+            }
+        }
 
     }
 }

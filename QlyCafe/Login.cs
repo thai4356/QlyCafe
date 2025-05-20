@@ -53,13 +53,13 @@ namespace QlyCafe
 
                 switch (role)
                 {
-                    case "NguoiDung":
-                        new FormNguoiDung().Show();
-                        break;
-                    case "NguoiBan":
+                    //case "NguoiDung":
+                    //    new FormNguoiDung().Show();
+                    //    break;
+                    case "NhanVien":
                         new FormNguoiBan().Show();
                         break;
-                    case "QuanLy":
+                    case "Admin":
                         new FormQuanLy().Show();
                         break;
                 }
