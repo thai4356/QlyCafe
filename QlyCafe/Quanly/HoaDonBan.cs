@@ -849,41 +849,42 @@ namespace QlyCafe.Quanly
                         }
                     }
 
-                    // Lưu vào bảng HoaDonBan
-                    string sqlInsertHDB = @"INSERT INTO dbo.HoaDonBan (MaHDB, NgayBan, MaNV, MaKH, TongTien, IsDeleted)
-                                       VALUES (@MaHDB, @NgayBan, @MaNV, @MaKH, @TongTien, 0)"; // Đổi bảng và cột
+                    // Bước 2: Lưu thông tin HoaDonBan
+                    string sqlInsertHDB = @"INSERT INTO dbo.HoaDonBan (MaHDB, NgayBan, MaNV, MaKH, TongTien, IsDeleted, IDBan)
+                               VALUES (@MaHDB, @NgayBan, @MaNV, @MaKH, @TongTien, 0, @IDBan)";
                     SqlParameter[] paramsHDB =
                     {
                         new SqlParameter("@MaHDB", maHDB),
                         new SqlParameter("@NgayBan", ngayBan.Date),
                         new SqlParameter("@MaNV", maNV),
-                        new SqlParameter("@MaKH", maKH), // Đổi MaNCC thành MaKH
-                        new SqlParameter("@TongTien", tongTienDecimal)
+                        new SqlParameter("@MaKH", maKH),
+                        new SqlParameter("@TongTien", tongTienDecimal),
+                        new SqlParameter("@IDBan", selectedIDBan.HasValue ? (object)selectedIDBan.Value : DBNull.Value)
                     };
                     Function.ExecuteNonQuery(sqlInsertHDB, conn, trans, paramsHDB);
 
-                    // Lưu vào bảng ChiTietHDB
+                    // Bước 3: Lưu ChiTietHDB và cập nhật tồn kho
                     string sqlInsertChiTiet = @"INSERT INTO dbo.ChiTietHDB (MaHDB, MaSP, SoLuong, MaKM, ThanhTien)
-                            VALUES (@MaHDB_CT, @MaSP_CT, @SoLuong_CT, @MaKM_CT, @ThanhTien_CT)"; // Use MaKM in SQL (modified SQL)
+                                    VALUES (@MaHDB_CT, @MaSP_CT, @SoLuong_CT, @MaKM_CT, @ThanhTien_CT)";
                     foreach (DataRow drChiTiet in dtChiTietHDB.Rows)
                     {
                         if (drChiTiet.RowState == DataRowState.Deleted) continue;
+
                         SqlParameter[] paramsChiTiet =
                         {
                             new SqlParameter("@MaHDB_CT", maHDB),
                             new SqlParameter("@MaSP_CT", drChiTiet["MaSP"].ToString()),
                             new SqlParameter("@SoLuong_CT", Convert.ToDecimal(drChiTiet["SoLuong"])),
-                            // Không có DonGia ở đây nếu schema ChiTietHDB không có
-                            new SqlParameter("@MaKM_CT", drChiTiet["MaKM"] == DBNull.Value ? (object)DBNull.Value : drChiTiet["MaKM"].ToString()),
+                            new SqlParameter("@MaKM_CT", drChiTiet["MaKM"] == DBNull.Value ? (object)DBNull.Value : drChiTiet["MaKM"].ToString()), // Lưu MaKM
                             new SqlParameter("@ThanhTien_CT", Convert.ToDecimal(drChiTiet["ThanhTien"]))
                         };
                         Function.ExecuteNonQuery(sqlInsertChiTiet, conn, trans, paramsChiTiet);
 
-                        // CẬP NHẬT (TRỪ) SỐ LƯỢNG TỒN KHO
-                        string sqlUpdateKho = @"UPDATE dbo.SanPham SET SoLuong = SoLuong - @SoLuongBan WHERE MaSP = @MaSPKho"; // Trừ đi
+                        // Cập nhật (TRỪ) số lượng tồn kho
+                        string sqlUpdateKho = @"UPDATE dbo.SanPham SET SoLuong = ISNULL(SoLuong, 0) - @SoLuongBan WHERE MaSP = @MaSPKho";
                         SqlParameter[] paramsKho =
                         {
-                            new SqlParameter("@SoLuongBan", Convert.ToDecimal(drChiTiet["SoLuong"])), // Đổi tên biến
+                            new SqlParameter("@SoLuongBan", Convert.ToDecimal(drChiTiet["SoLuong"])),
                             new SqlParameter("@MaSPKho", drChiTiet["MaSP"].ToString())
                         };
                         Function.ExecuteNonQuery(sqlUpdateKho, conn, trans, paramsKho);
@@ -892,7 +893,6 @@ namespace QlyCafe.Quanly
 
                 MessageBox.Show("Lưu hóa đơn bán thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ResetValuesToInitialState();
-                // Đổi ComboBox tìm kiếm
                 Function.FillCombo(cboMaHDBSearch, "MaHDB", "MaHDB", "SELECT MaHDB FROM dbo.HoaDonBan WHERE IsDeleted = 0 ORDER BY NgayBan DESC, MaHDB DESC");
                 cboMaHDBSearch.SelectedIndex = -1;
             }
@@ -1037,6 +1037,12 @@ namespace QlyCafe.Quanly
             string maKHMoi = cboMaKH.SelectedValue.ToString(); // Đổi biến
             DateTime ngayBanMoi = dpNgayBan.Value; // Đổi biến
 
+            int? newSelectedIDBan = null;
+            if (cboMaBan.SelectedValue != null && cboMaBan.SelectedValue != DBNull.Value && cboMaBan.SelectedIndex != -1) // Bỏ >0 nếu "Tất cả bàn" không có trong list khi sửa
+            {
+                newSelectedIDBan = Convert.ToInt32(cboMaBan.SelectedValue);
+            }
+
             if (dtChiTietHDBGoc == null) // Đổi tên dt
             {
                 MessageBox.Show("Lỗi dữ liệu gốc. Tải lại hóa đơn.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1058,90 +1064,124 @@ namespace QlyCafe.Quanly
             {
                 Function.ExecuteTransaction((conn, trans) =>
                 {
-                    // Cập nhật HoaDonBan
-                    string sqlUpdateHDB = @"UPDATE dbo.HoaDonBan SET NgayBan = @NgayBan, MaNV = @MaNV, MaKH = @MaKH, TongTien = @TongTien WHERE MaHDB = @MaHDB"; // Đổi bảng và cột
+                    // Bước 1: Xử lý thay đổi trạng thái bàn nếu IDBan thay đổi
+                    if (originalIDBan != newSelectedIDBan)
+                    {
+                        // 1.1: Giải phóng bàn cũ (nếu có và không còn HĐ nào khác dùng)
+                        if (originalIDBan.HasValue)
+                        {
+                            string sqlCheckOldTable = "SELECT COUNT(*) FROM dbo.HoaDonBan WHERE IDBan = @IDBanOld AND MaHDB <> @MaHDBCurrent AND IsDeleted = 0";
+                            SqlParameter[] paramsCheckOld = {
+                                new SqlParameter("@IDBanOld", originalIDBan.Value),
+                                new SqlParameter("@MaHDBCurrent", maHDBCCanSua)
+                            };
+                            // Giả sử CountRecords có overload nhận transaction hoặc tạo connection mới
+                            int otherBillsOnOldTable = Function.CountRecords(sqlCheckOldTable, conn, trans, paramsCheckOld); // Cần CountRecords hỗ trợ trans
+                            if (otherBillsOnOldTable == 0)
+                            {
+                                string sqlFreeOldBan = "UPDATE dbo.Ban SET status = N'Trống' WHERE id = @IDBan_Old";
+                                Function.ExecuteNonQuery(sqlFreeOldBan, conn, trans, new SqlParameter("@IDBan_Old", originalIDBan.Value));
+                            }
+                        }
+                        // 1.2: Chiếm dụng bàn mới (nếu có và đang trống)
+                        if (newSelectedIDBan.HasValue)
+                        {
+                            string sqlOccupyNewBan = "UPDATE dbo.Ban SET status = N'Đang phục vụ' WHERE id = @IDBan_New AND (status = N'Trống' OR status IS NULL)";
+                            Function.ExecuteNonQuery(sqlOccupyNewBan, conn, trans, new SqlParameter("@IDBan_New", newSelectedIDBan.Value));
+                            // Nếu bàn mới không trống, bạn có thể throw exception hoặc có logic khác
+                        }
+                    }
+                    else if (newSelectedIDBan.HasValue)
+                    { // Bàn không đổi, nhưng vẫn đảm bảo nó 'Đang phục vụ'
+                        string sqlReOccupyBan = "UPDATE dbo.Ban SET status = N'Đang phục vụ' WHERE id = @IDBan_Current";
+                        Function.ExecuteNonQuery(sqlReOccupyBan, conn, trans, new SqlParameter("@IDBan_Current", newSelectedIDBan.Value));
+                    }
+
+
+                    // Bước 2: Cập nhật thông tin chính của HoaDonBan
+                    string sqlUpdateHDB = @"UPDATE dbo.HoaDonBan 
+                                   SET NgayBan = @NgayBan, MaNV = @MaNV, MaKH = @MaKH, TongTien = @TongTien, IDBan = @IDBan
+                                   WHERE MaHDB = @MaHDB";
                     SqlParameter[] paramsUpdateHDB =
                     {
                         new SqlParameter("@NgayBan", ngayBanMoi.Date),
                         new SqlParameter("@MaNV", maNVMoi),
-                        new SqlParameter("@MaKH", maKHMoi), // Đổi MaNCC
+                        new SqlParameter("@MaKH", maKHMoi),
                         new SqlParameter("@TongTien", tongTienMoi),
+                        new SqlParameter("@IDBan", newSelectedIDBan.HasValue ? (object)newSelectedIDBan.Value : DBNull.Value),
                         new SqlParameter("@MaHDB", maHDBCCanSua)
                     };
                     Function.ExecuteNonQuery(sqlUpdateHDB, conn, trans, paramsUpdateHDB);
 
-                    // Xử lý ChiTietHDB và SanPham (logic phức tạp hơn)
-                    // 1. Các dòng bị xóa khỏi chi tiết (có trong dtChiTietHDBGoc, không có trong dtChiTietHDB)
+                    // Bước 3: Xử lý ChiTietHDB và SanPham
+                    // 3.1. Các dòng bị xóa khỏi chi tiết
                     List<DataRow> rowsToDeleteFromDB = new List<DataRow>();
-                    foreach (DataRow rowGoc in dtChiTietHDBGoc.Rows) // Đổi tên dt
+                    foreach (DataRow rowGoc in dtChiTietHDBGoc.Rows)
                     {
                         string maSPGoc = rowGoc["MaSP"].ToString();
-                        DataRow[] foundRowsMoi = dtChiTietHDB.Select($"MaSP = '{maSPGoc.Replace("'", "''")}'"); // Đổi tên dt
-                        if (foundRowsMoi.Length == 0) rowsToDeleteFromDB.Add(rowGoc);
+                        bool foundInCurrent = dtChiTietHDB.AsEnumerable()
+                                              .Any(r => r.RowState != DataRowState.Deleted && r.Field<string>("MaSP") == maSPGoc);
+                        if (!foundInCurrent) rowsToDeleteFromDB.Add(rowGoc);
                     }
                     foreach (DataRow rowBiXoa in rowsToDeleteFromDB)
                     {
                         string maSPBiXoa = rowBiXoa["MaSP"].ToString();
                         decimal soLuongGocCuaDongBiXoa = Convert.ToDecimal(rowBiXoa["SoLuong"]);
-                        // Xóa khỏi ChiTietHDB
-                        string sqlDeleteChiTiet = "DELETE FROM dbo.ChiTietHDB WHERE MaHDB = @MaHDB AND MaSP = @MaSP"; // Đổi bảng
+                        string sqlDeleteChiTiet = "DELETE FROM dbo.ChiTietHDB WHERE MaHDB = @MaHDB AND MaSP = @MaSP";
                         Function.ExecuteNonQuery(sqlDeleteChiTiet, conn, trans, new SqlParameter("@MaHDB", maHDBCCanSua), new SqlParameter("@MaSP", maSPBiXoa));
-                        // CỘNG TRẢ LẠI KHO
-                        string sqlUpdateKhoCong = "UPDATE dbo.SanPham SET SoLuong = ISNULL(SoLuong, 0) + @SoLuongTraLai WHERE MaSP = @MaSPKho"; // Cộng trả
+                        string sqlUpdateKhoCong = "UPDATE dbo.SanPham SET SoLuong = ISNULL(SoLuong, 0) + @SoLuongTraLai WHERE MaSP = @MaSPKho";
                         Function.ExecuteNonQuery(sqlUpdateKhoCong, conn, trans, new SqlParameter("@SoLuongTraLai", soLuongGocCuaDongBiXoa), new SqlParameter("@MaSPKho", maSPBiXoa));
                     }
 
-                    // 2. Các dòng mới thêm hoặc sửa đổi
-                    foreach (DataRow rowMoiTrenForm in dtChiTietHDB.Rows) // Đổi tên dt
+                    // 3.2. Các dòng mới thêm hoặc sửa đổi
+                    foreach (DataRow rowMoiTrenForm in dtChiTietHDB.Rows)
                     {
                         if (rowMoiTrenForm.RowState == DataRowState.Deleted) continue;
                         string maSPMoi = rowMoiTrenForm["MaSP"].ToString();
                         decimal soLuongMoi = Convert.ToDecimal(rowMoiTrenForm["SoLuong"]);
-                        // DonGia không lưu vào ChiTietHDB theo schema, ThanhTien đã có
-                        string khuyenMaiMoi = rowMoiTrenForm["KhuyenMai"]?.ToString();
+                        string maKMMoi = rowMoiTrenForm["MaKM"] == DBNull.Value ? null : rowMoiTrenForm["MaKM"].ToString();
                         decimal thanhTienMoi = Convert.ToDecimal(rowMoiTrenForm["ThanhTien"]);
 
-                        DataRow[] foundRowsGoc = dtChiTietHDBGoc.Select($"MaSP = '{maSPMoi.Replace("'", "''")}'"); // Đổi tên dt
+                        DataRow[] foundRowsGoc = dtChiTietHDBGoc.Select($"MaSP = '{maSPMoi.Replace("'", "''")}'");
                         if (foundRowsGoc.Length == 0) // Mới thêm
                         {
-                            // Thêm vào ChiTietHDB
-                            string sqlInsertChiTietSua = @"INSERT INTO dbo.ChiTietHDB (MaHDB, MaSP, SoLuong, MaKM, ThanhTien) VALUES (@MaHDB, @MaSP, @SoLuong, @MaKM, @ThanhTien)"; // (modified SQL)
+                            string sqlInsertChiTietSua = @"INSERT INTO dbo.ChiTietHDB (MaHDB, MaSP, SoLuong, MaKM, ThanhTien) 
+                                                   VALUES (@MaHDB, @MaSP, @SoLuong, @MaKM, @ThanhTien)";
                             SqlParameter[] paramsInsertCT = {
                                 new SqlParameter("@MaHDB", maHDBCCanSua), new SqlParameter("@MaSP", maSPMoi),
                                 new SqlParameter("@SoLuong", soLuongMoi),
-                                new SqlParameter("@MaKM", rowMoiTrenForm["MaKM"] == DBNull.Value ? (object)DBNull.Value : rowMoiTrenForm["MaKM"].ToString()),
+                                new SqlParameter("@MaKM", string.IsNullOrEmpty(maKMMoi) ? (object)DBNull.Value : maKMMoi),
                                 new SqlParameter("@ThanhTien", thanhTienMoi)
                             };
                             Function.ExecuteNonQuery(sqlInsertChiTietSua, conn, trans, paramsInsertCT);
-                            // TRỪ KHO
-                            string sqlUpdateKhoTru = "UPDATE dbo.SanPham SET SoLuong = ISNULL(SoLuong, 0) - @SoLuongMoiBan WHERE MaSP = @MaSPKho"; // Trừ đi
+                            string sqlUpdateKhoTru = "UPDATE dbo.SanPham SET SoLuong = ISNULL(SoLuong, 0) - @SoLuongMoiBan WHERE MaSP = @MaSPKho";
                             Function.ExecuteNonQuery(sqlUpdateKhoTru, conn, trans, new SqlParameter("@SoLuongMoiBan", soLuongMoi), new SqlParameter("@MaSPKho", maSPMoi));
                         }
                         else // Đã có, kiểm tra sửa đổi
                         {
                             DataRow rowGocDeSoSanh = foundRowsGoc[0];
                             decimal soLuongGoc = Convert.ToDecimal(rowGocDeSoSanh["SoLuong"]);
-                            // DonGia không so sánh vì không lưu trong ChiTietHDB
-                            string khuyenMaiGoc = rowGocDeSoSanh["KhuyenMai"]?.ToString() ?? "";
-                            // ThanhTien sẽ khác nếu SoLuong hoặc KhuyenMai khác
+                            string maKMGoc = rowGocDeSoSanh["MaKM"] == DBNull.Value ? null : rowGocDeSoSanh["MaKM"].ToString();
+                            decimal thanhTienGoc = Convert.ToDecimal(rowGocDeSoSanh["ThanhTien"]);
 
-                            bool coThayDoiChiTiet = (soLuongMoi != soLuongGoc || (khuyenMaiMoi ?? "") != khuyenMaiGoc);
+                            bool coThayDoiChiTiet = (soLuongMoi != soLuongGoc ||
+                                                     (maKMMoi ?? "") != (maKMGoc ?? "") ||
+                                                     thanhTienMoi != thanhTienGoc); // So sánh cả thành tiền
                             if (coThayDoiChiTiet)
                             {
-                                // Cập nhật ChiTietHDB
-                                string sqlUpdateChiTietSua = @"UPDATE dbo.ChiTietHDB SET SoLuong = @SoLuong, MaKM = @MaKM, ThanhTien = @ThanhTien WHERE MaHDB = @MaHDB AND MaSP = @MaSP"; // (modified SQL)
+                                string sqlUpdateChiTietSua = @"UPDATE dbo.ChiTietHDB SET SoLuong = @SoLuong, MaKM = @MaKM, ThanhTien = @ThanhTien 
+                                                      WHERE MaHDB = @MaHDB AND MaSP = @MaSP";
                                 SqlParameter[] paramsUpdateCT = {
                                     new SqlParameter("@SoLuong", soLuongMoi),
-                                    new SqlParameter("@MaKM", rowMoiTrenForm["MaKM"] == DBNull.Value ? (object)DBNull.Value : rowMoiTrenForm["MaKM"].ToString()),
+                                    new SqlParameter("@MaKM", string.IsNullOrEmpty(maKMMoi) ? (object)DBNull.Value : maKMMoi),
                                     new SqlParameter("@ThanhTien", thanhTienMoi),
                                     new SqlParameter("@MaHDB", maHDBCCanSua), new SqlParameter("@MaSP", maSPMoi)
                                 };
                                 Function.ExecuteNonQuery(sqlUpdateChiTietSua, conn, trans, paramsUpdateCT);
-                                // Cập nhật kho (chênh lệch)
-                                decimal soLuongChenhLech = soLuongMoi - soLuongGoc; // Nếu dương: bán thêm, âm: trả lại
+                                decimal soLuongChenhLech = soLuongMoi - soLuongGoc;
                                 if (soLuongChenhLech != 0)
                                 {
-                                    string sqlUpdateKhoChenhLech = "UPDATE dbo.SanPham SET SoLuong = ISNULL(SoLuong, 0) - @SoLuongChenhLech WHERE MaSP = @MaSPKho"; // Trừ đi chênh lệch
+                                    string sqlUpdateKhoChenhLech = "UPDATE dbo.SanPham SET SoLuong = ISNULL(SoLuong, 0) - @SoLuongChenhLech WHERE MaSP = @MaSPKho";
                                     Function.ExecuteNonQuery(sqlUpdateKhoChenhLech, conn, trans, new SqlParameter("@SoLuongChenhLech", soLuongChenhLech), new SqlParameter("@MaSPKho", maSPMoi));
                                 }
                             }
@@ -1151,15 +1191,18 @@ namespace QlyCafe.Quanly
 
                 MessageBox.Show($"Cập nhật hóa đơn bán '{maHDBCCanSua}' thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 string maHDVVuaCapNhat = maHDBToLoad;
-                ResetValuesToInitialState();
+                ResetValuesToInitialState(); // Sẽ nạp lại cboMaBan và các combo khác
                 maHDBToLoad = maHDVVuaCapNhat;
                 txtMaHDB.Text = maHDBToLoad;
-                LoadThongTinHoaDon(maHDBToLoad);
+                LoadThongTinHoaDon(maHDBToLoad); // Nạp lại để thấy thay đổi và trạng thái nút đúng
 
-                int selectedIndexSearch = cboMaHDBSearch.SelectedIndex; // Đổi tên ComboBox
-                Function.FillCombo(cboMaHDBSearch, "MaHDB", "MaHDB", "SELECT MaHDB FROM dbo.HoaDonBan WHERE IsDeleted = 0 ORDER BY NgayBan DESC, MaHDB DESC"); // Đổi bảng
+                int selectedIndexSearch = cboMaHDBSearch.SelectedIndex;
+                Function.FillCombo(cboMaHDBSearch, "MaHDB", "MaHDB", "SELECT MaHDB FROM dbo.HoaDonBan WHERE IsDeleted = 0 ORDER BY NgayBan DESC, MaHDB DESC");
                 if (selectedIndexSearch != -1 && cboMaHDBSearch.Items.Count > selectedIndexSearch) cboMaHDBSearch.SelectedIndex = selectedIndexSearch;
-                else cboMaHDBSearch.SelectedValue = maHDBToLoad;
+                else if (cboMaHDBSearch.Items.Contains(maHDBToLoad)) cboMaHDBSearch.SelectedValue = maHDBToLoad;
+                else cboMaHDBSearch.SelectedIndex = -1;
+
+                originalIDBan = newSelectedIDBan; // Cập nhật originalIDBan sau khi sửa thành công
             }
             catch (Exception ex)
             {
@@ -1171,22 +1214,34 @@ namespace QlyCafe.Quanly
         {
             if (string.IsNullOrEmpty(maHDBToLoad) && !string.IsNullOrWhiteSpace(txtMaHDB.Text))
             {
-                DialogResult confirmCancel = MessageBox.Show("Hủy tạo hóa đơn bán này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (confirmCancel == DialogResult.Yes)
+                // Hủy tạo hóa đơn mới đang làm dở
+                if (dtChiTietHDB.AsEnumerable().Any(r => r.RowState != DataRowState.Deleted) ||
+                    cboMaNV.SelectedIndex != -1 || cboMaKH.SelectedIndex != -1 || cboMaBan.SelectedIndex > 0)
                 {
-                    ResetValuesToInitialState();
-                    MessageBox.Show("Đã hủy tạo hóa đơn bán mới.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    DialogResult confirmCancel = MessageBox.Show("Hủy tạo hóa đơn bán này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (confirmCancel == DialogResult.Yes)
+                    {
+                        // Nếu đã chọn bàn và bàn đó được cập nhật trạng thái (logic này chưa có khi hủy HĐ đang tạo)
+                        // thì cần trả lại trạng thái bàn. Hiện tại, trạng thái bàn chỉ cập nhật khi Lưu.
+                        ResetValuesToInitialState();
+                        MessageBox.Show("Đã hủy tạo hóa đơn bán mới.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                else
+                {
+                    ResetValuesToInitialState(); // Nếu chưa nhập gì nhiều, cứ reset
                 }
             }
             else if (!string.IsNullOrEmpty(maHDBToLoad))
             {
-                DialogResult confirmDelete = MessageBox.Show($"XÓA hóa đơn bán '{maHDBToLoad}'? Thao tác này sẽ cập nhật lại kho.", "XÁC NHẬN XÓA", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                // Xóa hóa đơn đã tồn tại
+                DialogResult confirmDelete = MessageBox.Show($"XÓA hóa đơn bán '{maHDBToLoad}'? Thao tác này sẽ cập nhật lại kho và trạng thái bàn.", "XÁC NHẬN XÓA", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (confirmDelete == DialogResult.Yes)
                 {
-                    XoaHoaDonBanKhoiCSDL(maHDBToLoad); // Đổi tên hàm
+                    XoaHoaDonBanKhoiCSDL(maHDBToLoad);
                 }
             }
-            else
+            else // Trường hợp không có MaHDB nào (form trống rỗng)
             {
                 ResetValuesToInitialState();
             }
@@ -1194,12 +1249,20 @@ namespace QlyCafe.Quanly
 
         private void XoaHoaDonBanKhoiCSDL(string maHDBToDelete) // Đổi tên hàm
         {
+            int? idBanCuaHDBBiXoa = null;
+            object idBanObj = Function.GetFieldValue("SELECT IDBan FROM dbo.HoaDonBan WHERE MaHDB = @MaHDB AND IsDeleted = 0",
+                                                     new SqlParameter("@MaHDB", maHDBToDelete));
+            if (idBanObj != null && idBanObj != DBNull.Value)
+            {
+                idBanCuaHDBBiXoa = Convert.ToInt32(idBanObj);
+            }
+
             DataTable dtChiTietCanXoa = Function.GetDataToTable(
-               "SELECT MaSP, SoLuong FROM dbo.ChiTietHDB WHERE MaHDB = @MaHDB", new SqlParameter("@MaHDB", maHDBToDelete)); // Đổi bảng
+               "SELECT MaSP, SoLuong FROM dbo.ChiTietHDB WHERE MaHDB = @MaHDB", new SqlParameter("@MaHDB", maHDBToDelete));
 
             if (dtChiTietCanXoa == null)
             {
-                MessageBox.Show($"Không thể lấy chi tiết hóa đơn bán '{maHDBToDelete}'.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Không thể lấy chi tiết hóa đơn bán '{maHDBToDelete}' để xóa.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -1207,29 +1270,47 @@ namespace QlyCafe.Quanly
             {
                 Function.ExecuteTransaction((conn, trans) =>
                 {
+                    // Cộng trả lại kho
                     if (dtChiTietCanXoa.Rows.Count > 0)
                     {
                         foreach (DataRow drChiTiet in dtChiTietCanXoa.Rows)
                         {
                             string maSP = drChiTiet["MaSP"].ToString();
-                            decimal soLuongDaBan = Convert.ToDecimal(drChiTiet["SoLuong"]); // Đổi tên biến
-                            // CỘNG TRẢ LẠI KHO
-                            string sqlUpdateKho = @"UPDATE dbo.SanPham SET SoLuong = ISNULL(SoLuong, 0) + @SoLuongTraLai WHERE MaSP = @MaSPKho"; // Cộng trả
+                            decimal soLuongDaBan = Convert.ToDecimal(drChiTiet["SoLuong"]);
+                            string sqlUpdateKho = @"UPDATE dbo.SanPham SET SoLuong = ISNULL(SoLuong, 0) + @SoLuongTraLai WHERE MaSP = @MaSPKho";
                             SqlParameter[] paramsKho = { new SqlParameter("@SoLuongTraLai", soLuongDaBan), new SqlParameter("@MaSPKho", maSP) };
                             Function.ExecuteNonQuery(sqlUpdateKho, conn, trans, paramsKho);
                         }
                     }
+
                     // Xóa ChiTietHDB
-                    string sqlDeleteChiTiet = "DELETE FROM dbo.ChiTietHDB WHERE MaHDB = @MaHDB"; // Đổi bảng
+                    string sqlDeleteChiTiet = "DELETE FROM dbo.ChiTietHDB WHERE MaHDB = @MaHDB";
                     Function.ExecuteNonQuery(sqlDeleteChiTiet, conn, trans, new SqlParameter("@MaHDB", maHDBToDelete));
-                    // Đánh dấu xóa HoaDonBan
-                    string sqlMarkAsDeletedHDB = "UPDATE dbo.HoaDonBan SET IsDeleted = 1, TongTien = 0 WHERE MaHDB = @MaHDB"; // Đổi bảng
+
+                    // Đánh dấu xóa HoaDonBan (hoặc xóa hẳn tùy theo nghiệp vụ)
+                    string sqlMarkAsDeletedHDB = "UPDATE dbo.HoaDonBan SET IsDeleted = 1, TongTien = 0 WHERE MaHDB = @MaHDB";
+                    // Hoặc: string sqlDeleteHDB = "DELETE FROM dbo.HoaDonBan WHERE MaHDB = @MaHDB";
                     Function.ExecuteNonQuery(sqlMarkAsDeletedHDB, conn, trans, new SqlParameter("@MaHDB", maHDBToDelete));
+
+                    // Cập nhật trạng thái bàn về 'Trống' nếu có và không còn HĐ nào khác trên bàn đó
+                    if (idBanCuaHDBBiXoa.HasValue)
+                    {
+                        string sqlCheckOtherBillsOnTable = "SELECT COUNT(*) FROM dbo.HoaDonBan WHERE IDBan = @IDBanCheck AND IsDeleted = 0";
+                        SqlParameter[] paramsCheck = { new SqlParameter("@IDBanCheck", idBanCuaHDBBiXoa.Value) };
+                        // Giả sử CountRecords có thể dùng conn, trans. Nếu không, bạn cần query riêng trước transaction hoặc chấp nhận rủi ro nhỏ.
+                        // Hoặc sửa Function.CountRecords để chấp nhận conn, trans.
+                        // Vì đã xóa HĐ hiện tại, nếu count = 0 nghĩa là bàn trống.
+                        int otherBillsCount = Function.CountRecords(sqlCheckOtherBillsOnTable, conn, trans, paramsCheck);
+                        if (otherBillsCount == 0)
+                        {
+                            string sqlUpdateBanStatus = "UPDATE dbo.Ban SET status = N'Trống' WHERE id = @IDBan_Update";
+                            Function.ExecuteNonQuery(sqlUpdateBanStatus, conn, trans, new SqlParameter("@IDBan_Update", idBanCuaHDBBiXoa.Value));
+                        }
+                    }
                 });
 
                 MessageBox.Show($"Đã xóa hóa đơn bán '{maHDBToDelete}'.", "Hoàn tất", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ResetValuesToInitialState();
-                // Đổi ComboBox tìm kiếm
                 Function.FillCombo(cboMaHDBSearch, "MaHDB", "MaHDB", "SELECT MaHDB FROM dbo.HoaDonBan WHERE IsDeleted = 0 ORDER BY NgayBan DESC, MaHDB DESC");
                 if (cboMaHDBSearch.Items.Count > 0) cboMaHDBSearch.SelectedIndex = -1; else cboMaHDBSearch.DataSource = null;
             }
@@ -1247,20 +1328,22 @@ namespace QlyCafe.Quanly
                 MessageBox.Show("Vui lòng tải hóa đơn bán đã lưu để in.", "Chưa có hóa đơn", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            if (dtChiTietHDB == null || dtChiTietHDB.Rows.Count == 0)
+            if (dtChiTietHDB == null || !dtChiTietHDB.AsEnumerable().Any(r => r.RowState != DataRowState.Deleted))
             {
-                MessageBox.Show("Hóa đơn không có chi tiết.", "Không có dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Hóa đơn không có chi tiết sản phẩm để in.", "Không có dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             string ngayBanHienThi = dpNgayBan.Text;
             string tenNVHienThi = txtTenNV.Text;
             string tenKHHienThi = txtTenKH.Text;
-            string diaChiKH = ""; // Sẽ lấy từ CSDL nếu cần thiết kế chi tiết hơn
-            string sdtKHHienThi = txtSDT.Text; // Lấy SĐT từ TextBox đã có trên form
+            string sdtKHHienThi = txtSDT.Text;
+            string diaChiKH = "";
+            string soBanHienThi = (cboMaBan.SelectedIndex != -1 && cboMaBan.SelectedValue != null && cboMaBan.SelectedValue != DBNull.Value)
+                                  ? cboMaBan.SelectedValue.ToString()
+                                  : "N/A";
 
-            // Nếu bạn muốn đảm bảo lấy SĐT mới nhất từ CSDL thay vì từ TextBox (phòng trường hợp TextBox chưa cập nhật)
-            if (cboMaKH.SelectedValue != null)
+            if (cboMaKH.SelectedValue != null && cboMaKH.SelectedValue != DBNull.Value)
             {
                 DataTable dtKHInfo = Function.GetDataToTable("SELECT TenKH, DiaChi, SDT FROM dbo.KhachHang WHERE MaKH = @MaKH",
                                                              new SqlParameter("@MaKH", cboMaKH.SelectedValue.ToString()));
@@ -1268,71 +1351,106 @@ namespace QlyCafe.Quanly
                 {
                     tenKHHienThi = dtKHInfo.Rows[0]["TenKH"]?.ToString() ?? tenKHHienThi;
                     diaChiKH = dtKHInfo.Rows[0]["DiaChi"]?.ToString();
-                    sdtKHHienThi = dtKHInfo.Rows[0]["SDT"]?.ToString() ?? sdtKHHienThi; // Ưu tiên SĐT từ CSDL
+                    sdtKHHienThi = dtKHInfo.Rows[0]["SDT"]?.ToString() ?? sdtKHHienThi;
                 }
             }
 
             string tongTienHienThi = txtTongTien.Text;
             string tongTienBangChuHienThi = lblTongTienBangChu.Text;
 
-            try
+            try // Bắt đầu khối try chính cho toàn bộ thao tác Excel
             {
                 using (var workbook = new XLWorkbook())
                 {
-                    var worksheet = workbook.Worksheets.Add("HoaDonBan_" + maHDBCCanIn);
+                    var worksheet = workbook.Worksheets.Add("HoaDon_" + maHDBCCanIn);
                     int currentRow = 1;
+                    int lastColumnUsed = 6;
 
-                    // Tiêu đề Hóa Đơn Bán
-                    worksheet.Cell(currentRow, 3).Value = "HÓA ĐƠN BÁN HÀNG";
-                    var titleRange = worksheet.Range(currentRow, 3, currentRow, 5);
-                    titleRange.Merge().Style.Font.SetBold().Font.SetFontSize(16).Font.SetFontColor(XLColor.DarkBlue);
-                    titleRange.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                    // --- Đặt độ rộng cột ---
+                    worksheet.Column(1).Width = 15; // Nhãn TT chung / STT
+                    worksheet.Column(2).Width = 30; // Giá trị TT chung / Tên SP
+                    worksheet.Column(3).Width = 10; // Giá trị TT chung (nếu có) / SL
+                    worksheet.Column(4).Width = 12; // Nhãn TT chung / Đơn giá
+                    worksheet.Column(5).Width = 25; // Giá trị TT chung / Khuyến mãi
+                    worksheet.Column(6).Width = 15; // Thành tiền
+
+                    // --- Thông tin Quán ---
+                    worksheet.Cell(currentRow, 1).Value = "TÊN QUÁN CÀ PHÊ ABC";
+                    worksheet.Range(currentRow, 1, currentRow, lastColumnUsed).Merge().Style.Font.SetBold();
+                    worksheet.Range(currentRow, 1, currentRow, lastColumnUsed).Style.Font.FontSize = 14;
+                    worksheet.Range(currentRow, 1, currentRow, lastColumnUsed).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    currentRow++;
+                    worksheet.Cell(currentRow, 1).Value = "Địa chỉ: Số 12 Đường Nguyễn Trãi, Hà Nội"; // ĐỊA CHỈ MỚI
+                    worksheet.Range(currentRow, 1, currentRow, lastColumnUsed).Merge().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    currentRow++;
+                    worksheet.Cell(currentRow, 1).Value = "Điện thoại: 0123.456.789";
+                    worksheet.Range(currentRow, 1, currentRow, lastColumnUsed).Merge().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                     currentRow += 2;
 
-                    // Thông tin chung HĐ Bán
-                    worksheet.Cell(currentRow, 1).Value = "Mã hóa đơn:"; worksheet.Cell(currentRow, 1).Style.Font.SetBold();
+                    // --- Tiêu đề Hóa Đơn Bán ---
+                    worksheet.Cell(currentRow, 1).Value = "HÓA ĐƠN BÁN HÀNG";
+                    var titleRange = worksheet.Range(currentRow, 1, currentRow, lastColumnUsed);
+                    titleRange.Merge();
+                    titleRange.Style.Font.Bold = true;
+                    titleRange.Style.Font.FontSize = 18;
+                    titleRange.Style.Font.FontColor = XLColor.DarkBlue;
+                    titleRange.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    currentRow += 2;
+
+                    // --- Thông tin chung HĐ Bán ---
+                    int infoStartRow = currentRow;
+                    worksheet.Cell(currentRow, 1).Value = "Mã hóa đơn:"; worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
                     worksheet.Cell(currentRow, 2).Value = maHDBCCanIn; worksheet.Range(currentRow, 2, currentRow, 3).Merge();
-                    worksheet.Cell(currentRow, 5).Value = "Ngày bán:"; worksheet.Cell(currentRow, 5).Style.Font.SetBold();
-                    worksheet.Cell(currentRow, 6).Value = ngayBanHienThi;
-                    currentRow++;
-                    worksheet.Cell(currentRow, 1).Value = "Nhân viên:"; worksheet.Cell(currentRow, 1).Style.Font.SetBold();
-                    worksheet.Cell(currentRow, 2).Value = tenNVHienThi; worksheet.Range(currentRow, 2, currentRow, 3).Merge();
-                    currentRow++;
-                    worksheet.Cell(currentRow, 1).Value = "Khách hàng:"; worksheet.Cell(currentRow, 1).Style.Font.SetBold();
-                    worksheet.Cell(currentRow, 2).Value = tenKHHienThi; worksheet.Range(currentRow, 2, currentRow, 6).Merge();
+
+                    worksheet.Cell(currentRow, 4).Value = "Ngày bán:"; worksheet.Cell(currentRow, 4).Style.Font.Bold = true;
+                    worksheet.Cell(currentRow, 5).Value = ngayBanHienThi; worksheet.Range(currentRow, 5, currentRow, lastColumnUsed).Merge();
                     currentRow++;
 
-                    // THÊM SỐ ĐIỆN THOẠI KHÁCH HÀNG VÀO EXCEL
+                    worksheet.Cell(currentRow, 1).Value = "Nhân viên:"; worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
+                    worksheet.Cell(currentRow, 2).Value = tenNVHienThi; worksheet.Range(currentRow, 2, currentRow, 3).Merge();
+
+                    worksheet.Cell(currentRow, 4).Value = "Số Bàn:"; worksheet.Cell(currentRow, 4).Style.Font.Bold = true;
+                    worksheet.Cell(currentRow, 5).Value = soBanHienThi; worksheet.Range(currentRow, 5, currentRow, lastColumnUsed).Merge();
+                    currentRow++;
+
+                    worksheet.Cell(currentRow, 1).Value = "Khách hàng:"; worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
+                    worksheet.Cell(currentRow, 2).Value = tenKHHienThi; worksheet.Range(currentRow, 2, currentRow, lastColumnUsed).Merge();
+                    currentRow++;
+
                     if (!string.IsNullOrEmpty(sdtKHHienThi))
                     {
-                        worksheet.Cell(currentRow, 1).Value = "SĐT Khách:"; worksheet.Cell(currentRow, 1).Style.Font.SetBold();
-                        worksheet.Cell(currentRow, 2).Value = sdtKHHienThi;
-                        worksheet.Range(currentRow, 2, currentRow, 3).Merge(); // Merge nếu cần
-                                                                               // Nếu muốn SĐT ở cột khác hoặc không merge, điều chỉnh ở đây
-                                                                               // Ví dụ: worksheet.Cell(currentRow, 4).Value = "SĐT Khách:"; worksheet.Cell(currentRow, 4).Style.Font.SetBold();
-                                                                               //        worksheet.Cell(currentRow, 5).Value = sdtKHHienThi;
+                        worksheet.Cell(currentRow, 1).Value = "SĐT Khách:"; worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
+                        worksheet.Cell(currentRow, 2).Value = "'" + sdtKHHienThi;
+                        worksheet.Range(currentRow, 2, currentRow, lastColumnUsed).Merge();
                         currentRow++;
                     }
-
                     if (!string.IsNullOrEmpty(diaChiKH))
                     {
-                        worksheet.Cell(currentRow, 1).Value = "Địa chỉ KH:"; worksheet.Cell(currentRow, 1).Style.Font.SetBold();
-                        worksheet.Cell(currentRow, 2).Value = diaChiKH; worksheet.Range(currentRow, 2, currentRow, 6).Merge();
+                        worksheet.Cell(currentRow, 1).Value = "Địa chỉ KH:"; worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
+                        worksheet.Cell(currentRow, 2).Value = diaChiKH; worksheet.Range(currentRow, 2, currentRow, lastColumnUsed).Merge();
                         currentRow++;
                     }
-                    currentRow++; // Dòng trống sau thông tin khách hàng
+                    var infoRange = worksheet.Range(infoStartRow, 1, currentRow - 1, lastColumnUsed);
+                    infoRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin; // Sửa lỗi CS1061
+                    currentRow++;
 
-                    // Bảng chi tiết (giữ nguyên như trước)
+                    // --- Bảng chi tiết sản phẩm ---
                     int headerDetailRow = currentRow;
                     worksheet.Cell(headerDetailRow, 1).Value = "STT";
                     worksheet.Cell(headerDetailRow, 2).Value = "Tên Sản Phẩm";
-                    worksheet.Cell(headerDetailRow, 3).Value = "Số Lượng";
-                    worksheet.Cell(headerDetailRow, 4).Value = "Đơn Giá Bán";
+                    worksheet.Cell(headerDetailRow, 3).Value = "SL";
+                    worksheet.Cell(headerDetailRow, 4).Value = "Đơn Giá";
                     worksheet.Cell(headerDetailRow, 5).Value = "Khuyến Mãi";
                     worksheet.Cell(headerDetailRow, 6).Value = "Thành Tiền";
-                    var headerDetailRange = worksheet.Range(headerDetailRow, 1, headerDetailRow, 6);
-                    headerDetailRange.Style.Font.SetBold().Fill.SetBackgroundColor(XLColor.LightSkyBlue);
-                    headerDetailRange.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                    var headerDetailRange = worksheet.Range(headerDetailRow, 1, headerDetailRow, lastColumnUsed);
+                    headerDetailRange.Style.Font.Bold = true;
+                    headerDetailRange.Style.Fill.BackgroundColor = XLColor.FromArgb(217, 225, 242);
+                    headerDetailRange.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    headerDetailRange.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center; // Sửa lỗi CS1061
+                    headerDetailRange.Style.Border.InsideBorder = XLBorderStyleValues.Thin;   // Sửa lỗi CS1061
+                    headerDetailRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;  // Sửa lỗi CS1061
+                    worksheet.Row(headerDetailRow).Height = 20;
                     currentRow++;
 
                     int stt = 0;
@@ -1340,45 +1458,72 @@ namespace QlyCafe.Quanly
                     {
                         if (dr.RowState == DataRowState.Deleted) continue;
                         stt++;
-                        worksheet.Cell(currentRow, 1).Value = stt;
+                        worksheet.Cell(currentRow, 1).Value = stt; worksheet.Cell(currentRow, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                         worksheet.Cell(currentRow, 2).Value = dr["TenSP"]?.ToString();
-                        worksheet.Cell(currentRow, 3).Value = Convert.ToDecimal(dr["SoLuong"]); worksheet.Cell(currentRow, 3).Style.NumberFormat.Format = "#,##0";
-                        worksheet.Cell(currentRow, 4).Value = Convert.ToDecimal(dr["DonGia"]); worksheet.Cell(currentRow, 4).Style.NumberFormat.Format = "#,##0";
-                        worksheet.Cell(currentRow, 5).Value = dr["KhuyenMai"]?.ToString();
-                        worksheet.Cell(currentRow, 6).Value = Convert.ToDecimal(dr["ThanhTien"]); worksheet.Cell(currentRow, 6).Style.NumberFormat.Format = "#,##0";
+                        worksheet.Cell(currentRow, 3).Value = Convert.ToDecimal(dr["SoLuong"]); worksheet.Cell(currentRow, 3).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
+                        worksheet.Cell(currentRow, 4).Value = Convert.ToDecimal(dr["DonGia"]); worksheet.Cell(currentRow, 4).Style.NumberFormat.Format = "#,##0"; worksheet.Cell(currentRow, 4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
+                        worksheet.Cell(currentRow, 5).Value = dr["TenKMHienThi"]?.ToString();
+                        worksheet.Cell(currentRow, 6).Value = Convert.ToDecimal(dr["ThanhTien"]); worksheet.Cell(currentRow, 6).Style.NumberFormat.Format = "#,##0"; worksheet.Cell(currentRow, 6).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
                         currentRow++;
                     }
+                    var detailDataRange = worksheet.Range(headerDetailRow + 1, 1, currentRow - 1, lastColumnUsed);
+                    detailDataRange.Style.Border.InsideBorder = XLBorderStyleValues.Thin;   // Sửa lỗi CS1061
+                    detailDataRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;  // Sửa lỗi CS1061
+
+                    // --- Tổng tiền ---
+                    var sumSectionStartRow = currentRow;
+                    worksheet.Cell(currentRow, 1).Value = "Cộng tiền hàng:";
+                    worksheet.Range(currentRow, 1, currentRow, lastColumnUsed - 1).Merge().Style.Font.Bold = true;
+                    worksheet.Range(currentRow, 1, currentRow, lastColumnUsed - 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
+                    worksheet.Cell(currentRow, lastColumnUsed).Value = Convert.ToDecimal(tongTienHienThi.Replace(",", ""));
+                    worksheet.Cell(currentRow, lastColumnUsed).Style.Font.Bold = true;
+                    worksheet.Cell(currentRow, lastColumnUsed).Style.NumberFormat.Format = "#,##0";
+                    worksheet.Cell(currentRow, lastColumnUsed).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
                     currentRow++;
 
-                    // Tổng tiền (giữ nguyên)
-                    worksheet.Cell(currentRow, 5).Value = "Tổng cộng:"; worksheet.Cell(currentRow, 5).Style.Font.SetBold().Alignment.SetHorizontal(XLAlignmentHorizontalValues.Right);
-                    worksheet.Cell(currentRow, 6).Value = Convert.ToDecimal(tongTienHienThi.Replace(",", "")); worksheet.Cell(currentRow, 6).Style.Font.SetBold().NumberFormat.Format = "#,##0";
+                    worksheet.Cell(currentRow, 1).Value = "Tổng cộng thanh toán:";
+                    worksheet.Range(currentRow, 1, currentRow, lastColumnUsed - 1).Merge().Style.Font.Bold = true;
+                    worksheet.Range(currentRow, 1, currentRow, lastColumnUsed - 1).Style.Font.FontSize = 12;
+                    worksheet.Range(currentRow, 1, currentRow, lastColumnUsed - 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
+                    worksheet.Cell(currentRow, lastColumnUsed).Value = Convert.ToDecimal(tongTienHienThi.Replace(",", ""));
+                    worksheet.Cell(currentRow, lastColumnUsed).Style.Font.Bold = true;
+                    worksheet.Cell(currentRow, lastColumnUsed).Style.Font.FontSize = 12;
+                    worksheet.Cell(currentRow, lastColumnUsed).Style.NumberFormat.Format = "#,##0";
+                    worksheet.Cell(currentRow, lastColumnUsed).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
                     currentRow++;
-                    worksheet.Cell(currentRow, 1).Value = tongTienBangChuHienThi; worksheet.Range(currentRow, 1, currentRow, 6).Merge().Style.Font.SetBold().Font.SetItalic();
+
+                    worksheet.Cell(currentRow, 1).Value = tongTienBangChuHienThi;
+                    worksheet.Range(currentRow, 1, currentRow, lastColumnUsed).Merge().Style.Font.Bold = true;
+                    worksheet.Range(currentRow, 1, currentRow, lastColumnUsed).Style.Font.Italic = true;
+                    var sumRange = worksheet.Range(sumSectionStartRow, 1, currentRow, lastColumnUsed);
+                    sumRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin; // Sửa lỗi CS1061
                     currentRow += 2;
 
-                    // Ký tên (giữ nguyên)
-                    worksheet.Cell(currentRow, 2).Value = "Người Lập Phiếu"; worksheet.Cell(currentRow, 2).Style.Font.SetBold().Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-                    worksheet.Range(currentRow, 1, currentRow, 2).Merge();
-                    worksheet.Cell(currentRow, 5).Value = "Khách Hàng"; worksheet.Cell(currentRow, 5).Style.Font.SetBold().Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-                    worksheet.Range(currentRow, 4, currentRow, 6).Merge();
-                    currentRow += 3; // Tăng thêm dòng cho chữ ký
-                    worksheet.Cell(currentRow, 2).Value = tenNVHienThi; worksheet.Cell(currentRow, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-                    worksheet.Range(currentRow, 1, currentRow, 2).Merge();
-                    worksheet.Cell(currentRow, 5).Value = tenKHHienThi; worksheet.Cell(currentRow, 5).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-                    worksheet.Range(currentRow, 4, currentRow, 6).Merge();
+                    // --- BỎ PHẦN KÝ TÊN ---
 
-                    worksheet.Columns().AdjustToContents();
-                    worksheet.Column(2).Width = Math.Max(worksheet.Column(2).Width, 30);
-                    // Điều chỉnh lại dòng cuối của bảng chi tiết để kẻ khung cho đúng
-                    var detailTableRange = worksheet.Range(headerDetailRow, 1, currentRow - 4, 6); // -4 là để trừ đi 3 dòng ký tên và 1 dòng trống trước đó
-                    detailTableRange.Style.Border.SetOutsideBorder(XLBorderStyleValues.Thin).Border.SetInsideBorder(XLBorderStyleValues.Thin);
+                    worksheet.Cell(currentRow, 1).Value = "Cảm ơn quý khách và hẹn gặp lại!";
+                    worksheet.Range(currentRow, 1, currentRow, lastColumnUsed).Merge().Style.Font.Italic = true;
+                    worksheet.Range(currentRow, 1, currentRow, lastColumnUsed).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    currentRow++;
+                    worksheet.Cell(currentRow, 1).Value = "www.tenquan.com";
+                    worksheet.Range(currentRow, 1, currentRow, lastColumnUsed).Merge().Style.Font.FontColor = XLColor.Blue;
+                    worksheet.Range(currentRow, 1, currentRow, lastColumnUsed).Style.Font.Underline = XLFontUnderlineValues.Single;
+                    worksheet.Range(currentRow, 1, currentRow, lastColumnUsed).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
 
+                    // --- Cài đặt chung cho Worksheet ---
+                    worksheet.PageSetup.PaperSize = XLPaperSize.A4Paper;
+                    worksheet.PageSetup.PageOrientation = XLPageOrientation.Portrait;
+                    worksheet.PageSetup.Margins.Top = 0.5; worksheet.PageSetup.Margins.Bottom = 0.5;
+                    worksheet.PageSetup.Margins.Left = 0.25; worksheet.PageSetup.Margins.Right = 0.25;
+                    worksheet.PageSetup.CenterHorizontally = true;
+                    worksheet.PageSetup.FitToPages(1, 0);
+
+                    // --- Lưu File ---
                     SaveFileDialog saveFileDialog = new SaveFileDialog
                     {
                         Filter = "Excel Files|*.xlsx",
                         Title = "Lưu Hóa Đơn Bán",
-                        FileName = "HDB_" + maHDBCCanIn.Replace("/", "_").Replace(":", "") + ".xlsx"
+                        FileName = "HDB_" + maHDBCCanIn.Replace("/", "_").Replace("\\", "_").Replace(":", "") + ".xlsx"
                     };
                     if (saveFileDialog.ShowDialog() == DialogResult.OK)
                     {
@@ -1386,17 +1531,27 @@ namespace QlyCafe.Quanly
                         MessageBox.Show($"Đã xuất hóa đơn bán '{maHDBCCanIn}' thành công!\nĐường dẫn: {saveFileDialog.FileName}", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         if (MessageBox.Show("Mở file vừa xuất?", "Mở file", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                         {
-                            try { System.Diagnostics.Process.Start(saveFileDialog.FileName); }
-                            catch (Exception exOpen) { MessageBox.Show("Lỗi mở file: " + exOpen.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                            try // Bắt đầu khối try cho Process.Start
+                            {
+                                System.Diagnostics.Process.Start(saveFileDialog.FileName);
+                            }
+                            catch (Exception exOpen) // catch cho Process.Start
+                            {
+                                MessageBox.Show("Lỗi mở file: " + exOpen.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            } // Đóng khối catch cho Process.Start
                         }
                     }
-                }
-            }
-            catch (Exception ex)
+                } // Đóng khối using cho workbook
+            } // Đóng khối try chính
+            catch (Exception ex) // catch cho khối try chính
             {
                 MessageBox.Show("Lỗi xuất Excel: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+            } // Đóng khối catch chính
+        } // Đóng phương thức btnInHDB_Click
+        
+
+        
+        
 
         private void btnDong_Click(object sender, EventArgs e)
         {
