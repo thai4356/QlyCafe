@@ -272,6 +272,37 @@ namespace QlyCafe
             return count;
         }
 
+        // Trong Function.cs
+        public static int CountRecords(string sql, SqlConnection connection, SqlTransaction transaction, params SqlParameter[] parameters)
+        {
+            int count = 0;
+            // SqlCommand sẽ được gắn với connection và transaction này
+            using (SqlCommand command = new SqlCommand(sql, connection, transaction))
+            {
+                if (parameters != null && parameters.Length > 0)
+                {
+                    command.Parameters.AddRange(parameters);
+                }
+                try
+                {
+                    // Connection đã được mở bởi lời gọi ExecuteTransaction
+                    object result = command.ExecuteScalar();
+                    if (result != null && int.TryParse(result.ToString(), out count))
+                    {
+                        return count;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Không nên hiển thị MessageBox từ lớp Function, nên throw hoặc trả về giá trị lỗi
+                    // MessageBox.Show("DataService - Lỗi khi đếm bản ghi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Console.WriteLine("DataService - Lỗi khi đếm bản ghi: " + ex.Message);
+                    // Hoặc throw ex;
+                }
+            }
+            return count; // Hoặc một giá trị chỉ báo lỗi nếu có exception
+        }
+
         public static bool CheckKey(string sql, params SqlParameter[] parameters)
         {
             int recordCount = CountRecords(sql,parameters);
