@@ -1,38 +1,69 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace QlyCafe.NguoiDung
 {
     public partial class FormGioHang : Form
     {
-        public FormGioHang()
+        private BindingList<CartItem> bindingList;
+        private int banSo;
+
+
+        public FormGioHang(int so)
         {
             InitializeComponent();
+            this.banSo = so;
+            // Gắn các sự kiện
+            dataGridView1.CellValueChanged += dataGridView1_CellValueChanged;
+            dataGridView1.CellEndEdit += dataGridView1_CellEndEdit;
+            dataGridView1.CellValidating += dataGridView1_CellValidating;
         }
-
-       
-
+        
         private void FormGioHang_Load(object sender, EventArgs e)
         {
-            dataGridView1.DataSource = null;
-            dataGridView1.DataSource = CartSession.GioHangTam.Select(x => new
-            {
-                x.MaSP,
-                x.TenSP,
-                x.SoLuong,
-                x.DonGia,
-                x.ThanhTien
-            }).ToList();
+            dataGridView1.AllowUserToAddRows = false;
+            // Load dữ liệu từ CartSession
+            bindingList = new BindingList<CartItem>(CartSession.GioHangTam);
+            dataGridView1.DataSource = bindingList;
+
+            // Thiết lập các cột không chỉnh sửa
+            dataGridView1.Columns["MaSP"].ReadOnly = true;
+            dataGridView1.Columns["TenSP"].ReadOnly = true;
+            dataGridView1.Columns["DonGia"].ReadOnly = true;
+            dataGridView1.Columns["ThanhTien"].ReadOnly = true;
         }
 
-      
+        private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            dataGridView1.CommitEdit(DataGridViewDataErrorContexts.Commit);
+        }
+
+        private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && dataGridView1.Columns[e.ColumnIndex].Name == "SoLuong")
+            {
+                var row = dataGridView1.Rows[e.RowIndex];
+                var sp = row.DataBoundItem as CartItem;
+                if (sp != null)
+                {
+                    row.Cells["ThanhTien"].Value = sp.ThanhTien;
+                    dataGridView1.Refresh();
+                }
+            }
+        }
+
+        private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            if (dataGridView1.Columns[e.ColumnIndex].Name == "SoLuong")
+            {
+                if (!int.TryParse(e.FormattedValue.ToString(), out int value) || value <= 0)
+                {
+                    MessageBox.Show("Số lượng phải là số nguyên dương!" + banSo);
+                    e.Cancel = true;
+                }
+            }
+        }
 
         private void btnGioHang_Click(object sender, EventArgs e)
         {
@@ -50,7 +81,35 @@ namespace QlyCafe.NguoiDung
 
             CartSession.DonHangDangChoDuyet = true;
             MessageBox.Show("Đơn hàng đã được gửi đi chờ phê duyệt.");
+            FormNguoiBan f = new FormNguoiBan();
+            f.ShowDialog();
             this.Close();
+        }
+
+        private void btnXoaSP_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void btnXoaSP_Click_1(object sender, EventArgs e)
+        {
+            if (dataGridView1.CurrentRow == null)
+            {
+                MessageBox.Show("Vui lòng chọn sản phẩm để xóa.");
+                return;
+            }
+
+            var item = dataGridView1.CurrentRow.DataBoundItem as CartItem;
+            if (item != null)
+            {
+                DialogResult result = MessageBox.Show($"Xóa {item.TenSP} khỏi giỏ hàng?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    bindingList.Remove(item); // Xóa khỏi BindingList
+                    CartSession.GioHangTam.Remove(item); // Xóa khỏi danh sách gốc
+                    dataGridView1.Refresh();
+                }
+            }
         }
     }
 }

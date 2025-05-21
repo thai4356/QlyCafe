@@ -30,36 +30,52 @@
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.btnGioHang = new System.Windows.Forms.Button();
+            this.btnXoaSP = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(39, 28);
+            this.dataGridView1.Location = new System.Drawing.Point(29, 23);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(460, 277);
+            this.dataGridView1.Size = new System.Drawing.Size(345, 225);
             this.dataGridView1.TabIndex = 0;
             // 
             // btnGioHang
             // 
-            this.btnGioHang.Location = new System.Drawing.Point(39, 355);
+            this.btnGioHang.Location = new System.Drawing.Point(29, 288);
+            this.btnGioHang.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnGioHang.Name = "btnGioHang";
-            this.btnGioHang.Size = new System.Drawing.Size(460, 23);
+            this.btnGioHang.Size = new System.Drawing.Size(345, 19);
             this.btnGioHang.TabIndex = 1;
             this.btnGioHang.Text = "Mua hang";
             this.btnGioHang.UseVisualStyleBackColor = true;
             this.btnGioHang.Click += new System.EventHandler(this.btnGioHang_Click);
             // 
+            // btnXoaSP
+            // 
+            this.btnXoaSP.Location = new System.Drawing.Point(397, 23);
+            this.btnXoaSP.Name = "btnXoaSP";
+            this.btnXoaSP.Size = new System.Drawing.Size(75, 23);
+            this.btnXoaSP.TabIndex = 2;
+            this.btnXoaSP.Text = "Xoa ";
+            this.btnXoaSP.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
+            this.btnXoaSP.UseVisualStyleBackColor = true;
+            this.btnXoaSP.Click += new System.EventHandler(this.btnXoaSP_Click_1);
+            // 
             // FormGioHang
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(645, 405);
+            this.ClientSize = new System.Drawing.Size(484, 329);
+            this.Controls.Add(this.btnXoaSP);
             this.Controls.Add(this.btnGioHang);
             this.Controls.Add(this.dataGridView1);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "FormGioHang";
             this.Text = "FormGioHang";
             this.Load += new System.EventHandler(this.FormGioHang_Load);
@@ -72,5 +88,6 @@
 
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button btnGioHang;
+        private System.Windows.Forms.Button btnXoaSP;
     }
 }

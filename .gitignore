@@ -117,3 +117,16 @@ Backup*/
 UpgradeLog*.XML
 WinForms/AdamsLair.WinForms.xml
 /QlyCafe/obj/Debug/QlyCafe.csproj.AssemblyReference.cache
+/.vs/QlyCafe/v17/.suo
+/.vs/QlyCafe/v17/DocumentLayout.backup.json
+/.vs/QlyCafe/v17/DocumentLayout.json
+/QlyCafe/bin/Debug/QlyCafe.exe
+/QlyCafe/bin/Debug/QlyCafe.pdb
+/QlyCafe/.vs/QlyCafe.csproj.dtbcache.json
+/QlyCafe/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+/QlyCafe/obj/Debug/QlyCafe.csproj.AssemblyReference.cache
+/QlyCafe/obj/Debug/QlyCafe.csproj.FileListAbsolute.txt
+/QlyCafe/obj/Debug/QlyCafe.csproj.CoreCompileInputs.cache
+/QlyCafe/obj/Debug/QlyCafe.csproj.GenerateResource.cache
+/QlyCafe/obj/Debug/QlyCafe.exe
+/QlyCafe/obj/Debug/QlyCafe.pdb
