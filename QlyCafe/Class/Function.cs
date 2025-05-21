@@ -125,6 +125,53 @@ namespace QlyCafe
         }
 
         /// <summary>
+        /// Lấy một giá trị đơn lẻ từ CSDL sử dụng một SqlConnection và SqlTransaction đã có.
+        /// </summary>
+        /// <param name="sql">Câu lệnh SQL.</param>
+        /// <param name="connection">Đối tượng SqlConnection đang mở và đã bắt đầu transaction.</param>
+        /// <param name="transaction">Đối tượng SqlTransaction đang được sử dụng.</param>
+        /// <param name="parameters">Mảng các SqlParameter (tùy chọn).</param>
+        /// <returns>Giá trị dạng chuỗi, hoặc chuỗi rỗng nếu không tìm thấy hoặc có lỗi.</returns>
+        public static string GetFieldValue(string sql, SqlConnection connection, SqlTransaction transaction, params SqlParameter[] parameters)
+        {
+            string value = "";
+            if (connection == null || connection.State != ConnectionState.Open)
+            {
+                // Hoặc throw new ArgumentException, hoặc xử lý theo cách khác nếu muốn
+                MessageBox.Show("Lỗi GetFieldValue: SqlConnection phải hợp lệ và đang mở.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return value; // Trả về rỗng nếu connection không hợp lệ
+            }
+            // Transaction có thể là null nếu bạn muốn hàm này cũng dùng được cho các truy vấn đơn lẻ không cần transaction
+            // nhưng đang được gọi từ một ngữ cảnh có transaction.
+            // Tuy nhiên, nếu đã truyền vào, thì nó nên được sử dụng.
+
+            using (SqlCommand command = new SqlCommand(sql, connection, transaction)) // Gán transaction cho command
+            {
+                if (parameters != null && parameters.Length > 0)
+                {
+                    command.Parameters.AddRange(parameters);
+                }
+                try
+                {
+                    // Connection đã được mở từ bên ngoài (bởi lời gọi Function.ExecuteTransaction)
+                    object result = command.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        value = result.ToString();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Tránh hiển thị MessageBox trực tiếp từ lớp Function trong môi trường production
+                    // Có thể ghi log hoặc throw exception để lớp gọi xử lý
+                    Console.WriteLine("Lỗi GetFieldValue (trong transaction): " + ex.Message);
+                    // MessageBox.Show("DataService - Lỗi khi lấy giá trị (transaction): " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            return value;
+        }
+
+        /// <summary>
         /// Thực thi một câu lệnh INSERT/UPDATE/DELETE, không có transaction riêng.
         /// </summary>
         public static void ExecuteNonQuery(string sql, params SqlParameter[] parameters)

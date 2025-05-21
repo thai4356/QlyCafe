@@ -108,11 +108,11 @@ namespace QlyCafe
             }
 
             DialogResult confirm = MessageBox.Show(
-    $"Tổng tiền đơn hàng là {tongTien:N0} đ.\nBạn có muốn xác nhận tạo hóa đơn không?"+rank,
-    "Xác nhận thanh toán",
-    MessageBoxButtons.YesNo,
-    MessageBoxIcon.Question
-);
+                $"Tổng tiền đơn hàng là {tongTien:N0} đ.\nBạn có muốn xác nhận tạo hóa đơn không?"+rank,
+                "Xác nhận thanh toán",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
 
             if (confirm != DialogResult.Yes)
             {

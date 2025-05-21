@@ -18,6 +18,7 @@ namespace QlyCafe.Quanly
         public DataTable dtChiTietHDB; // Đổi tên từ dtChiTietHDN
         public string maHDBToLoad = null; // Đổi tên từ maHDNToLoad
         private DataTable dtChiTietHDBGoc; // Đổi tên từ dtChiTietHDNGoc
+        private int? originalIDBan = null;
         public HoaDonBan()
         {
             InitializeComponent();
@@ -31,40 +32,26 @@ namespace QlyCafe.Quanly
         private void HoaDonBan_Load(object sender, EventArgs e)
         {
             LoadComboBoxes();
-            CustomizeDgvChiTietHDB(); // Đổi tên hàm
+            CustomizeDgvChiTietHDB();
 
             txtTenNV.ReadOnly = true;
-            txtTenKH.ReadOnly = true; // Đổi từ txtTenNCC
+            txtTenKH.ReadOnly = true;
             txtTenSP.ReadOnly = true;
             txtThanhTienDong.ReadOnly = true;
             txtTongTien.ReadOnly = true;
-            txtMaHDB.ReadOnly = true; // Đổi từ txtMaHDN
+            txtMaHDB.ReadOnly = true;
+            txtSDT.ReadOnly = true;
+            txtGiaTriKM.ReadOnly = true; // Mô tả KM chỉ đọc
 
             if (!string.IsNullOrEmpty(maHDBToLoad))
             {
                 txtMaHDB.Text = maHDBToLoad;
                 LoadThongTinHoaDon(maHDBToLoad);
-                btnSuaHDB.Enabled = true; // Nút sửa HĐB
             }
             else
             {
-                ResetValuesToInitialState();
-                if (dtChiTietHDB == null)
-                {
-                    dtChiTietHDB = new DataTable("ChiTietHDB_Table");
-                    dtChiTietHDB.Columns.Add("MaSP", typeof(string));
-                    dtChiTietHDB.Columns.Add("TenSP", typeof(string));
-                    dtChiTietHDB.Columns.Add("SoLuong", typeof(decimal));
-                    dtChiTietHDB.Columns.Add("DonGia", typeof(decimal)); // Đây sẽ là Đơn giá bán
-                    dtChiTietHDB.Columns.Add("MaKM", typeof(string));
-                    dtChiTietHDB.Columns.Add("TenKMHienThi", typeof(string));
-                    dtChiTietHDB.Columns.Add("ThanhTien", typeof(decimal));
-                }
-                if (dgvChiTietHDB.DataSource == null)
-                {
-                    dgvChiTietHDB.DataSource = dtChiTietHDB;
-                }
-                // CustomizeDgvChiTietHDB(); // Đã gọi ở trên
+                ResetValuesToInitialState(); // Sẽ khởi tạo dtChiTietHDB nếu null
+                // Đảm bảo dtChiTietHDB được khởi tạo đúng cách trong ResetValuesToInitialState
             }
         }
 
@@ -88,7 +75,9 @@ namespace QlyCafe.Quanly
             Function.FillCombo(cboKhuyenMai, "MaKM", "MaKM", sqlKhuyenMaiChung); // Display TenKM, Value is MaKM
             cboKhuyenMai.SelectedIndex = -1; // Important to reset
 
-
+            string sqlLoadBan = "SELECT id, N'Bàn ' + CAST(id AS VARCHAR(10)) + N' (' + ISNULL(status, N'N/A') + N')' AS DisplayTextBan FROM dbo.Ban ORDER BY id";
+            Function.FillCombo(cboMaBan, "DisplayTextBan", "id", sqlLoadBan);
+            cboMaBan.SelectedIndex = -1;
         }
 
         private void CustomizeDgvChiTietHDB() // Đổi tên hàm
@@ -107,6 +96,19 @@ namespace QlyCafe.Quanly
             dgvChiTietHDB.EditMode = DataGridViewEditMode.EditProgrammatically;
             dgvChiTietHDB.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvChiTietHDB.MultiSelect = false;
+        }
+
+        private void InitializeChiTietHDBTable()
+        {
+            dtChiTietHDB = new DataTable("ChiTietHDB_Table");
+            dtChiTietHDB.Columns.Add("MaSP", typeof(string));
+            dtChiTietHDB.Columns.Add("TenSP", typeof(string));
+            dtChiTietHDB.Columns.Add("SoLuong", typeof(decimal));
+            dtChiTietHDB.Columns.Add("DonGia", typeof(decimal));
+            dtChiTietHDB.Columns.Add("MaKM", typeof(string)); // Lưu MaKM
+            dtChiTietHDB.Columns.Add("TenKMHienThi", typeof(string)); // Lưu mô tả KM để hiển thị
+            dtChiTietHDB.Columns.Add("ThanhTien", typeof(decimal));
+            dgvChiTietHDB.DataSource = dtChiTietHDB;
         }
 
         private void SetInitialButtonStatesAndControls()
@@ -142,25 +144,42 @@ namespace QlyCafe.Quanly
 
         private void ResetValuesToInitialState()
         {
-            txtMaHDB.Text = ""; // Đổi tên
-            dpNgayBan.Value = DateTime.Now; // Đổi tên
+            txtMaHDB.Text = "";
+            dpNgayBan.Value = DateTime.Now;
             cboMaNV.SelectedIndex = -1;
             txtTenNV.Text = "";
-            cboMaKH.SelectedIndex = -1; // Đổi từ cboMaNCC
-            txtTenKH.Text = "";         // Đổi từ txtTenNCC
+            cboMaKH.SelectedIndex = -1;
+            txtTenKH.Text = "";
             txtSDT.Text = "";
+            // cboMaBan.SelectedIndex = -1; // Sẽ được nạp lại bên dưới
+
             txtTongTien.Text = "0";
             UpdateTongTienBangChu();
-
             ResetChiTietSanPhamFields();
 
-            if (dtChiTietHDB != null) // Đổi tên
+            if (dtChiTietHDB != null)
             {
                 dtChiTietHDB.Rows.Clear();
             }
+            else
+            {
+                InitializeChiTietHDBTable(); // Khởi tạo nếu null
+            }
 
-            maHDBToLoad = null; // Đổi tên
+            maHDBToLoad = null;
+            originalIDBan = null;
             SetInitialButtonStatesAndControls();
+
+            // Nạp lại cboMaBan, ưu tiên bàn trống cho HĐ mới
+            // (đã được xử lý trong SetActiveProcessingButtonStates khi isEditingOldInvoice = false)
+            // Nếu đang ở trạng thái hoàn toàn khởi tạo (không phải sửa, không phải thêm mới),
+            // thì nạp tất cả bàn.
+            if (!btnLuuHDB.Enabled && !btnSuaHDB.Enabled) // Tức là trạng thái ban đầu, chưa nhấn Thêm mới
+            {
+                string sqlLoadAllBan = "SELECT id, N'Bàn ' + CAST(id AS VARCHAR(10)) + N' (' + ISNULL(status, N'N/A') + N')' AS DisplayTextBan FROM dbo.Ban ORDER BY id";
+                Function.FillCombo(cboMaBan, "DisplayTextBan", "id", sqlLoadAllBan);
+            }
+            cboMaBan.SelectedIndex = -1;
         }
 
         private void SetControlsEnabledState(bool isEnabled)
@@ -205,26 +224,41 @@ namespace QlyCafe.Quanly
 
         private void LoadThongTinHoaDon(string maHDB) // Đổi tên tham số
         {
-            string sql = "SELECT NgayBan, MaNV, MaKH, TongTien FROM dbo.HoaDonBan WHERE MaHDB = @MaHDB AND IsDeleted = 0"; // Đổi bảng và cột
+            string sql = "SELECT NgayBan, MaNV, MaKH, TongTien, IDBan FROM dbo.HoaDonBan WHERE MaHDB = @MaHDB AND IsDeleted = 0";
             SqlParameter param = new SqlParameter("@MaHDB", maHDB);
             DataTable dtThongTinChung = Function.GetDataToTable(sql, param);
 
             if (dtThongTinChung.Rows.Count > 0)
             {
                 DataRow row = dtThongTinChung.Rows[0];
-                dpNgayBan.Value = Convert.ToDateTime(row["NgayBan"]); // Đổi cột
+                dpNgayBan.Value = Convert.ToDateTime(row["NgayBan"]);
 
-                if (cboMaNV.DataSource != null) cboMaNV.SelectedValue = row["MaNV"]; else cboMaNV.Text = row["MaNV"].ToString();
-                if (cboMaKH.DataSource != null) cboMaKH.SelectedValue = row["MaKH"]; else cboMaKH.Text = row["MaKH"].ToString(); // Đổi cboMaNCC thành cboMaKH
+                if (cboMaNV.DataSource != null) cboMaNV.SelectedValue = row["MaNV"];
+                if (cboMaKH.DataSource != null) cboMaKH.SelectedValue = row["MaKH"];
+
+                // Nạp tất cả các bàn để đảm bảo SelectedValue hoạt động đúng cho bàn của HĐ cũ
+                string sqlLoadAllBan = "SELECT id, N'Bàn ' + CAST(id AS VARCHAR(10)) + N' (' + ISNULL(status, N'N/A') + N')' AS DisplayTextBan FROM dbo.Ban ORDER BY id";
+                Function.FillCombo(cboMaBan, "DisplayTextBan", "id", sqlLoadAllBan);
+
+                if (row["IDBan"] != DBNull.Value && row["IDBan"] != null)
+                {
+                    originalIDBan = Convert.ToInt32(row["IDBan"]);
+                    cboMaBan.SelectedValue = originalIDBan;
+                }
+                else
+                {
+                    originalIDBan = null;
+                    cboMaBan.SelectedIndex = -1;
+                }
 
                 UpdateTenNVFromMaNV();
-                UpdateTenKHFromMaKH(); // Đổi hàm
+                UpdateTenKHFromMaKH();
 
                 txtTongTien.Text = Convert.ToDecimal(row["TongTien"]).ToString("N0", CultureInfo.InvariantCulture);
                 UpdateTongTienBangChu();
 
-                LoadChiTietHoaDon(maHDB); // Tham số vẫn là mã hóa đơn
-                SetActiveProcessingButtonStates(true);
+                LoadChiTietHoaDon(maHDB); // Nạp chi tiết với MaKM và TenKMHienThi
+                SetActiveProcessingButtonStates(true); // isEditingOldInvoice = true
             }
             else
             {
@@ -465,29 +499,41 @@ namespace QlyCafe.Quanly
         private void TinhThanhTienDong()
         {
             decimal soLuong = 0, donGia = 0, thanhTien = 0;
-            decimal.TryParse(txtSoLuong.Text, out soLuong);
-            decimal.TryParse(txtDonGia.Text, out donGia);
+            decimal.TryParse(txtSoLuong.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out soLuong);
+            decimal.TryParse(txtDonGia.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out donGia);
 
             if (cboKhuyenMai.SelectedIndex != -1 && cboKhuyenMai.SelectedItem is DataRowView drv)
             {
-                string loaiKM = drv["LoaiKM"].ToString();
-                decimal giaTri = Convert.ToDecimal(drv["GiaTri"]);
+                string loaiKM = drv["LoaiKM"]?.ToString() ?? "";
+
+                object giaTriObj = drv["GiaTri"];
+                decimal giaTriKMValue = 0;
+                if (giaTriObj != DBNull.Value && giaTriObj != null)
+                {
+                    decimal.TryParse(giaTriObj.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out giaTriKMValue);
+                }
+
+                object dieuKienObj = drv["DieuKienApDung"];
+                int dieuKienKM = 0;
+                if (dieuKienObj != DBNull.Value && dieuKienObj != null)
+                {
+                    int.TryParse(dieuKienObj.ToString(), out dieuKienKM);
+                }
+
                 if (loaiKM == "PhanTram")
                 {
-                    thanhTien = soLuong * donGia * (1 - giaTri / 100);
+                    thanhTien = soLuong * donGia * (1 - giaTriKMValue / 100);
                 }
                 else if (loaiKM == "GiamGiaTrucTiep")
                 {
-                    thanhTien = (soLuong * donGia) - giaTri;
+                    thanhTien = (soLuong * donGia) - giaTriKMValue;
                     if (thanhTien < 0) thanhTien = 0;
                 }
                 else if (loaiKM == "MuaTang")
                 {
-                    int dieuKien = 0;
-                    int.TryParse(drv["DieuKienApDung"]?.ToString(), out dieuKien);
-                    if (dieuKien > 0)
+                    if (dieuKienKM > 0 && soLuong >= (dieuKienKM + 1)) // Phải mua đủ số lượng điều kiện + 1 sp tặng
                     {
-                        int soLuongTang = (int)(soLuong / (dieuKien + 1));
+                        int soLuongTang = (int)Math.Floor(soLuong / (dieuKienKM + 1)); // Số lần được tặng
                         thanhTien = (soLuong - soLuongTang) * donGia;
                     }
                     else
@@ -495,7 +541,7 @@ namespace QlyCafe.Quanly
                         thanhTien = soLuong * donGia;
                     }
                 }
-                else
+                else // Không có loại KM hợp lệ hoặc không có KM
                 {
                     thanhTien = soLuong * donGia;
                 }
@@ -504,7 +550,7 @@ namespace QlyCafe.Quanly
             {
                 thanhTien = soLuong * donGia;
             }
-            txtThanhTienDong.Text = thanhTien.ToString("N0");
+            txtThanhTienDong.Text = thanhTien.ToString("N0", CultureInfo.InvariantCulture);
         }
 
         private void txtChiTietSP_TextChanged(object sender, EventArgs e)
@@ -705,28 +751,24 @@ namespace QlyCafe.Quanly
             string tenSPDaChon = txtTenSP.Text;
             string khuyenMai = txtGiaTriKM.Text.Trim();
 
-            if (dtChiTietHDB != null) // Đổi tên dtChiTietHDN
+            // Kiểm tra sản phẩm đã tồn tại trong dtChiTietHDB
+            if (dtChiTietHDB.AsEnumerable().Any(row => row.RowState != DataRowState.Deleted && row.Field<string>("MaSP") == maSPDaChon))
             {
-                foreach (DataRow existingRow in dtChiTietHDB.Rows)
-                {
-                    if (existingRow.RowState != DataRowState.Deleted && existingRow["MaSP"].ToString().Equals(maSPDaChon, StringComparison.OrdinalIgnoreCase))
-                    {
-                        MessageBox.Show($"Sản phẩm '{tenSPDaChon}' đã có trong hóa đơn.", "Sản phẩm đã tồn tại", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-                }
+                MessageBox.Show($"Sản phẩm '{tenSPDaChon}' đã có trong hóa đơn.", "Sản phẩm đã tồn tại", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
 
-            if (dtChiTietHDB == null) return; // Nên được khởi tạo ở Load
             try
             {
                 DataRow newRow = dtChiTietHDB.NewRow();
                 newRow["MaSP"] = maSPDaChon;
                 newRow["TenSP"] = tenSPDaChon;
                 newRow["SoLuong"] = soLuong;
-                newRow["DonGia"] = donGia; // Đơn giá bán
-                newRow["MaKM"] = (cboKhuyenMai.SelectedValue == null || cboKhuyenMai.SelectedIndex == -1) ? (object)DBNull.Value : cboKhuyenMai.SelectedValue.ToString();
-                newRow["TenKMHienThi"] = txtGiaTriKM.Text; // The descriptive text from the TextBox
+                newRow["DonGia"] = donGia;
+                newRow["MaKM"] = (cboKhuyenMai.SelectedValue == null || cboKhuyenMai.SelectedIndex == -1 || cboKhuyenMai.SelectedValue == DBNull.Value)
+                                 ? (object)DBNull.Value
+                                 : cboKhuyenMai.SelectedValue.ToString();
+                newRow["TenKMHienThi"] = txtGiaTriKM.Text.Trim(); // Lưu mô tả từ TextBox
                 newRow["ThanhTien"] = thanhTienDong;
                 dtChiTietHDB.Rows.Add(newRow);
             }
@@ -734,7 +776,7 @@ namespace QlyCafe.Quanly
 
             CapNhatTongTienHoaDon();
             ResetChiTietSanPhamFields();
-            dgvChiTietHDB.ClearSelection(); // Đổi tên
+            dgvChiTietHDB.ClearSelection();
             cboMaSP.Focus();
         }
 
@@ -769,6 +811,15 @@ namespace QlyCafe.Quanly
             string maKH = cboMaKH.SelectedValue.ToString(); // Đổi biến
             DateTime ngayBan = dpNgayBan.Value; // Đổi biến
 
+            int? selectedIDBan = null;
+            if (cboMaBan.SelectedValue != null && cboMaBan.SelectedValue != DBNull.Value && cboMaBan.SelectedIndex > 0) // Index > 0 để bỏ qua "-- Tất cả Bàn --"
+            {
+                selectedIDBan = Convert.ToInt32(cboMaBan.SelectedValue);
+            }
+            if (!selectedIDBan.HasValue) { 
+                MessageBox.Show("Vui lòng chọn bàn.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return; }
+
             if (dtChiTietHDB == null || dtChiTietHDB.Rows.Count == 0) // Đổi dtChiTietHDN
             {
                 MessageBox.Show("Hóa đơn bán phải có ít nhất một sản phẩm.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -787,6 +838,17 @@ namespace QlyCafe.Quanly
             {
                 Function.ExecuteTransaction((conn, trans) =>
                 {
+                    if (selectedIDBan.HasValue)
+                    {
+                        // Kiểm tra xem bàn có thực sự trống không trước khi chiếm dụng
+                        string currentStatus = Function.GetFieldValue("SELECT status FROM dbo.Ban WHERE id = @IDBanStatus", conn, trans, new SqlParameter("@IDBanStatus", selectedIDBan.Value));
+                        if (currentStatus != null && (currentStatus.Equals("Trống", StringComparison.OrdinalIgnoreCase) || string.IsNullOrEmpty(currentStatus)))
+                        {
+                            string sqlUpdateBanStatus = "UPDATE dbo.Ban SET status = N'Đang phục vụ' WHERE id = @IDBan_Update";
+                            Function.ExecuteNonQuery(sqlUpdateBanStatus, conn, trans, new SqlParameter("@IDBan_Update", selectedIDBan.Value));
+                        }
+                    }
+
                     // Lưu vào bảng HoaDonBan
                     string sqlInsertHDB = @"INSERT INTO dbo.HoaDonBan (MaHDB, NgayBan, MaNV, MaKH, TongTien, IsDeleted)
                                        VALUES (@MaHDB, @NgayBan, @MaNV, @MaKH, @TongTien, 0)"; // Đổi bảng và cột
@@ -1394,33 +1456,64 @@ namespace QlyCafe.Quanly
 
         private bool KiemTraThayDoiChuaLuu()
         {
-            if (string.IsNullOrEmpty(maHDBToLoad) && !string.IsNullOrWhiteSpace(txtMaHDB.Text)) // Đổi tên
+            // 1. Kiểm tra thay đổi thông tin chung của hóa đơn
+            if (!string.IsNullOrEmpty(maHDBToLoad)) // Nếu đang sửa hóa đơn cũ
             {
-                if (dtChiTietHDB != null && dtChiTietHDB.Rows.Cast<DataRow>().Any(row => row.RowState != DataRowState.Deleted)) return true; // Đổi tên
-                if (cboMaNV.SelectedIndex != -1 || cboMaKH.SelectedIndex != -1) return true; // Đổi cboMaNCC
-            }
-            else if (!string.IsNullOrEmpty(maHDBToLoad) && dtChiTietHDBGoc != null) // Đổi tên
-            {
-                int soDongMoi = dtChiTietHDB.Rows.Cast<DataRow>().Count(row => row.RowState != DataRowState.Deleted); // Đổi tên
-                if (soDongMoi != dtChiTietHDBGoc.Rows.Count) return true; // Đổi tên
-                foreach (DataRow rowMoi in dtChiTietHDB.Rows) // Đổi tên
+                // Lấy thông tin gốc của hóa đơn từ CSDL để so sánh (an toàn nhất)
+                // Hoặc bạn có thể lưu một đối tượng HoaDonBan gốc khi load
+                string sqlOriginalHDB = "SELECT NgayBan, MaNV, MaKH, IDBan FROM dbo.HoaDonBan WHERE MaHDB = @MaHDB";
+                DataTable dtOriginalHDB = Function.GetDataToTable(sqlOriginalHDB, new SqlParameter("@MaHDB", maHDBToLoad));
+                if (dtOriginalHDB.Rows.Count > 0)
                 {
-                    if (rowMoi.RowState == DataRowState.Deleted) continue;
+                    DataRow originalRow = dtOriginalHDB.Rows[0];
+                    if (dpNgayBan.Value.Date != Convert.ToDateTime(originalRow["NgayBan"]).Date) return true;
+                    if ((cboMaNV.SelectedValue?.ToString() ?? "") != (originalRow["MaNV"]?.ToString() ?? "")) return true;
+                    if ((cboMaKH.SelectedValue?.ToString() ?? "") != (originalRow["MaKH"]?.ToString() ?? "")) return true;
+
+                    int? currentIDBan = (cboMaBan.SelectedValue == null || cboMaBan.SelectedValue == DBNull.Value) ? (int?)null : Convert.ToInt32(cboMaBan.SelectedValue);
+                    int? dbIDBan = (originalRow["IDBan"] == DBNull.Value) ? (int?)null : Convert.ToInt32(originalRow["IDBan"]);
+                    if (currentIDBan != dbIDBan) return true;
+                }
+            }
+            else
+            { // Đang tạo hóa đơn mới
+                if (!string.IsNullOrWhiteSpace(txtMaHDB.Text))
+                { // Nếu đã có mã HĐ (đã nhấn Thêm HĐ)
+                    if (cboMaNV.SelectedIndex != -1 || cboMaKH.SelectedIndex != -1 || cboMaBan.SelectedIndex > 0 /* >0 vì 0 là "--Tất cả--" */ ) return true;
+                }
+            }
+
+
+            // 2. Kiểm tra thay đổi trong dtChiTietHDB so với dtChiTietHDBGoc
+            if (dtChiTietHDB != null && dtChiTietHDBGoc != null)
+            {
+                // Kiểm tra số lượng dòng (bao gồm cả dòng đã xóa trong dtChiTietHDB nhưng vẫn còn trong dtChiTietHDBGoc)
+                var currentActiveRows = dtChiTietHDB.AsEnumerable().Where(r => r.RowState != DataRowState.Deleted).ToList();
+                if (currentActiveRows.Count != dtChiTietHDBGoc.Rows.Count) return true;
+
+                foreach (DataRow rowMoi in currentActiveRows)
+                {
                     string maSPMoi = rowMoi["MaSP"].ToString();
-                    DataRow[] rowsGoc = dtChiTietHDBGoc.Select($"MaSP = '{maSPMoi.Replace("'", "''")}'"); // Đổi tên
-                    if (rowsGoc.Length == 0) return true;
-                    else
+                    // Tìm dòng tương ứng trong dtChiTietHDBGoc
+                    DataRow[] rowsGoc = dtChiTietHDBGoc.Select($"MaSP = '{maSPMoi.Replace("'", "''")}'");
+                    if (rowsGoc.Length == 0) return true; // Dòng mới được thêm vào dtChiTietHDB
+
+                    DataRow rowGoc = rowsGoc[0];
+                    if (Convert.ToDecimal(rowMoi["SoLuong"]) != Convert.ToDecimal(rowGoc["SoLuong"]) ||
+                        Convert.ToDecimal(rowMoi["DonGia"]) != Convert.ToDecimal(rowGoc["DonGia"]) ||
+                        (rowMoi["MaKM"]?.ToString() ?? "") != (rowGoc["MaKM"]?.ToString() ?? "") || // So sánh MaKM
+                        Convert.ToDecimal(rowMoi["ThanhTien"]) != Convert.ToDecimal(rowGoc["ThanhTien"]))
                     {
-                        DataRow rowGoc = rowsGoc[0];
-                        if (Convert.ToDecimal(rowMoi["SoLuong"]) != Convert.ToDecimal(rowGoc["SoLuong"]) ||
-                            Convert.ToDecimal(rowMoi["DonGia"]) != Convert.ToDecimal(rowGoc["DonGia"]) || // DonGia (bán) vẫn được so sánh vì nó thể hiện giá lúc bán
-                            (rowMoi["MaKM"]?.ToString() ?? "") != (rowGoc["MaKM"]?.ToString() ?? ""))
-                        {
-                            return true;
-                        }
+                        return true;
                     }
                 }
             }
+            else if (dtChiTietHDB != null && dtChiTietHDB.AsEnumerable().Any(r => r.RowState != DataRowState.Deleted) && string.IsNullOrEmpty(maHDBToLoad))
+            {
+                // Nếu đang tạo HĐ mới và đã thêm dòng chi tiết
+                return true;
+            }
+
             return false;
         }
 
@@ -1443,39 +1536,28 @@ namespace QlyCafe.Quanly
         {
             if (cboKhuyenMai.SelectedIndex != -1 && cboKhuyenMai.SelectedItem is DataRowView drv)
             {
-                string tenKM = drv["TenKM"]?.ToString() ?? "";
+                string maKM_selected = drv["MaKM"]?.ToString() ?? "";
+                string tenKM = drv["TenKM"]?.ToString() ?? maKM_selected;
                 string loaiKM = drv["LoaiKM"]?.ToString() ?? "";
 
-                // Lấy GiaTri một cách an toàn, kiểm tra DBNull
                 object giaTriObj = drv["GiaTri"];
-                decimal giaTri = 0; // Giá trị mặc định nếu GiaTri là NULL hoặc không hợp lệ
+                decimal giaTriKMValue = 0;
                 if (giaTriObj != DBNull.Value && giaTriObj != null)
                 {
-                    // Thử chuyển đổi, có thể thêm TryParse để an toàn hơn nếu kiểu dữ liệu nguồn không chắc chắn
-                    // Tuy nhiên, nếu nguồn là DECIMAL từ SQL, Convert.ToDecimal thường đủ sau khi kiểm tra DBNull.
-                    giaTri = Convert.ToDecimal(giaTriObj);
+                    decimal.TryParse(giaTriObj.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out giaTriKMValue);
                 }
 
                 object dieuKienObj = drv["DieuKienApDung"];
-                string dieuKienApDungStr = (dieuKienObj == DBNull.Value || dieuKienObj == null) ? "" : dieuKienObj.ToString();
+                string dieuKienApDungKM = (dieuKienObj == DBNull.Value || dieuKienObj == null) ? "" : dieuKienObj.ToString();
 
-                if (!string.IsNullOrEmpty(tenKM))
-                {
-                    // Cập nhật txtGiaTriKM (trường hiển thị mô tả)
-                    if (loaiKM == "PhanTram")
-                        txtGiaTriKM.Text = $"Giảm {giaTri}% ({tenKM})"; // giaTri ở đây là phần trăm
-                    else if (loaiKM == "GiamGiaTrucTiep")
-                        txtGiaTriKM.Text = $"Giảm {giaTri:N0}đ ({tenKM})"; // giaTri ở đây là số tiền giảm
-                    else if (loaiKM == "MuaTang")
-                        // Đối với MuaTang, GiaTri có thể là NULL, mô tả thường dựa vào TenKM và DieuKienApDung
-                        txtGiaTriKM.Text = string.IsNullOrWhiteSpace(dieuKienApDungStr) ? $"{tenKM}" : $"Mua {dieuKienApDungStr} tặng 1 ({tenKM})";
-                    else
-                        txtGiaTriKM.Text = tenKM; // Hiển thị TenKM cho các loại khác hoặc làm fallback
-                }
+                if (loaiKM == "PhanTram")
+                    txtGiaTriKM.Text = $"Giảm {giaTriKMValue}% ({tenKM})";
+                else if (loaiKM == "GiamGiaTrucTiep")
+                    txtGiaTriKM.Text = $"Giảm {giaTriKMValue:N0}đ ({tenKM})";
+                else if (loaiKM == "MuaTang")
+                    txtGiaTriKM.Text = string.IsNullOrWhiteSpace(dieuKienApDungKM) ? $"{tenKM}" : $"Mua {dieuKienApDungKM} tặng 1 ({tenKM})";
                 else
-                {
-                    txtGiaTriKM.Text = drv["MaKM"].ToString();
-                }
+                    txtGiaTriKM.Text = tenKM; // Hiển thị TenKM hoặc MaKM nếu TenKM rỗng
             }
             else
             {
