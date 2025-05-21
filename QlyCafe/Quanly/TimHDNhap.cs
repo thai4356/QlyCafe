@@ -313,29 +313,66 @@ namespace QlyCafe.Quanly
 
         private void dgvKQTimKiemHDN_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Nếu người dùng nhấp đúp vào một dòng (không phải header)
-            if (e.RowIndex >= 0)
+            if (e.RowIndex < 0) return; // click vào header thì bỏ qua
+
+            // Lấy giá trị cột MaHDN theo RowIndex
+            var cell = dgvKQTimKiemHDN.Rows[e.RowIndex].Cells["MaHDN"].Value;
+            if (cell == null || cell == DBNull.Value)
             {
-                // Gọi hành động của nút "Xem Chi Tiết"
-                btnXemChiTiet_Click(sender, e);
+                MessageBox.Show("Không thể lấy mã HĐN từ dòng này.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
+
+            string maHDNCanXem = cell.ToString();
+
+            // Mở form chi tiết
+            var frm = new HoaDonNhap(maHDNCanXem);
+            frm.StartPosition = FormStartPosition.CenterParent;
+            frm.ShowDialog(this);
+
+            // Sau khi đóng, làm mới lại nếu cần
+            PerformSearch(true);
         }
 
         private void btnXemChiTiet_Click(object sender, EventArgs e)
         {
-            if(dgvKQTimKiemHDN.SelectedRows.Count > 0)
+            if (dgvKQTimKiemHDN.SelectedRows.Count > 0)
             {
-                // Lấy MaHDN từ dòng đang được chọn
-                string maHDNCanXem = dgvKQTimKiemHDN.SelectedRows[0].Cells["MaHDN"].Value.ToString();
+                string maHDNCanXem = string.Empty;
+                object cellValue = dgvKQTimKiemHDN.SelectedRows[0].Cells["MaHDN"].Value;
 
-                HoaDonNhap frmHDNChiTiet = new HoaDonNhap(maHDNCanXem);
+                if (cellValue != null && cellValue != DBNull.Value)
+                {
+                    maHDNCanXem = cellValue.ToString();
+                }
+                else
+                {
+                    MessageBox.Show("Không thể lấy được mã hóa đơn từ dòng đã chọn.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
+                // Kiểm tra xem có vô tình lấy phải tên kiểu dữ liệu không
+                if (maHDNCanXem.Equals("System.Data.DataRowView", StringComparison.OrdinalIgnoreCase) || string.IsNullOrWhiteSpace(maHDNCanXem))
+                {
+                    MessageBox.Show("Mã hóa đơn không hợp lệ. Vui lòng kiểm tra lại.", "Lỗi Mã Hóa Đơn", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Truyền mã hóa đơn đã được lấy đúng cho form HoaDonNhap
+                HoaDonNhap frmHDNChiTiet = new HoaDonNhap(maHDNCanXem.Trim());
                 frmHDNChiTiet.StartPosition = FormStartPosition.CenterScreen;
-                frmHDNChiTiet.ShowDialog(this);
+                frmHDNChiTiet.ShowDialog(this); // Sử dụng ShowDialog để form tìm kiếm chờ
 
-                btnTimKiem_Click(null, null);
+                // Sau khi form chi tiết đóng, bạn có thể muốn làm mới lại danh sách tìm kiếm
+                PerformSearch(true); // Giả sử PerformSearch(true) sẽ tìm kiếm lại với các tiêu chí hiện tại
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn một hóa đơn từ danh sách để xem chi tiết.", "Chưa chọn hóa đơn", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
+        
 
         private void dtpTimTuNgay_ValueChanged(object sender, EventArgs e)
         {

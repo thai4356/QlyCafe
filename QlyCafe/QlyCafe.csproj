@@ -140,6 +140,12 @@
     <Compile Include="Quanly\FormQuanLy.Designer.cs">
       <DependentUpon>FormQuanLy.cs</DependentUpon>
     </Compile>
+    <Compile Include="Quanly\HoaDonBan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Quanly\HoaDonBan.Designer.cs">
+      <DependentUpon>HoaDonBan.cs</DependentUpon>
+    </Compile>
     <Compile Include="Quanly\HoaDonNhap.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -157,6 +163,12 @@
     </Compile>
     <Compile Include="Quanly\SanPham.Designer.cs">
       <DependentUpon>SanPham.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Quanly\TimHDBan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Quanly\TimHDBan.Designer.cs">
+      <DependentUpon>TimHDBan.cs</DependentUpon>
     </Compile>
     <Compile Include="Quanly\TimHDNhap.cs">
       <SubType>Form</SubType>
@@ -204,6 +216,9 @@
     <EmbeddedResource Include="Quanly\FormQuanLy.resx">
       <DependentUpon>FormQuanLy.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Quanly\HoaDonBan.resx">
+      <DependentUpon>HoaDonBan.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Quanly\HoaDonNhap.resx">
       <DependentUpon>HoaDonNhap.cs</DependentUpon>
     </EmbeddedResource>
@@ -212,6 +227,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Quanly\SanPham.resx">
       <DependentUpon>SanPham.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Quanly\TimHDBan.resx">
+      <DependentUpon>TimHDBan.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Quanly\TimHDNhap.resx">
       <DependentUpon>TimHDNhap.cs</DependentUpon>

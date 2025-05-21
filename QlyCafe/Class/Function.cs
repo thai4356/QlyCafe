@@ -11,7 +11,7 @@ namespace QlyCafe
 {
     internal class Function
     {
-        private static string connString = "Data Source=LAPTOP-FRNPC1AU;Initial Catalog=qlyCafe;Integrated Security=True;Encrypt=True;TrustServerCertificate=True";
+        private static string connString = "Data Source=DESKTOP-6P76JI8\\SQLEXPRESS;Initial Catalog=qlyCafe;Integrated Security=True;TrustServerCertificate=True";
         private static SqlConnection conn;
 
         public static void OpenConnection()
@@ -124,32 +124,77 @@ namespace QlyCafe
             return value;
         }
 
-        public static void RunSql(string sql, params SqlParameter[] parameters)
+        /// <summary>
+        /// Thực thi một câu lệnh INSERT/UPDATE/DELETE, không có transaction riêng.
+        /// </summary>
+        public static void ExecuteNonQuery(string sql, params SqlParameter[] parameters)
         {
-            using (SqlConnection connection = new SqlConnection(connString))
+            using (var conn = new SqlConnection(connString))
+            using (var cmd = new SqlCommand(sql, conn))
             {
-                using (SqlCommand command = new SqlCommand(sql, connection))
+                if (parameters?.Any() == true)
+                    cmd.Parameters.AddRange(parameters);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        // === HÀM MỚI ExecuteNonQuery HỖ TRỢ TRANSACTION ===
+        /// <summary>
+        /// Thực thi một câu lệnh SQL (INSERT, UPDATE, DELETE) sử dụng một SqlConnection và SqlTransaction đã có.
+        /// </summary>
+        /// <param name="sql">Câu lệnh SQL.</param>
+        /// <param name="connection">Đối tượng SqlConnection đang mở và đã bắt đầu transaction.</param>
+        /// <param name="transaction">Đối tượng SqlTransaction đang được sử dụng.</param>
+        /// <param name="parameters">Mảng các SqlParameter (tùy chọn).</param>
+        public static void ExecuteNonQuery(string sql, SqlConnection connection, SqlTransaction transaction, params SqlParameter[] parameters)
+        {
+            if (connection == null || connection.State != ConnectionState.Open)
+            {
+                throw new ArgumentException("SqlConnection phải hợp lệ và đang mở trong ngữ cảnh transaction.");
+            }
+            if (transaction == null)
+            {
+                throw new ArgumentException("SqlTransaction không thể null khi thực thi trong ngữ cảnh transaction.");
+            }
+
+            // SqlCommand sẽ được gắn với connection và transaction này
+            using (SqlCommand command = new SqlCommand(sql, connection, transaction))
+            {
+                if (parameters != null && parameters.Length > 0)
                 {
-                    if (parameters != null && parameters.Length > 0)
-                    {
-                        command.Parameters.AddRange(parameters);
-                    }
+                    command.Parameters.AddRange(parameters);
+                }
+                command.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
+        /// Thực thi nhiều câu lệnh trong cùng một transaction.
+        /// </summary>
+        public static void ExecuteTransaction(Action<SqlConnection, SqlTransaction> body)
+        {
+            using (var conn = new SqlConnection(connString))
+            {
+                conn.Open();
+                using (var tx = conn.BeginTransaction())
+                {
                     try
                     {
-                        connection.Open();
-                        command.ExecuteNonQuery();
+                        body(conn, tx);
+                        tx.Commit();
                     }
-                    catch (SqlException ex)
+                    catch
                     {
-                        MessageBox.Show("DataService - Lỗi SQL: " + ex.Message + "\nSố lỗi: " + ex.Number, "Lỗi Thực Thi SQL", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("DataService - Lỗi không xác định: " + ex.Message, "Lỗi Thực Thi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        tx.Rollback();
+                        throw;
                     }
                 }
             }
         }
+
+        public static void RunSql(string sql, params SqlParameter[] parameters)
+            => ExecuteNonQuery(sql, parameters);
 
         public static int CountRecords(string sql, params SqlParameter[] parameters)
         {
