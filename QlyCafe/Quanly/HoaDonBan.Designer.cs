@@ -44,6 +44,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cboKhuyenMai = new System.Windows.Forms.ComboBox();
+            this.label17 = new System.Windows.Forms.Label();
             this.btnHuyBoDong = new System.Windows.Forms.Button();
             this.btnSuaDong = new System.Windows.Forms.Button();
             this.btnXoaDong = new System.Windows.Forms.Button();
@@ -74,8 +76,8 @@
             this.dgvChiTietHDB = new System.Windows.Forms.DataGridView();
             this.cboMaHDBSearch = new System.Windows.Forms.ComboBox();
             this.label16 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.cboKhuyenMai = new System.Windows.Forms.ComboBox();
+            this.cboMaBan = new System.Windows.Forms.ComboBox();
+            this.label18 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -84,6 +86,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cboMaBan);
+            this.groupBox1.Controls.Add(this.label18);
             this.groupBox1.Controls.Add(this.txtSDT);
             this.groupBox1.Controls.Add(this.label15);
             this.groupBox1.Controls.Add(this.txtTenKH);
@@ -118,7 +122,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(670, 110);
+            this.label15.Location = new System.Drawing.Point(694, 112);
             this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(85, 16);
@@ -135,10 +139,10 @@
             // 
             // txtTenNV
             // 
-            this.txtTenNV.Location = new System.Drawing.Point(723, 72);
+            this.txtTenNV.Location = new System.Drawing.Point(797, 72);
             this.txtTenNV.Name = "txtTenNV";
             this.txtTenNV.ReadOnly = true;
-            this.txtTenNV.Size = new System.Drawing.Size(224, 22);
+            this.txtTenNV.Size = new System.Drawing.Size(150, 22);
             this.txtTenNV.TabIndex = 10;
             // 
             // cboMaKH
@@ -165,9 +169,9 @@
             // 
             this.dpNgayBan.CustomFormat = "dd/MM/yyyy";
             this.dpNgayBan.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dpNgayBan.Location = new System.Drawing.Point(723, 32);
+            this.dpNgayBan.Location = new System.Drawing.Point(797, 32);
             this.dpNgayBan.Name = "dpNgayBan";
-            this.dpNgayBan.Size = new System.Drawing.Size(224, 22);
+            this.dpNgayBan.Size = new System.Drawing.Size(150, 22);
             this.dpNgayBan.TabIndex = 7;
             // 
             // txtMaHDB
@@ -203,7 +207,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(580, 70);
+            this.label3.Location = new System.Drawing.Point(694, 70);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(94, 16);
@@ -223,7 +227,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(580, 34);
+            this.label2.Location = new System.Drawing.Point(699, 36);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(66, 16);
@@ -266,6 +270,25 @@
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Nhập chi tiết sản phẩm";
+            // 
+            // cboKhuyenMai
+            // 
+            this.cboKhuyenMai.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboKhuyenMai.FormattingEnabled = true;
+            this.cboKhuyenMai.Location = new System.Drawing.Point(442, 72);
+            this.cboKhuyenMai.Name = "cboKhuyenMai";
+            this.cboKhuyenMai.Size = new System.Drawing.Size(177, 24);
+            this.cboKhuyenMai.TabIndex = 17;
+            this.cboKhuyenMai.SelectedIndexChanged += new System.EventHandler(this.cboKhuyenMai_SelectedIndexChanged);
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(334, 75);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(76, 16);
+            this.label17.TabIndex = 16;
+            this.label17.Text = "Khuyến mãi";
             // 
             // btnHuyBoDong
             // 
@@ -557,24 +580,24 @@
             this.label16.TabIndex = 9;
             this.label16.Text = "Tìm kiếm hóa đơn theo mã";
             // 
-            // label17
+            // cboMaBan
             // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(334, 75);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(76, 16);
-            this.label17.TabIndex = 16;
-            this.label17.Text = "Khuyến mãi";
+            this.cboMaBan.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboMaBan.FormattingEnabled = true;
+            this.cboMaBan.Location = new System.Drawing.Point(469, 34);
+            this.cboMaBan.Name = "cboMaBan";
+            this.cboMaBan.Size = new System.Drawing.Size(150, 24);
+            this.cboMaBan.TabIndex = 15;
             // 
-            // cboKhuyenMai
+            // label18
             // 
-            this.cboKhuyenMai.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboKhuyenMai.FormattingEnabled = true;
-            this.cboKhuyenMai.Location = new System.Drawing.Point(442, 72);
-            this.cboKhuyenMai.Name = "cboKhuyenMai";
-            this.cboKhuyenMai.Size = new System.Drawing.Size(177, 24);
-            this.cboKhuyenMai.TabIndex = 17;
-            this.cboKhuyenMai.SelectedIndexChanged += new System.EventHandler(this.cboKhuyenMai_SelectedIndexChanged);
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(413, 36);
+            this.label18.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(37, 16);
+            this.label18.TabIndex = 14;
+            this.label18.Text = "Bàn: ";
             // 
             // HoaDonBan
             // 
@@ -651,5 +674,7 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.ComboBox cboKhuyenMai;
+        private System.Windows.Forms.ComboBox cboMaBan;
+        private System.Windows.Forms.Label label18;
     }
 }

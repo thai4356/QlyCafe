@@ -23,8 +23,8 @@ namespace QlyCafe.Quanly
         {
             ResetValues();
 
-            LoadComboBoxNhanVienSearch();
-            LoadComboBoxKhachHangSearch();
+            //LoadComboBoxNhanVienSearch();
+            //LoadComboBoxKhachHangSearch();
             btnXemChiTiet.Enabled = false; // Chỉ bật khi có dòng được chọn
             PerformSearch(false);
         }
@@ -57,6 +57,24 @@ namespace QlyCafe.Quanly
             }
         }
 
+        // Phương thức mới để nạp cboMaBan
+        private void LoadComboBoxMaBanSearch()
+        {
+            // Hiển thị dạng "Bàn X (Trạng thái)"
+            string sqlLoadBan = "SELECT id, N'Bàn ' + CAST(id AS VARCHAR(10)) + N' (' + ISNULL(status, N'N/A') + N')' AS DisplayTextBan FROM dbo.Ban ORDER BY id"; //
+            Function.FillCombo(cboMaBan, "DisplayTextBan", "id", sqlLoadBan); //
+
+            DataTable dtBan = (DataTable)cboMaBan.DataSource;
+            if (dtBan != null)
+            {
+                DataRow dr = dtBan.NewRow();
+                dr["id"] = DBNull.Value; // Giá trị cho "-- Tất cả Bàn --"
+                dr["DisplayTextBan"] = "-- Tất cả Bàn --";
+                dtBan.Rows.InsertAt(dr, 0);
+                cboMaBan.SelectedIndex = 0;
+            }
+        }
+
         private void CustomizeDgvKQTimKiem()
         {
             if (dgvKQTimKiemHDB.DataSource == null || dgvKQTimKiemHDB.Columns.Count == 0)
@@ -64,69 +82,82 @@ namespace QlyCafe.Quanly
                 return;
             }
 
-            // Đổi tên các cột cho phù hợp với hóa đơn bán
+            // Tên các cột từ câu lệnh SQL (đảm bảo khớp)
             string colMaHDB = "MaHDB";
-            string colNgayBan = "NgayBan"; // Đổi từ NgayNhap
-            string colTenKH = "TenKH";     // Đổi từ TenNCC, và JOIN để lấy TenKH
+            string colNgayBan = "NgayBan";
+            string colIDBan = "IDBan";
+            string colTenKH = "TenKH";
+            string colMaKH = "MaKH";
             string colTenNV = "TenNV";
-            string colTongTien = "TongTien";
-            string colMaKH = "MaKH";       // Đổi từ MaNCC
             string colMaNV = "MaNV";
+            string colTongTien = "TongTien";
 
+            // Cài đặt cho từng cột
             if (dgvKQTimKiemHDB.Columns[colMaHDB] != null)
             {
-                dgvKQTimKiemHDB.Columns[colMaHDB].HeaderText = "Mã HĐB"; // Đổi
-                dgvKQTimKiemHDB.Columns[colMaHDB].Width = 130;
+                dgvKQTimKiemHDB.Columns[colMaHDB].HeaderText = "Mã HĐB";
+                dgvKQTimKiemHDB.Columns[colMaHDB].Width = 130; // Điều chỉnh
             }
 
             if (dgvKQTimKiemHDB.Columns[colNgayBan] != null)
             {
-                dgvKQTimKiemHDB.Columns[colNgayBan].HeaderText = "Ngày Bán"; // Đổi
-                dgvKQTimKiemHDB.Columns[colNgayBan].Width = 100;
+                dgvKQTimKiemHDB.Columns[colNgayBan].HeaderText = "Ngày Bán";
+                dgvKQTimKiemHDB.Columns[colNgayBan].Width = 90; // Điều chỉnh
                 dgvKQTimKiemHDB.Columns[colNgayBan].DefaultCellStyle.Format = "dd/MM/yyyy";
                 dgvKQTimKiemHDB.Columns[colNgayBan].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             }
 
-            if (dgvKQTimKiemHDB.Columns[colTenKH] != null)
+            if (dgvKQTimKiemHDB.Columns[colIDBan] != null)
             {
-                dgvKQTimKiemHDB.Columns[colTenKH].HeaderText = "Tên Khách Hàng"; // Đổi
-                dgvKQTimKiemHDB.Columns[colTenKH].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                dgvKQTimKiemHDB.Columns[colTenKH].FillWeight = 35;
-            }
-            if (dgvKQTimKiemHDB.Columns[colMaKH] != null) // Hiển thị thêm mã KH nếu muốn
-            {
-                dgvKQTimKiemHDB.Columns[colMaKH].HeaderText = "Mã KH";
-                dgvKQTimKiemHDB.Columns[colMaKH].Width = 80;
-                dgvKQTimKiemHDB.Columns[colMaKH].Visible = true;
+                dgvKQTimKiemHDB.Columns[colIDBan].HeaderText = "Số Bàn";
+                dgvKQTimKiemHDB.Columns[colIDBan].Width = 60; // Điều chỉnh
+                dgvKQTimKiemHDB.Columns[colIDBan].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgvKQTimKiemHDB.Columns[colIDBan].Visible = true;
             }
 
+            if (dgvKQTimKiemHDB.Columns[colTenKH] != null)
+            {
+                dgvKQTimKiemHDB.Columns[colTenKH].HeaderText = "Tên Khách Hàng";
+                dgvKQTimKiemHDB.Columns[colTenKH].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dgvKQTimKiemHDB.Columns[colTenKH].FillWeight = 60; // Tăng FillWeight để ưu tiên không gian
+            }
+
+            if (dgvKQTimKiemHDB.Columns[colMaKH] != null)
+            {
+                dgvKQTimKiemHDB.Columns[colMaKH].HeaderText = "Mã KH";
+                dgvKQTimKiemHDB.Columns[colMaKH].Width = 70; // Điều chỉnh
+                dgvKQTimKiemHDB.Columns[colMaKH].Visible = true;
+            }
 
             if (dgvKQTimKiemHDB.Columns[colTenNV] != null)
             {
                 dgvKQTimKiemHDB.Columns[colTenNV].HeaderText = "Nhân Viên Lập";
                 dgvKQTimKiemHDB.Columns[colTenNV].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                dgvKQTimKiemHDB.Columns[colTenNV].FillWeight = 30;
+                dgvKQTimKiemHDB.Columns[colTenNV].FillWeight = 70; // Điều chỉnh FillWeight
             }
+
             if (dgvKQTimKiemHDB.Columns[colMaNV] != null)
             {
                 dgvKQTimKiemHDB.Columns[colMaNV].HeaderText = "Mã NV";
-                dgvKQTimKiemHDB.Columns[colMaNV].Width = 80;
+                dgvKQTimKiemHDB.Columns[colMaNV].Width = 70; // Điều chỉnh
                 dgvKQTimKiemHDB.Columns[colMaNV].Visible = true;
             }
 
             if (dgvKQTimKiemHDB.Columns[colTongTien] != null)
             {
                 dgvKQTimKiemHDB.Columns[colTongTien].HeaderText = "Tổng Tiền";
-                dgvKQTimKiemHDB.Columns[colTongTien].Width = 120;
+                dgvKQTimKiemHDB.Columns[colTongTien].Width = 110; // Điều chỉnh
                 dgvKQTimKiemHDB.Columns[colTongTien].DefaultCellStyle.Format = "N0";
                 dgvKQTimKiemHDB.Columns[colTongTien].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             }
 
+            // Các cài đặt chung cho DataGridView
             dgvKQTimKiemHDB.AllowUserToAddRows = false;
             dgvKQTimKiemHDB.EditMode = DataGridViewEditMode.EditProgrammatically;
             dgvKQTimKiemHDB.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvKQTimKiemHDB.MultiSelect = false;
             dgvKQTimKiemHDB.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(230, 240, 255);
+            dgvKQTimKiemHDB.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter; // Căn giữa tiêu đề cột
         }
 
         private void ResetValues()
@@ -135,16 +166,10 @@ namespace QlyCafe.Quanly
             dtpTimTuNgay.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             dtpTimDenNgay.Value = DateTime.Now;
 
-            
-            if (cboTimKH.Items.Count > 0) 
-                cboTimKH.SelectedIndex = 0;
-            else
-                cboTimKH.SelectedIndex = -1;
-
-            if (cboTimNV.Items.Count > 0)
-                cboTimNV.SelectedIndex = 0;
-            else
-                cboTimNV.SelectedIndex = -1;
+            // Gọi các hàm load ComboBox ở đây để đảm bảo chúng được nạp lại khi reset
+            LoadComboBoxNhanVienSearch();
+            LoadComboBoxKhachHangSearch();
+            LoadComboBoxMaBanSearch(); // Gọi hàm nạp cboMaBan
 
             dgvKQTimKiemHDB.DataSource = null;
             lblSoLuongKQ.Text = "Tìm thấy: 0 kết quả";
@@ -154,7 +179,6 @@ namespace QlyCafe.Quanly
         private void PerformSearch(bool useDateFilter)
         {
             string maHDBFilter = txtTimMaHDB.Text.Trim();
-            // Lấy MaKH từ cboTimKH
             string maKHFilter = (cboTimKH.SelectedIndex > 0 && cboTimKH.SelectedValue != null && cboTimKH.SelectedValue != DBNull.Value)
                                 ? cboTimKH.SelectedValue.ToString()
                                 : null;
@@ -162,12 +186,20 @@ namespace QlyCafe.Quanly
                                 ? cboTimNV.SelectedValue.ToString()
                                 : null;
 
-            // Câu lệnh SQL cho Hóa Đơn Bán
-            string sqlBase = @"SELECT hdb.MaHDB, hdb.NgayBan, ISNULL(kh.TenKH, kh.DiaChi) AS TenKH, nv.TenNV, hdb.TongTien, hdb.MaKH, hdb.MaNV 
+            // Lấy IDBan từ cboMaBan để lọc
+            int? idBanFilter = null; //
+            if (cboMaBan.SelectedIndex > 0 && cboMaBan.SelectedValue != null && cboMaBan.SelectedValue != DBNull.Value) //
+            {
+                idBanFilter = Convert.ToInt32(cboMaBan.SelectedValue); //
+            }
+
+            // Thêm hdb.IDBan vào câu lệnh SELECT
+            string sqlBase = @"SELECT hdb.MaHDB, hdb.NgayBan, ISNULL(kh.TenKH, kh.DiaChi) AS TenKH, 
+                                      nv.TenNV, hdb.TongTien, hdb.MaKH, hdb.MaNV, hdb.IDBan 
                        FROM dbo.HoaDonBan hdb
                        LEFT JOIN dbo.KhachHang kh ON hdb.MaKH = kh.MaKH
                        LEFT JOIN dbo.NhanVien nv ON hdb.MaNV = nv.MaNV
-                       WHERE hdb.IsDeleted = 0"; // Giả sử có cột IsDeleted
+                       WHERE hdb.IsDeleted = 0"; //
 
             List<SqlParameter> parameters = new List<SqlParameter>();
             string conditions = "";
@@ -181,19 +213,24 @@ namespace QlyCafe.Quanly
             if (useDateFilter)
             {
                 DateTime tuNgay = dtpTimTuNgay.Value.Date;
-                DateTime denNgay = dtpTimDenNgay.Value.Date.AddDays(1).AddTicks(-1);
+                DateTime denNgay = dtpTimDenNgay.Value.Date; // Chỉ lấy phần Date
 
-                if (tuNgay > denNgay.Date)
+                if (tuNgay > denNgay) // So sánh chỉ phần Date
                 {
                     MessageBox.Show("Ngày bắt đầu không thể lớn hơn ngày kết thúc.", "Lỗi Khoảng Ngày", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    // Cân nhắc reset lại ngày hoặc không thực hiện tìm kiếm
+                    dtpTimTuNgay.Value = denNgay; // Gợi ý: đặt lại ngày bắt đầu = ngày kết thúc
                     return;
                 }
-                conditions += " AND hdb.NgayBan BETWEEN @TuNgay AND @DenNgay"; // NgayBan
+                // Để bao gồm cả ngày kết thúc, điều kiện nên là NgayBan <= denNgay
+                // Hoặc denNgay = dtpTimDenNgay.Value.Date.AddDays(1).AddTicks(-1); (nếu NgayBan có cả giờ phút)
+                // Nếu NgayBan chỉ lưu Date thì BETWEEN tuNgay AND denNgay là đủ
+                conditions += " AND hdb.NgayBan BETWEEN @TuNgay AND @DenNgay";
                 parameters.Add(new SqlParameter("@TuNgay", SqlDbType.Date) { Value = tuNgay });
-                parameters.Add(new SqlParameter("@DenNgay", SqlDbType.Date) { Value = denNgay.Date });
+                parameters.Add(new SqlParameter("@DenNgay", SqlDbType.Date) { Value = denNgay });
             }
 
-            if (!string.IsNullOrWhiteSpace(maKHFilter)) // Lọc theo MaKH
+            if (!string.IsNullOrWhiteSpace(maKHFilter))
             {
                 conditions += " AND hdb.MaKH = @MaKH";
                 parameters.Add(new SqlParameter("@MaKH", SqlDbType.VarChar, 10) { Value = maKHFilter });
@@ -205,16 +242,24 @@ namespace QlyCafe.Quanly
                 parameters.Add(new SqlParameter("@MaNV", SqlDbType.VarChar, 10) { Value = maNVFilter });
             }
 
-            string sql = sqlBase + conditions + " ORDER BY hdb.NgayBan DESC, hdb.MaHDB DESC"; // Sắp xếp theo NgayBan
+            // Thêm điều kiện lọc theo IDBan
+            if (idBanFilter.HasValue) //
+            {
+                conditions += " AND hdb.IDBan = @IDBan"; //
+                parameters.Add(new SqlParameter("@IDBan", SqlDbType.Int) { Value = idBanFilter.Value }); //
+            }
 
-            tblHDB = Function.GetDataToTable(sql, parameters.ToArray()); // Đổi tên tblHDN
+
+            string sql = sqlBase + conditions + " ORDER BY hdb.NgayBan DESC, hdb.MaHDB DESC";
+
+            tblHDB = Function.GetDataToTable(sql, parameters.ToArray());
             dgvKQTimKiemHDB.DataSource = tblHDB;
-            CustomizeDgvKQTimKiem();
+            CustomizeDgvKQTimKiem(); // Gọi sau khi gán DataSource
 
             if (tblHDB != null)
             {
                 lblSoLuongKQ.Text = $"Tìm thấy: {tblHDB.Rows.Count} kết quả.";
-                if (tblHDB.Rows.Count == 0 && useDateFilter)
+                if (tblHDB.Rows.Count == 0 && (useDateFilter || !string.IsNullOrWhiteSpace(maHDBFilter) || idBanFilter.HasValue || maKHFilter != null || maNVFilter != null)) // Chỉ thông báo nếu có tiêu chí lọc
                 {
                     MessageBox.Show("Không có bản ghi nào thỏa mãn điều kiện tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -222,7 +267,7 @@ namespace QlyCafe.Quanly
             else
             {
                 lblSoLuongKQ.Text = "Tìm thấy: 0 kết quả.";
-                if (useDateFilter)
+                if (useDateFilter || !string.IsNullOrWhiteSpace(maHDBFilter) || idBanFilter.HasValue || maKHFilter != null || maNVFilter != null)
                     MessageBox.Show("Lỗi khi tải dữ liệu hoặc không có bản ghi nào!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             btnXemChiTiet.Enabled = (tblHDB != null && tblHDB.Rows.Count > 0);
