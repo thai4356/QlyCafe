@@ -68,3 +68,37 @@ D:\dotnet development\QlyCafe\QlyCafe\bin\Debug\ClosedXML.dll
 D:\dotnet development\QlyCafe\QlyCafe\bin\Debug\ClosedXML.pdb
 D:\dotnet development\QlyCafe\QlyCafe\bin\Debug\ClosedXML.xml
 D:\dotnet development\QlyCafe\QlyCafe\obj\Debug\QlyCafe.Quanly.SanPham.resources
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\ClosedXML.dll
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\ClosedXML.Parser.dll
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\DocumentFormat.OpenXml.dll
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\DocumentFormat.OpenXml.Framework.dll
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\ExcelNumberFormat.dll
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\Microsoft.Bcl.HashCode.dll
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\RBush.dll
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\SixLabors.Fonts.dll
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\System.Buffers.dll
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\System.Memory.dll
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\ClosedXML.pdb
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\ClosedXML.xml
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\ClosedXML.Parser.xml
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\DocumentFormat.OpenXml.xml
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\DocumentFormat.OpenXml.Framework.xml
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\ExcelNumberFormat.xml
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\Microsoft.Bcl.HashCode.xml
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\RBush.xml
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\SixLabors.Fonts.xml
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\System.Buffers.xml
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\System.Memory.xml
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.Quanly.HoaDonNhap.resources
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.Quanly.NhaCungCap.resources
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.Quanly.SanPham.resources
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.Quanly.TimHDNhap.resources
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.csproj.Up2Date
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.DatBan.resources
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\QRCoder.dll
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.FormQRBan.resources
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.TableDetail.resources

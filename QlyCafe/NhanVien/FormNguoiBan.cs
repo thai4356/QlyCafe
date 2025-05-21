@@ -15,6 +15,7 @@ namespace QlyCafe
         public FormNguoiBan()
         {
             InitializeComponent();
+            
         }
 
         private void FormNguoiBan_Load(object sender, EventArgs e)
@@ -37,19 +38,35 @@ namespace QlyCafe
 
         private void btnDuyetDon_Click(object sender, EventArgs e)
         {
-            //string maNV = UserSession.MaNguoiDung;
-            //MessageBox.Show("Mã NV đang dùng: " + maNV);
-
             if (!CartSession.DonHangDangChoDuyet || CartSession.GioHangTam.Count == 0)
             {
                 MessageBox.Show("Không có đơn hàng nào chờ duyệt!", "Thông báo");
                 return;
             }
 
+            string cccd = txtCCCD.Text.Trim();
+            if (string.IsNullOrWhiteSpace(cccd))
+            {
+                MessageBox.Show("Vui lòng nhập số CCCD của khách hàng.", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            string maKH = GetOrCreateMaKH(cccd);
+
+
+            string sqlRank = $"SELECT Rank FROM KhachHang WHERE cccd = '{cccd}'";
+            DataTable dtRank = Function.GetDataToTable(sqlRank);
+            int rank = 0;
+            if (dtRank.Rows.Count > 0 && dtRank.Rows[0]["Rank"] != DBNull.Value)
+            {
+                rank = Convert.ToInt32(dtRank.Rows[0]["Rank"]);
+            }
+
+           
+
+
             bool coSanPhamThieu = false;
             decimal tongTien = 0;
 
-            // Kiểm tra & cập nhật số lượng từng sản phẩm
             foreach (var item in CartSession.GioHangTam)
             {
                 string sqlCheck = $"SELECT SoLuong FROM SanPham WHERE MaSP = '{item.MaSP}'";
@@ -75,6 +92,13 @@ namespace QlyCafe
                 Function.ExecuteNonQuery(sqlUpdate);
 
                 tongTien += item.ThanhTien;
+
+                if (rank == 1)
+                {
+                    decimal giam = tongTien * 0.10m;
+                    tongTien -= giam;
+                    MessageBox.Show($"Khách hàng hạng 1 được giảm 10% ({giam:N0} đ). Tổng tiền sau giảm: {tongTien:N0} đ", "Ưu đãi khách VIP");
+                }
             }
 
             if (coSanPhamThieu)
@@ -83,15 +107,27 @@ namespace QlyCafe
                 return;
             }
 
-            string maHDB = "HDB" + DateTime.Now.Ticks.ToString().Substring(8, 6); // HDB+6 số cuối
-            string ngayBan = DateTime.Now.ToString("yyyy-MM-dd");
-            string maNV = UserSession.MaNguoiDung; // Nhân viên đang duyệt đơn
-            string maKH = "KH01"; // Giả sử khách hàng cố định, có thể sửa lại
+            DialogResult confirm = MessageBox.Show(
+    $"Tổng tiền đơn hàng là {tongTien:N0} đ.\nBạn có muốn xác nhận tạo hóa đơn không?"+rank,
+    "Xác nhận thanh toán",
+    MessageBoxButtons.YesNo,
+    MessageBoxIcon.Question
+);
 
-            // ✅ Thêm vào bảng HoaDonBan
+            if (confirm != DialogResult.Yes)
+            {
+                MessageBox.Show("Hủy tạo hóa đơn.", "Đã hủy");
+                return;
+            }
+
+
+            string maHDB = "HDB_" + DateTime.Now.ToString("yyyyMMdd_HHmmss"); // HDB_18052025_112530
+            string ngayBan = DateTime.Now.ToString("yyyy-MM-dd");
+            string maNV = UserSession.MaNguoiDung;
+
             string sqlInsertHDB = $@"
-            INSERT INTO HoaDonBan (MaHDB, NgayBan, MaNV, MaKH, TongTien)
-            VALUES ('{maHDB}', '{ngayBan}', '{maNV}', '{maKH}', {tongTien})";
+    INSERT INTO HoaDonBan (MaHDB, NgayBan, MaNV, MaKH, TongTien)
+    VALUES ('{maHDB}', '{ngayBan}', '{maNV}', '{maKH}', {tongTien})";
             Function.ExecuteNonQuery(sqlInsertHDB);
 
             foreach (var item in CartSession.GioHangTam)
@@ -100,14 +136,13 @@ namespace QlyCafe
                 Function.ExecuteNonQuery(sqlCT);
             }
 
-
-            MessageBox.Show("Hóa đơn đã được tạo và tồn kho đã cập nhật!");
-
+            MessageBox.Show("✅ Hóa đơn đã được tạo thành công!", "Thành công");
 
             CartSession.GioHangTam.Clear();
             CartSession.DonHangDangChoDuyet = false;
             LoadDonHangCho();
         }
+
 
 
         private void btnTuChoiDon_Click(object sender, EventArgs e)
@@ -121,6 +156,45 @@ namespace QlyCafe
         private void btnLamMoi_Click(object sender, EventArgs e)
         {
             LoadDonHangCho();
+        }
+
+        private void btn_exit_Click(object sender, EventArgs e)
+        {
+            Function.Logout(this);
+        }
+
+        private string GetOrCreateMaKH(string cccd)
+        {
+            string sqlCheck = $"SELECT MaKH FROM KhachHang WHERE CCCD = '{cccd}'";
+            DataTable dt = Function.GetDataToTable(sqlCheck);
+
+            if (dt.Rows.Count > 0)
+            {
+                return dt.Rows[0]["MaKH"].ToString();
+            }
+
+            // Tạo mã KH mới theo KHxxx
+            string sqlMax = "SELECT TOP 1 MaKH FROM KhachHang ORDER BY MaKH DESC";
+            DataTable dtMax = Function.GetDataToTable(sqlMax);
+
+            string newMaKH = "KH001";
+            if (dtMax.Rows.Count > 0)
+            {
+                string lastMa = dtMax.Rows[0]["MaKH"].ToString(); // KH009
+                int num = int.Parse(lastMa.Substring(2)) + 1;
+                newMaKH = "KH" + num.ToString("D3");
+            }
+
+            // Chèn khách hàng mới
+            string sqlInsert = $"INSERT INTO KhachHang (MaKH, CCCD) VALUES ('{newMaKH}', '{cccd}')";
+            Function.ExecuteNonQuery(sqlInsert);
+
+            return newMaKH;
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
