@@ -13,10 +13,13 @@ namespace QlyCafe
 {
     public partial class FormNguoiDung : Form
     {
+        private int banSo;
+
         public FormNguoiDung(int so)
         {
             InitializeComponent(); 
             label.Text = "Đơn hàng cho bàn số " + so;
+            this.banSo = so;
             LoadProducts();
         }
 
@@ -30,7 +33,9 @@ namespace QlyCafe
                 string maSP = row["MaSP"].ToString();
                 string tenSP = row["TenSP"].ToString();
                 decimal giaBan = Convert.ToDecimal(row["GiaBan"]);
+                string hinhAnh = row["HinhAnh"].ToString(); // tên file ảnh
 
+                // Tạo thẻ sản phẩm
                 Panel productCard = new Panel();
                 productCard.Width = 150;
                 productCard.Height = 200;
@@ -41,23 +46,45 @@ namespace QlyCafe
                 pic.Width = 130;
                 pic.Height = 100;
                 pic.SizeMode = PictureBoxSizeMode.StretchImage;
+                pic.Top = 5;
+                pic.Left = 10;
+
+                // ✅ Load ảnh từ file, an toàn bộ nhớ
+                string duongDan = Application.StartupPath + @"\Images\" + hinhAnh;
+                if (System.IO.File.Exists(duongDan))
+                {
+                    try
+                    {
+                        pic.Image = Image.FromStream(new System.IO.MemoryStream(System.IO.File.ReadAllBytes(duongDan)));
+                    }
+                    catch
+                    {
+                        pic.Image = null; // ảnh dự phòng nếu ảnh lỗi
+                    }
+                }
+                else
+                {
+                    pic.Image = null; // ảnh dự phòng nếu không tìm thấy
+                }
 
                 Label lblTen = new Label();
                 lblTen.Text = tenSP;
                 lblTen.Width = 130;
                 lblTen.Top = 110;
+                lblTen.Left = 10;
 
                 Label lblGia = new Label();
-                lblGia.Text = giaBan + " đ";
+                lblGia.Text = giaBan.ToString("N0") + " đ";
                 lblGia.Width = 130;
                 lblGia.Top = 130;
+                lblGia.Left = 10;
 
                 Button btn = new Button();
                 btn.Text = "Mua";
                 btn.Width = 130;
                 btn.Top = 160;
+                btn.Left = 10;
 
-                // Khi bấm nút "Mua"
                 btn.Click += (s, e) =>
                 {
                     var existing = CartSession.GioHangTam.FirstOrDefault(i => i.MaSP == maSP);
@@ -80,12 +107,10 @@ namespace QlyCafe
                 productCard.Controls.Add(lblGia);
                 productCard.Controls.Add(btn);
 
-                pic.Top = 5;
-                lblTen.Left = lblGia.Left = btn.Left = pic.Left = 10;
-
                 flowLayoutPanel1.Controls.Add(productCard);
             }
         }
+
 
 
         private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
@@ -95,7 +120,7 @@ namespace QlyCafe
 
         private void btnGioHang_Click(object sender, EventArgs e)
         {
-            FormGioHang gh = new FormGioHang();
+            FormGioHang gh = new FormGioHang(banSo);
             gh.ShowDialog();
         }
 
@@ -108,5 +133,7 @@ namespace QlyCafe
         {
 
         }
+
+
     }
 }

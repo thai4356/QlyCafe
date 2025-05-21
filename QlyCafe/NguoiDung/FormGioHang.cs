@@ -7,17 +7,19 @@ namespace QlyCafe.NguoiDung
     public partial class FormGioHang : Form
     {
         private BindingList<CartItem> bindingList;
+        private int banSo;
 
-        public FormGioHang()
+
+        public FormGioHang(int so)
         {
             InitializeComponent();
-
+            this.banSo = so;
             // Gắn các sự kiện
             dataGridView1.CellValueChanged += dataGridView1_CellValueChanged;
             dataGridView1.CellEndEdit += dataGridView1_CellEndEdit;
             dataGridView1.CellValidating += dataGridView1_CellValidating;
         }
-
+        
         private void FormGioHang_Load(object sender, EventArgs e)
         {
             dataGridView1.AllowUserToAddRows = false;
@@ -57,7 +59,7 @@ namespace QlyCafe.NguoiDung
             {
                 if (!int.TryParse(e.FormattedValue.ToString(), out int value) || value <= 0)
                 {
-                    MessageBox.Show("Số lượng phải là số nguyên dương!");
+                    MessageBox.Show("Số lượng phải là số nguyên dương!" + banSo);
                     e.Cancel = true;
                 }
             }
@@ -79,7 +81,35 @@ namespace QlyCafe.NguoiDung
 
             CartSession.DonHangDangChoDuyet = true;
             MessageBox.Show("Đơn hàng đã được gửi đi chờ phê duyệt.");
+            FormNguoiBan f = new FormNguoiBan();
+            f.ShowDialog();
             this.Close();
+        }
+
+        private void btnXoaSP_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void btnXoaSP_Click_1(object sender, EventArgs e)
+        {
+            if (dataGridView1.CurrentRow == null)
+            {
+                MessageBox.Show("Vui lòng chọn sản phẩm để xóa.");
+                return;
+            }
+
+            var item = dataGridView1.CurrentRow.DataBoundItem as CartItem;
+            if (item != null)
+            {
+                DialogResult result = MessageBox.Show($"Xóa {item.TenSP} khỏi giỏ hàng?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    bindingList.Remove(item); // Xóa khỏi BindingList
+                    CartSession.GioHangTam.Remove(item); // Xóa khỏi danh sách gốc
+                    dataGridView1.Refresh();
+                }
+            }
         }
     }
 }

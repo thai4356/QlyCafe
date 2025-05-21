@@ -22,8 +22,8 @@ namespace QlyCafe
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            DatBan form1 = new DatBan();
-            form1.Show();
+            //DatBan form1 = new DatBan();
+            //form1.Show();
 
             Login form2 = new Login();
             Application.Run(form2);

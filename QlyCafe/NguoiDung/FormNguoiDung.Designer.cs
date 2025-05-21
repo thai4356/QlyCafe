@@ -48,16 +48,16 @@
             // 
             this.flowLayoutPanel1.AutoScroll = true;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(34, 61);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(428, 278);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(644, 540);
             this.flowLayoutPanel1.TabIndex = 1;
             this.flowLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanel1_Paint);
             // 
             // btnGioHang
             // 
-            this.btnGioHang.Location = new System.Drawing.Point(486, 105);
-            this.btnGioHang.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnGioHang.Location = new System.Drawing.Point(695, 61);
+            this.btnGioHang.Margin = new System.Windows.Forms.Padding(2);
             this.btnGioHang.Name = "btnGioHang";
             this.btnGioHang.Size = new System.Drawing.Size(92, 26);
             this.btnGioHang.TabIndex = 2;
@@ -68,7 +68,7 @@
             // btn_exit
             // 
             this.btn_exit.Location = new System.Drawing.Point(9, 10);
-            this.btn_exit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_exit.Margin = new System.Windows.Forms.Padding(2);
             this.btn_exit.Name = "btn_exit";
             this.btn_exit.Size = new System.Drawing.Size(92, 26);
             this.btn_exit.TabIndex = 3;
@@ -80,12 +80,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(600, 366);
+            this.ClientSize = new System.Drawing.Size(833, 628);
             this.Controls.Add(this.btn_exit);
             this.Controls.Add(this.btnGioHang);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.label);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FormNguoiDung";
             this.Text = "FormNguoiDung";
             this.Load += new System.EventHandler(this.FormNguoiDung_Load);

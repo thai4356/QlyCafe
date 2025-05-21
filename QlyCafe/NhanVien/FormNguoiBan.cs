@@ -50,9 +50,19 @@ namespace QlyCafe
                 MessageBox.Show("Vui lòng nhập số CCCD của khách hàng.", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            // ✅ Tìm hoặc tạo mới MaKH
             string maKH = GetOrCreateMaKH(cccd);
+
+
+            string sqlRank = $"SELECT Rank FROM KhachHang WHERE cccd = '{cccd}'";
+            DataTable dtRank = Function.GetDataToTable(sqlRank);
+            int rank = 0;
+            if (dtRank.Rows.Count > 0 && dtRank.Rows[0]["Rank"] != DBNull.Value)
+            {
+                rank = Convert.ToInt32(dtRank.Rows[0]["Rank"]);
+            }
+
+           
+
 
             bool coSanPhamThieu = false;
             decimal tongTien = 0;
@@ -82,6 +92,13 @@ namespace QlyCafe
                 Function.ExecuteNonQuery(sqlUpdate);
 
                 tongTien += item.ThanhTien;
+
+                if (rank == 1)
+                {
+                    decimal giam = tongTien * 0.10m;
+                    tongTien -= giam;
+                    MessageBox.Show($"Khách hàng hạng 1 được giảm 10% ({giam:N0} đ). Tổng tiền sau giảm: {tongTien:N0} đ", "Ưu đãi khách VIP");
+                }
             }
 
             if (coSanPhamThieu)
@@ -89,6 +106,20 @@ namespace QlyCafe
                 MessageBox.Show("Có sản phẩm thiếu số lượng, hóa đơn không được tạo.");
                 return;
             }
+
+            DialogResult confirm = MessageBox.Show(
+    $"Tổng tiền đơn hàng là {tongTien:N0} đ.\nBạn có muốn xác nhận tạo hóa đơn không?"+rank,
+    "Xác nhận thanh toán",
+    MessageBoxButtons.YesNo,
+    MessageBoxIcon.Question
+);
+
+            if (confirm != DialogResult.Yes)
+            {
+                MessageBox.Show("Hủy tạo hóa đơn.", "Đã hủy");
+                return;
+            }
+
 
             string maHDB = "HDB_" + DateTime.Now.ToString("yyyyMMdd_HHmmss"); // HDB_18052025_112530
             string ngayBan = DateTime.Now.ToString("yyyy-MM-dd");
