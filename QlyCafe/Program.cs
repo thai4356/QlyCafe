@@ -31,10 +31,10 @@ namespace QlyCafe
         }
 
         static void test() {
-            
 
-            KhuyenMai km = new KhuyenMai();
-            Application.Run(km);
+
+            FormQuanLy form3 = new FormQuanLy();
+            Application.Run(form3);
 
         }
     }
