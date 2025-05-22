@@ -71,7 +71,12 @@ namespace QlyCafe.Quanly
             Function.FillCombo(cboMaHDBSearch, "MaHDB", "MaHDB", "SELECT MaHDB FROM dbo.HoaDonBan WHERE IsDeleted = 0 ORDER BY NgayBan DESC, MaHDB DESC");
             cboMaHDBSearch.SelectedIndex = -1;
 
-            string sqlKhuyenMaiChung = "SELECT MaKM, TenKM, LoaiKM, GiaTri, DieuKienApDung FROM dbo.KhuyenMai WHERE TrangThai = 1 AND GETDATE() BETWEEN NgayBatDau AND NgayKetThuc ORDER BY NgayBatDau DESC";
+            string sqlKhuyenMaiChung = @"
+                SELECT MaKM, TenKM, LoaiKM, GiaTri, DieuKienApDung, 
+                       DK_SoLuongCanMua, DK_SoLuongDuocTang 
+                FROM dbo.KhuyenMai 
+                WHERE TrangThai = 1 AND GETDATE() BETWEEN NgayBatDau AND NgayKetThuc 
+                ORDER BY NgayBatDau DESC";
             Function.FillCombo(cboKhuyenMai, "MaKM", "MaKM", sqlKhuyenMaiChung); // Display TenKM, Value is MaKM
             cboKhuyenMai.SelectedIndex = -1; // Important to reset
 
@@ -270,14 +275,11 @@ namespace QlyCafe.Quanly
         private void LoadKhuyenMaiForSanPham(string maSP)
         {
             string sqlProductKhuyenMai = @"
-                SELECT km.MaKM, km.TenKM, km.LoaiKM, km.GiaTri, km.DieuKienApDung
-                FROM KhuyenMai km
-                INNER JOIN KhuyenMai_SanPham kmsp ON km.MaKM = kmsp.MaKM
-                WHERE kmsp.MaSP = @MaSP
-                    AND km.TrangThai = 1
-                    AND GETDATE() BETWEEN km.NgayBatDau AND km.NgayKetThuc
-                ORDER BY km.NgayBatDau DESC
-            "; // (modified SQL)
+                SELECT MaKM, TenKM, LoaiKM, GiaTri, DieuKienApDung, 
+                       DK_SoLuongCanMua, DK_SoLuongDuocTang 
+                FROM dbo.KhuyenMai 
+                WHERE TrangThai = 1 AND GETDATE() BETWEEN NgayBatDau AND NgayKetThuc 
+                ORDER BY NgayBatDau DESC";
             Function.FillCombo(cboKhuyenMai, "MaKM", "MaKM", sqlProductKhuyenMai, new SqlParameter("@MaSP", maSP)); // Display TenKM, Value is MaKM
             cboKhuyenMai.SelectedIndex = -1;
         }
@@ -499,12 +501,15 @@ namespace QlyCafe.Quanly
         private void TinhThanhTienDong()
         {
             decimal soLuong = 0, donGia = 0, thanhTien = 0;
+
+            // Sử dụng CultureInfo.InvariantCulture để đảm bảo parse số thập phân đúng cách
+            // bất kể cài đặt culture của máy, đặc biệt nếu người dùng có thể nhập dấu ',' thay vì '.'
             decimal.TryParse(txtSoLuong.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out soLuong);
             decimal.TryParse(txtDonGia.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out donGia);
 
             if (cboKhuyenMai.SelectedIndex != -1 && cboKhuyenMai.SelectedItem is DataRowView drv)
             {
-                string loaiKM = drv["LoaiKM"]?.ToString() ?? "";
+                string loaiKM = drv["LoaiKM"]?.ToString() ?? ""; // Lấy LoaiKM, nếu null thì là chuỗi rỗng
 
                 object giaTriObj = drv["GiaTri"];
                 decimal giaTriKMValue = 0;
@@ -513,45 +518,67 @@ namespace QlyCafe.Quanly
                     decimal.TryParse(giaTriObj.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out giaTriKMValue);
                 }
 
-                object dieuKienObj = drv["DieuKienApDung"];
-                int dieuKienKM = 0;
-                if (dieuKienObj != DBNull.Value && dieuKienObj != null)
-                {
-                    int.TryParse(dieuKienObj.ToString(), out dieuKienKM);
-                }
-
-                if (loaiKM == "PhanTram")
+                // Sử dụng chính xác các giá trị LoaiKM từ CSDL của bạn
+                if (loaiKM == "Phần trăm") // So sánh với giá trị thực tế trong CSDL
                 {
                     thanhTien = soLuong * donGia * (1 - giaTriKMValue / 100);
                 }
-                else if (loaiKM == "GiamGiaTrucTiep")
+                else if (loaiKM == "Giảm giá trực tiếp") // So sánh với giá trị thực tế
                 {
                     thanhTien = (soLuong * donGia) - giaTriKMValue;
-                    if (thanhTien < 0) thanhTien = 0;
+                    if (thanhTien < 0) thanhTien = 0; // Đảm bảo thành tiền không âm
                 }
-                else if (loaiKM == "MuaTang")
+                else if (loaiKM == "Tặng sản phẩm") // So sánh với giá trị thực tế
                 {
-                    if (dieuKienKM > 0 && soLuong >= (dieuKienKM + 1)) // Phải mua đủ số lượng điều kiện + 1 sp tặng
+                    object slCanMuaObj = drv["DK_SoLuongCanMua"]; // Cột mới cho số lượng cần mua
+                    object slDuocTangObj = drv["DK_SoLuongDuocTang"]; // Cột mới cho số lượng được tặng
+
+                    int soLuongCanMua = 0;
+                    int soLuongDuocTang = 0;
+
+                    if (slCanMuaObj != DBNull.Value && slCanMuaObj != null)
                     {
-                        int soLuongTang = (int)Math.Floor(soLuong / (dieuKienKM + 1)); // Số lần được tặng
-                        thanhTien = (soLuong - soLuongTang) * donGia;
+                        int.TryParse(slCanMuaObj.ToString(), out soLuongCanMua);
+                    }
+                    if (slDuocTangObj != DBNull.Value && slDuocTangObj != null)
+                    {
+                        int.TryParse(slDuocTangObj.ToString(), out soLuongDuocTang);
+                    }
+
+                    // Logic "Mua X tặng Y": Nếu mua đủ một cụm (X+Y) sản phẩm, thì Y sản phẩm trong đó được miễn phí.
+                    if (soLuongCanMua > 0 && soLuongDuocTang > 0)
+                    {
+                        int itemsInOnePromotionalSet = soLuongCanMua + soLuongDuocTang; // Tổng SP trong 1 lần KM (mua + tặng)
+                        if (soLuong >= itemsInOnePromotionalSet) // Nếu mua đủ ít nhất 1 set KM
+                        {
+                            int numberOfPromotionalSets = (int)Math.Floor(soLuong / itemsInOnePromotionalSet);
+                            int totalFreeItems = numberOfPromotionalSets * soLuongDuocTang;
+                            thanhTien = (soLuong - totalFreeItems) * donGia;
+                        }
+                        else
+                        {
+                            thanhTien = soLuong * donGia; // Không đủ một set KM, tính giá thường
+                        }
                     }
                     else
                     {
-                        thanhTien = soLuong * donGia;
+                        thanhTien = soLuong * donGia; // Không có điều kiện KM "Tặng sản phẩm" hợp lệ
                     }
                 }
-                else // Không có loại KM hợp lệ hoặc không có KM
+                else // Không có loại KM hợp lệ hoặc không có KM được chọn
                 {
                     thanhTien = soLuong * donGia;
                 }
             }
-            else
+            else // Không có khuyến mãi nào được chọn từ ComboBox
             {
                 thanhTien = soLuong * donGia;
             }
-            txtThanhTienDong.Text = thanhTien.ToString("N0", CultureInfo.InvariantCulture);
+
+            // Hiển thị thành tiền đã làm tròn (N0 là không có chữ số thập phân)
+            txtThanhTienDong.Text = thanhTien.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")); // Dùng culture vi-VN để có dấu phẩy đúng kiểu
         }
+
 
         private void txtChiTietSP_TextChanged(object sender, EventArgs e)
         {
@@ -1689,10 +1716,12 @@ namespace QlyCafe.Quanly
 
         private void cboKhuyenMai_SelectedIndexChanged(object sender, EventArgs e)
         {
+            txtGiaTriKM.Text = ""; // Reset trước khi gán giá trị mới
+
             if (cboKhuyenMai.SelectedIndex != -1 && cboKhuyenMai.SelectedItem is DataRowView drv)
             {
                 string maKM_selected = drv["MaKM"]?.ToString() ?? "";
-                string tenKM = drv["TenKM"]?.ToString() ?? maKM_selected;
+                string tenKM = drv["TenKM"]?.ToString() ?? maKM_selected; // Fallback về MaKM nếu TenKM là null
                 string loaiKM = drv["LoaiKM"]?.ToString() ?? "";
 
                 object giaTriObj = drv["GiaTri"];
@@ -1702,23 +1731,54 @@ namespace QlyCafe.Quanly
                     decimal.TryParse(giaTriObj.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out giaTriKMValue);
                 }
 
-                object dieuKienObj = drv["DieuKienApDung"];
-                string dieuKienApDungKM = (dieuKienObj == DBNull.Value || dieuKienObj == null) ? "" : dieuKienObj.ToString();
-
-                if (loaiKM == "PhanTram")
-                    txtGiaTriKM.Text = $"Giảm {giaTriKMValue}% ({tenKM})";
-                else if (loaiKM == "GiamGiaTrucTiep")
+                // Sử dụng các giá trị LoaiKM chính xác từ CSDL của bạn
+                if (loaiKM == "Phần trăm")
+                {
+                    txtGiaTriKM.Text = $"Giảm {giaTriKMValue:N0}% ({tenKM})"; // Sử dụng N0 cho % nếu muốn số nguyên
+                }
+                else if (loaiKM == "Giảm giá trực tiếp")
+                {
                     txtGiaTriKM.Text = $"Giảm {giaTriKMValue:N0}đ ({tenKM})";
-                else if (loaiKM == "MuaTang")
-                    txtGiaTriKM.Text = string.IsNullOrWhiteSpace(dieuKienApDungKM) ? $"{tenKM}" : $"Mua {dieuKienApDungKM} tặng 1 ({tenKM})";
-                else
-                    txtGiaTriKM.Text = tenKM; // Hiển thị TenKM hoặc MaKM nếu TenKM rỗng
+                }
+                else if (loaiKM == "Tặng sản phẩm") // Sử dụng giá trị từ CSDL của bạn
+                {
+                    object slCanMuaObj = drv["DK_SoLuongCanMua"];
+                    object slDuocTangObj = drv["DK_SoLuongDuocTang"];
+                    int soLuongCanMua = 0;
+                    int soLuongDuocTang = 0;
+
+                    if (slCanMuaObj != DBNull.Value && slCanMuaObj != null)
+                    {
+                        int.TryParse(slCanMuaObj.ToString(), out soLuongCanMua);
+                    }
+                    if (slDuocTangObj != DBNull.Value && slDuocTangObj != null)
+                    {
+                        int.TryParse(slDuocTangObj.ToString(), out soLuongDuocTang);
+                    }
+
+                    if (soLuongCanMua > 0 && soLuongDuocTang > 0)
+                    {
+                        txtGiaTriKM.Text = $"Mua {soLuongCanMua} tặng {soLuongDuocTang} ({tenKM})";
+                    }
+                    else
+                    {
+                        // Fallback nếu DK_SoLuongCanMua hoặc DK_SoLuongDuocTang không hợp lệ,
+                        // nhưng vẫn là loại "Tặng sản phẩm"
+                        txtGiaTriKM.Text = tenKM; // Hoặc một mô tả chung chung hơn
+                    }
+                }
+                else if (!string.IsNullOrEmpty(tenKM)) // Cho các LoaiKM khác hoặc không xác định nhưng có TenKM
+                {
+                    txtGiaTriKM.Text = tenKM;
+                }
+                else if (!string.IsNullOrEmpty(maKM_selected)) // Fallback cuối cùng nếu TenKM cũng rỗng
+                {
+                    txtGiaTriKM.Text = maKM_selected;
+                }
             }
-            else
-            {
-                txtGiaTriKM.Text = "";
-            }
-            TinhThanhTienDong();
+            // else: không có mục nào được chọn, txtGiaTriKM.Text đã được reset thành "" ở đầu hàm.
+
+            TinhThanhTienDong(); // Gọi để cập nhật thành tiền dựa trên khuyến mãi mới (hoặc không có)
         }
     }
 }
