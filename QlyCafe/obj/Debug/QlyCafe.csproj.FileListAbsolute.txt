@@ -102,3 +102,5 @@ C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.DatBan.resources
 C:\Users\uchih\source\repos\QlyCafe\QlyCafe\bin\Debug\QRCoder.dll
 C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.FormQRBan.resources
 C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.TableDetail.resources
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.Quanly.HoaDonBan.resources
+C:\Users\uchih\source\repos\QlyCafe\QlyCafe\obj\Debug\QlyCafe.Quanly.TimHDBan.resources
