@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.DataGridViewNCC = new System.Windows.Forms.DataGridView();
+            this.DataGridViewTK = new System.Windows.Forms.DataGridView();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -49,14 +49,14 @@
             this.txtUsername = new System.Windows.Forms.TextBox();
             this.cboMaLienKet = new System.Windows.Forms.ComboBox();
             this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DataGridViewNCC)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DataGridViewTK)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.DataGridViewNCC);
+            this.groupBox3.Controls.Add(this.DataGridViewTK);
             this.groupBox3.Controls.Add(this.txtSearch);
             this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -67,16 +67,16 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Danh sách các Tài khoản";
             // 
-            // DataGridViewNCC
+            // DataGridViewTK
             // 
-            this.DataGridViewNCC.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DataGridViewNCC.Location = new System.Drawing.Point(7, 28);
-            this.DataGridViewNCC.Margin = new System.Windows.Forms.Padding(4);
-            this.DataGridViewNCC.Name = "DataGridViewNCC";
-            this.DataGridViewNCC.RowHeadersWidth = 51;
-            this.DataGridViewNCC.RowTemplate.Height = 24;
-            this.DataGridViewNCC.Size = new System.Drawing.Size(920, 510);
-            this.DataGridViewNCC.TabIndex = 0;
+            this.DataGridViewTK.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DataGridViewTK.Location = new System.Drawing.Point(7, 28);
+            this.DataGridViewTK.Margin = new System.Windows.Forms.Padding(4);
+            this.DataGridViewTK.Name = "DataGridViewTK";
+            this.DataGridViewTK.RowHeadersWidth = 51;
+            this.DataGridViewTK.RowTemplate.Height = 24;
+            this.DataGridViewTK.Size = new System.Drawing.Size(920, 510);
+            this.DataGridViewTK.TabIndex = 0;
             // 
             // txtSearch
             // 
@@ -275,7 +275,7 @@
             this.Text = "TaiKhoan";
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DataGridViewNCC)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DataGridViewTK)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -286,7 +286,7 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.DataGridView DataGridViewNCC;
+        private System.Windows.Forms.DataGridView DataGridViewTK;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.GroupBox groupBox2;
