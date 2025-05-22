@@ -31,20 +31,7 @@ namespace QlyCafe
         }
 
         static void test() {
-            //NhaCungCap ncc = new NhaCungCap();
-            //Application.Run(ncc);
-
-            //SanPham sp = new SanPham();
-            //Application.Run(sp);
-
-            //HoaDonNhap hdn = new HoaDonNhap();
-            //Application.Run(hdn);
-
-            //TimHDNhap thdn = new TimHDNhap();
-            //Application.Run(thdn);
-
-            //TimHDBan thb = new TimHDBan();
-            //Application.Run(thb);
+            
 
             KhuyenMai km = new KhuyenMai();
             Application.Run(km);

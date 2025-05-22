@@ -95,6 +95,25 @@ namespace QlyCafe
             cbo.SelectedIndex = -1; // Reset selection
         }
 
+        public static void FillCombo(ComboBox cbo, string displayMember, string valueMember, DataTable dataSource)
+        {
+            cbo.DataSource = dataSource;
+            cbo.DisplayMember = displayMember;
+            cbo.ValueMember = valueMember;
+            if (dataSource != null && dataSource.Rows.Count > 0)
+            {
+                // Nếu bạn muốn tự động chọn item đầu tiên sau khi binding DataTable
+                // cbo.SelectedIndex = 0;
+                // Hoặc để trống lựa chọn ban đầu
+                cbo.SelectedIndex = -1;
+            }
+            else
+            {
+                cbo.SelectedIndex = -1;
+                cbo.DataSource = null; // Xóa DataSource nếu không có dữ liệu
+            }
+        }
+
         public static void FillListBox(ListBox lst, string displayMember, string valueMember, string sql, params SqlParameter[] parameters)
         {
             DataTable listBoxDataTable = GetDataToTable(sql, parameters);
