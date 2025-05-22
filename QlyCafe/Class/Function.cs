@@ -95,6 +95,15 @@ namespace QlyCafe
             cbo.SelectedIndex = -1; // Reset selection
         }
 
+        public static void FillListBox(ListBox lst, string displayMember, string valueMember, string sql, params SqlParameter[] parameters)
+        {
+            DataTable listBoxDataTable = GetDataToTable(sql, parameters);
+            lst.DataSource = listBoxDataTable;
+            lst.DisplayMember = displayMember;
+            lst.ValueMember = valueMember;
+            lst.SelectedIndex = -1; // Reset selection
+        }
+
         public static string GetFieldValue(string sql, params SqlParameter[] parameters) // Đổi tên GetFieldValues thành GetFieldValue cho rõ ràng hơn vì nó trả về một giá trị
         {
             string value = "";
