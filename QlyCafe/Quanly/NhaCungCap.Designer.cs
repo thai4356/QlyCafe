@@ -49,20 +49,22 @@
             this.btnXuatRaExcel = new System.Windows.Forms.Button();
             this.btnNhapTuExcel = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridViewNCC)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // DataGridViewNCC
             // 
             this.DataGridViewNCC.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DataGridViewNCC.Location = new System.Drawing.Point(16, 18);
+            this.DataGridViewNCC.Location = new System.Drawing.Point(7, 28);
             this.DataGridViewNCC.Margin = new System.Windows.Forms.Padding(4);
             this.DataGridViewNCC.Name = "DataGridViewNCC";
             this.DataGridViewNCC.RowHeadersWidth = 51;
             this.DataGridViewNCC.RowTemplate.Height = 24;
-            this.DataGridViewNCC.Size = new System.Drawing.Size(920, 630);
+            this.DataGridViewNCC.Size = new System.Drawing.Size(920, 510);
             this.DataGridViewNCC.TabIndex = 0;
             this.DataGridViewNCC.Click += new System.EventHandler(this.DataGridViewNCC_Click);
             // 
@@ -86,7 +88,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(414, 574);
+            this.groupBox1.Size = new System.Drawing.Size(380, 506);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Thông tin nhà cung cấp";
@@ -133,7 +135,7 @@
             // 
             // btnDong
             // 
-            this.btnDong.Location = new System.Drawing.Point(289, 506);
+            this.btnDong.Location = new System.Drawing.Point(217, 446);
             this.btnDong.Margin = new System.Windows.Forms.Padding(4);
             this.btnDong.Name = "btnDong";
             this.btnDong.Size = new System.Drawing.Size(94, 32);
@@ -144,7 +146,7 @@
             // 
             // btnSua
             // 
-            this.btnSua.Location = new System.Drawing.Point(45, 506);
+            this.btnSua.Location = new System.Drawing.Point(45, 446);
             this.btnSua.Margin = new System.Windows.Forms.Padding(4);
             this.btnSua.Name = "btnSua";
             this.btnSua.Size = new System.Drawing.Size(103, 32);
@@ -155,7 +157,7 @@
             // 
             // btnBoqua
             // 
-            this.btnBoqua.Location = new System.Drawing.Point(289, 430);
+            this.btnBoqua.Location = new System.Drawing.Point(217, 383);
             this.btnBoqua.Margin = new System.Windows.Forms.Padding(4);
             this.btnBoqua.Name = "btnBoqua";
             this.btnBoqua.Size = new System.Drawing.Size(94, 32);
@@ -166,7 +168,7 @@
             // 
             // btnXoa
             // 
-            this.btnXoa.Location = new System.Drawing.Point(45, 430);
+            this.btnXoa.Location = new System.Drawing.Point(45, 383);
             this.btnXoa.Margin = new System.Windows.Forms.Padding(4);
             this.btnXoa.Name = "btnXoa";
             this.btnXoa.Size = new System.Drawing.Size(103, 32);
@@ -177,7 +179,7 @@
             // 
             // btnLuu
             // 
-            this.btnLuu.Location = new System.Drawing.Point(289, 353);
+            this.btnLuu.Location = new System.Drawing.Point(217, 318);
             this.btnLuu.Margin = new System.Windows.Forms.Padding(4);
             this.btnLuu.Name = "btnLuu";
             this.btnLuu.Size = new System.Drawing.Size(94, 32);
@@ -188,7 +190,7 @@
             // 
             // btnThem
             // 
-            this.btnThem.Location = new System.Drawing.Point(45, 353);
+            this.btnThem.Location = new System.Drawing.Point(45, 318);
             this.btnThem.Margin = new System.Windows.Forms.Padding(4);
             this.btnThem.Name = "btnThem";
             this.btnThem.Size = new System.Drawing.Size(103, 32);
@@ -202,7 +204,7 @@
             this.txtSoDienThoai.Location = new System.Drawing.Point(143, 270);
             this.txtSoDienThoai.Margin = new System.Windows.Forms.Padding(4);
             this.txtSoDienThoai.Name = "txtSoDienThoai";
-            this.txtSoDienThoai.Size = new System.Drawing.Size(240, 28);
+            this.txtSoDienThoai.Size = new System.Drawing.Size(217, 28);
             this.txtSoDienThoai.TabIndex = 3;
             // 
             // txtDiaChi
@@ -210,7 +212,7 @@
             this.txtDiaChi.Location = new System.Drawing.Point(14, 211);
             this.txtDiaChi.Margin = new System.Windows.Forms.Padding(4);
             this.txtDiaChi.Name = "txtDiaChi";
-            this.txtDiaChi.Size = new System.Drawing.Size(369, 28);
+            this.txtDiaChi.Size = new System.Drawing.Size(346, 28);
             this.txtDiaChi.TabIndex = 2;
             // 
             // txtTenNhaCC
@@ -218,7 +220,7 @@
             this.txtTenNhaCC.Location = new System.Drawing.Point(12, 131);
             this.txtTenNhaCC.Margin = new System.Windows.Forms.Padding(4);
             this.txtTenNhaCC.Name = "txtTenNhaCC";
-            this.txtTenNhaCC.Size = new System.Drawing.Size(371, 28);
+            this.txtTenNhaCC.Size = new System.Drawing.Size(348, 28);
             this.txtTenNhaCC.TabIndex = 1;
             // 
             // txtMaNCC
@@ -232,7 +234,7 @@
             // 
             // txtSearch
             // 
-            this.txtSearch.Location = new System.Drawing.Point(391, 679);
+            this.txtSearch.Location = new System.Drawing.Point(382, 569);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(545, 28);
             this.txtSearch.TabIndex = 2;
@@ -241,7 +243,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 682);
+            this.label5.Location = new System.Drawing.Point(3, 572);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(373, 22);
             this.label5.TabIndex = 3;
@@ -249,7 +251,7 @@
             // 
             // btnXuatRaExcel
             // 
-            this.btnXuatRaExcel.Location = new System.Drawing.Point(12, 36);
+            this.btnXuatRaExcel.Location = new System.Drawing.Point(24, 33);
             this.btnXuatRaExcel.Name = "btnXuatRaExcel";
             this.btnXuatRaExcel.Size = new System.Drawing.Size(163, 48);
             this.btnXuatRaExcel.TabIndex = 4;
@@ -259,7 +261,7 @@
             // 
             // btnNhapTuExcel
             // 
-            this.btnNhapTuExcel.Location = new System.Drawing.Point(245, 36);
+            this.btnNhapTuExcel.Location = new System.Drawing.Point(206, 33);
             this.btnNhapTuExcel.Name = "btnNhapTuExcel";
             this.btnNhapTuExcel.Size = new System.Drawing.Size(163, 48);
             this.btnNhapTuExcel.TabIndex = 5;
@@ -271,23 +273,33 @@
             // 
             this.groupBox2.Controls.Add(this.btnXuatRaExcel);
             this.groupBox2.Controls.Add(this.btnNhapTuExcel);
-            this.groupBox2.Location = new System.Drawing.Point(989, 609);
+            this.groupBox2.Location = new System.Drawing.Point(989, 531);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(414, 100);
+            this.groupBox2.Size = new System.Drawing.Size(380, 100);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Tùy chọn";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.DataGridViewNCC);
+            this.groupBox3.Controls.Add(this.txtSearch);
+            this.groupBox3.Controls.Add(this.label5);
+            this.groupBox3.Location = new System.Drawing.Point(13, 18);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(969, 613);
+            this.groupBox3.TabIndex = 7;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "groupBox3";
             // 
             // NhaCungCap
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1418, 796);
+            this.ClientSize = new System.Drawing.Size(1379, 643);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.DataGridViewNCC);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "NhaCungCap";
@@ -297,8 +309,9 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -325,5 +338,6 @@
         private System.Windows.Forms.Button btnXuatRaExcel;
         private System.Windows.Forms.Button btnNhapTuExcel;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupBox3;
     }
 }
