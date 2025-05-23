@@ -25,29 +25,24 @@ namespace QlyCafe
             //DatBan form1 = new DatBan();
             //form1.Show();
 
+
             Login form2 = new Login();
 
             FormNhanVien f = new FormNhanVien();
             Application.Run(form2);
             //test();
+
         }
 
         static void test() {
-            //NhaCungCap ncc = new NhaCungCap();
-            //Application.Run(ncc);
+
 
             SanPham sp = new SanPham();
             Application.Run(sp);
 
-            //HoaDonNhap hdn = new HoaDonNhap();
-            //Application.Run(hdn);
 
-            //TimHDNhap thdn = new TimHDNhap();
-            //Application.Run(thdn);
-
-            //TimHDBan thb = new TimHDBan();
-            //Application.Run(thb);
-
+            FormQuanLy form3 = new FormQuanLy();
+            Application.Run(form3);
 
         }
     }
