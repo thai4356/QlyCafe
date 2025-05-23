@@ -28,8 +28,103 @@ namespace QlyCafe.Quanly
 
         private void FormQuanLy_Load(object sender, EventArgs e)
         {
-
+            LoadKPIs();
+            // Bạn có thể thêm Timer ở đây để refresh KPIs định kỳ nếu muốn
+            Timer kpiTimer = new Timer();
+            kpiTimer.Interval = 60000; // Ví dụ: cập nhật mỗi 60 giây
+            kpiTimer.Tick += KpiTimer_Tick;
+            kpiTimer.Start();
         }
+
+        private void KpiTimer_Tick(object sender, EventArgs e)
+        {
+            LoadKPIs();
+        }
+
+        private void LoadKPIs()
+        {
+            try
+            {
+                // 1. Doanh Thu Hôm Nay
+                string sqlDoanhThu = "SELECT SUM(TongTien) FROM HoaDonBan WHERE IsDeleted = 0 AND CONVERT(date, NgayBan) = CONVERT(date, GETDATE())";
+                object resultDoanhThu = Function.GetFieldValue(sqlDoanhThu); // Sử dụng GetFieldValue
+                if (resultDoanhThu != null && resultDoanhThu != DBNull.Value)
+                {
+                    lblDoanhThuHomNay.Text = Convert.ToDecimal(resultDoanhThu).ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) + " VNĐ";
+                }
+                else
+                {
+                    lblDoanhThuHomNay.Text = "0 VNĐ";
+                }
+
+                // 2. Tổng Số Hóa Đơn Bán Hôm Nay
+                string sqlSoHDB = "SELECT COUNT(MaHDB) FROM HoaDonBan WHERE IsDeleted = 0 AND CONVERT(date, NgayBan) = CONVERT(date, GETDATE())";
+                object resultSoHDB = Function.GetFieldValue(sqlSoHDB);
+                if (resultSoHDB != null && resultSoHDB != DBNull.Value)
+                {
+                    lblSoHDBanHomNay.Text = Convert.ToInt32(resultSoHDB).ToString() + " Hóa đơn";
+                }
+                else
+                {
+                    lblSoHDBanHomNay.Text = "0 Hóa đơn";
+                }
+
+                // 3. Số Bàn Đang Phục Vụ
+                string sqlSoBanPhucVu = "SELECT COUNT(id) FROM Ban WHERE status = N'Đang phục vụ'";
+                object resultSoBanPhucVu = Function.GetFieldValue(sqlSoBanPhucVu);
+                if (resultSoBanPhucVu != null && resultSoBanPhucVu != DBNull.Value)
+                {
+                    lblSoBanPhucVu.Text = Convert.ToInt32(resultSoBanPhucVu).ToString() + " Bàn";
+                }
+                else
+                {
+                    lblSoBanPhucVu.Text = "0 Bàn";
+                }
+
+                // 4. Sản Phẩm Bán Chạy Nhất Hôm Nay (Theo Số Lượng)
+                string sqlSPBanChay = @"SELECT TOP 1 sp.TenSP 
+                                       FROM ChiTietHDB ct
+                                       JOIN SanPham sp ON ct.MaSP = sp.MaSP
+                                       JOIN HoaDonBan hdb ON ct.MaHDB = hdb.MaHDB
+                                       WHERE hdb.IsDeleted = 0 AND CONVERT(date, hdb.NgayBan) = CONVERT(date, GETDATE())
+                                       GROUP BY sp.MaSP, sp.TenSP
+                                       ORDER BY SUM(ct.SoLuong) DESC";
+                object resultSPBanChay = Function.GetFieldValue(sqlSPBanChay);
+                if (resultSPBanChay != null && resultSPBanChay != DBNull.Value)
+                {
+                    lblSPBanChay.Text = resultSPBanChay.ToString();
+                }
+                else
+                {
+                    lblSPBanChay.Text = "Chưa có";
+                }
+
+                // 5. Số Mặt Hàng Sắp Hết Hàng (ví dụ: số lượng < 10)
+                int nguongSapHetHang = 10; // Bạn có thể đặt ngưỡng này ở đâu đó cấu hình được
+                string sqlSPSapHet = "SELECT COUNT(MaSP) FROM SanPham WHERE SoLuong < @Nguong";
+                object resultSPSapHet = Function.GetFieldValue(sqlSPSapHet, new System.Data.SqlClient.SqlParameter("@Nguong", nguongSapHetHang));
+                if (resultSPSapHet != null && resultSPSapHet != DBNull.Value)
+                {
+                    lblSoMatHangHetHang.Text = Convert.ToInt32(resultSPSapHet).ToString() + " Mặt hàng";
+                }
+                else
+                {
+                    lblSoMatHangHetHang.Text = "0 Mặt hàng";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi tải dữ liệu KPI: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Đặt giá trị mặc định cho các label nếu có lỗi
+                lblDoanhThuHomNay.Text = "Lỗi tải";
+                lblSoHDBanHomNay.Text = "Lỗi tải";
+                lblSoBanPhucVu.Text = "Lỗi tải";
+                lblSPBanChay.Text = "Lỗi tải";
+                lblSoMatHangHetHang.Text = "Lỗi tải";
+            }
+        }
+
+
 
         private void UpdateDateTimeLabels()
         {
@@ -170,7 +265,11 @@ namespace QlyCafe.Quanly
 
         private void btnThoat_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            // Nên có xác nhận trước khi thoát
+            if (MessageBox.Show("Bạn có chắc chắn muốn đăng xuất và thoát ứng dụng?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Application.Exit(); // Hoặc quay về form Login nếu có
+            }
         }
     }
 }
