@@ -32,6 +32,7 @@ namespace QlyCafe.Quanly
         {
             LoadKPIs();
             LoadAllCharts();
+            LoadQuickViewData();
             // Bạn có thể thêm Timer ở đây để refresh KPIs định kỳ nếu muốn
             Timer kpiTimer = new Timer();
             kpiTimer.Interval = 60000; // Ví dụ: cập nhật mỗi 60 giây
@@ -43,6 +44,7 @@ namespace QlyCafe.Quanly
         {
             LoadKPIs();
             LoadAllCharts();
+            LoadQuickViewData();
         }
 
         private void LoadKPIs()
@@ -335,6 +337,117 @@ namespace QlyCafe.Quanly
                 catch (Exception ex) { Console.WriteLine("Error LoadCategoryRevenueChart: " + ex.Message); currentChart.Series.Clear(); }
             }
         }
+
+        private void LoadQuickViewData()
+        {
+            LoadRecentSales();
+            LoadLowStockProducts();
+        }
+
+        // --- TẢI HÓA ĐƠN BÁN GẦN ĐÂY ---
+        private void LoadRecentSales()
+        {
+            try
+            {
+                // Lấy 5 hóa đơn bán gần nhất
+                string sql = @"
+                    SELECT TOP 5 hdb.MaHDB, hdb.NgayBan, 
+                                 ISNULL(kh.TenKH, N'Khách vãng lai') AS TenKhachHang, 
+                                 hdb.TongTien
+                    FROM HoaDonBan hdb
+                    LEFT JOIN KhachHang kh ON hdb.MaKH = kh.MaKH
+                    WHERE hdb.IsDeleted = 0
+                    ORDER BY hdb.NgayBan DESC, hdb.MaHDB DESC"; //
+                DataTable dtRecentSales = Function.GetDataToTable(sql);
+                dgvHDBanGanDay.DataSource = dtRecentSales; //
+
+                // Tùy chỉnh cột cho dgvHDBanGanDay
+                if (dgvHDBanGanDay.Columns["MaHDB"] != null)
+                {
+                    dgvHDBanGanDay.Columns["MaHDB"].HeaderText = "Mã HĐ";
+                    dgvHDBanGanDay.Columns["MaHDB"].Width = 150;
+                }
+                if (dgvHDBanGanDay.Columns["NgayBan"] != null)
+                {
+                    dgvHDBanGanDay.Columns["NgayBan"].HeaderText = "Ngày Bán";
+                    dgvHDBanGanDay.Columns["NgayBan"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm"; // Hiển thị cả giờ nếu có
+                    dgvHDBanGanDay.Columns["NgayBan"].Width = 130;
+                }
+                if (dgvHDBanGanDay.Columns["TenKhachHang"] != null)
+                {
+                    dgvHDBanGanDay.Columns["TenKhachHang"].HeaderText = "Khách Hàng";
+                    dgvHDBanGanDay.Columns["TenKhachHang"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                }
+                if (dgvHDBanGanDay.Columns["TongTien"] != null)
+                {
+                    dgvHDBanGanDay.Columns["TongTien"].HeaderText = "Tổng Tiền";
+                    dgvHDBanGanDay.Columns["TongTien"].DefaultCellStyle.Format = "N0";
+                    dgvHDBanGanDay.Columns["TongTien"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                    dgvHDBanGanDay.Columns["TongTien"].Width = 120;
+                }
+                dgvHDBanGanDay.AllowUserToAddRows = false;
+                dgvHDBanGanDay.EditMode = DataGridViewEditMode.EditProgrammatically;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error LoadRecentSales: " + ex.Message);
+                dgvHDBanGanDay.DataSource = null;
+            }
+        }
+
+        // --- TẢI SẢN PHẨM SẮP HẾT HÀNG ---, sẽ load khi có sản phẩm có số lượng < 10
+        private void LoadLowStockProducts()
+        {
+            try
+            {
+                int nguongSapHetHang = 10; // Ngưỡng bạn đã dùng cho KPI
+                string sql = @"
+                    SELECT sp.MaSP, sp.TenSP, sp.SoLuong, l.TenLoai
+                    FROM SanPham sp
+                    LEFT JOIN Loai l ON sp.MaLoai = l.MaLoai
+                    WHERE sp.SoLuong < @Nguong
+                    ORDER BY sp.SoLuong ASC, sp.TenSP ASC"; //
+
+                DataTable dtLowStock = Function.GetDataToTable(sql, new System.Data.SqlClient.SqlParameter("@Nguong", nguongSapHetHang));
+                this.dvgSPSapHetHang.DataSource = dtLowStock; // Đảm bảo là dvgSPSapHetHang
+
+                // Tùy chỉnh cột cho dvgSPSapHetHang
+                // Tùy chỉnh cột cho dvgSPSapHetHang
+                if (this.dvgSPSapHetHang.Columns["MaSP"] != null)
+                {
+                    this.dvgSPSapHetHang.Columns["MaSP"].HeaderText = "Mã SP";
+                    this.dvgSPSapHetHang.Columns["MaSP"].Width = 80;
+                }
+                if (this.dvgSPSapHetHang.Columns["TenSP"] != null)
+                {
+                    this.dvgSPSapHetHang.Columns["TenSP"].HeaderText = "Tên Sản Phẩm";
+                    this.dvgSPSapHetHang.Columns["TenSP"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                }
+                if (this.dvgSPSapHetHang.Columns["TenLoai"] != null)
+                {
+                    this.dvgSPSapHetHang.Columns["TenLoai"].HeaderText = "Loại SP";
+                    this.dvgSPSapHetHang.Columns["TenLoai"].Width = 150;
+                }
+                if (this.dvgSPSapHetHang.Columns["SoLuong"] != null)
+                {
+                    this.dvgSPSapHetHang.Columns["SoLuong"].HeaderText = "SL Tồn";
+                    this.dvgSPSapHetHang.Columns["SoLuong"].Width = 70;
+                    this.dvgSPSapHetHang.Columns["SoLuong"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                    // Highlight nếu số lượng đặc biệt thấp (ví dụ: <= 5)
+                    this.dvgSPSapHetHang.Columns["SoLuong"].DefaultCellStyle.ForeColor = Color.Red;
+                    // Dòng này cần sửa:
+                    this.dvgSPSapHetHang.Columns["SoLuong"].DefaultCellStyle.Font = new Font(this.dvgSPSapHetHang.Font, FontStyle.Bold);
+                }
+                this.dvgSPSapHetHang.AllowUserToAddRows = false;
+                this.dvgSPSapHetHang.EditMode = DataGridViewEditMode.EditProgrammatically;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error LoadLowStockProducts: " + ex.Message);
+                dvgSPSapHetHang.DataSource = null;
+            }
+        }
+
 
         private void UpdateDateTimeLabels()
         {
