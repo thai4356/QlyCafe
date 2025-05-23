@@ -245,14 +245,14 @@
             // mnuDoanhThu
             // 
             this.mnuDoanhThu.Name = "mnuDoanhThu";
-            this.mnuDoanhThu.Size = new System.Drawing.Size(182, 26);
+            this.mnuDoanhThu.Size = new System.Drawing.Size(224, 26);
             this.mnuDoanhThu.Text = "Doanh thu";
             this.mnuDoanhThu.Click += new System.EventHandler(this.mnuDoanhThu_Click);
             // 
             // mnuHangTonKho
             // 
             this.mnuHangTonKho.Name = "mnuHangTonKho";
-            this.mnuHangTonKho.Size = new System.Drawing.Size(182, 26);
+            this.mnuHangTonKho.Size = new System.Drawing.Size(224, 26);
             this.mnuHangTonKho.Text = "Hàng tồn kho";
             this.mnuHangTonKho.Click += new System.EventHandler(this.mnuHangTonKho_Click);
             // 
@@ -474,11 +474,11 @@
             // 
             this.tpChart.BackColor = System.Drawing.Color.WhiteSmoke;
             this.tpChart.Controls.Add(this.panelCharts);
-            this.tpChart.Location = new System.Drawing.Point(4, 27);
+            this.tpChart.Location = new System.Drawing.Point(4, 29);
             this.tpChart.Margin = new System.Windows.Forms.Padding(4);
             this.tpChart.Name = "tpChart";
             this.tpChart.Padding = new System.Windows.Forms.Padding(4);
-            this.tpChart.Size = new System.Drawing.Size(985, 529);
+            this.tpChart.Size = new System.Drawing.Size(985, 527);
             this.tpChart.TabIndex = 1;
             this.tpChart.Text = "Chart Section";
             // 
@@ -497,7 +497,7 @@
             this.panelCharts.RowCount = 2;
             this.panelCharts.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.panelCharts.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.panelCharts.Size = new System.Drawing.Size(977, 521);
+            this.panelCharts.Size = new System.Drawing.Size(977, 519);
             this.panelCharts.TabIndex = 0;
             // 
             // panelWrapperCategoryRevenue
@@ -505,9 +505,9 @@
             this.panelWrapperCategoryRevenue.Controls.Add(this.chartCategoryRevenue);
             this.panelWrapperCategoryRevenue.Controls.Add(this.label10);
             this.panelWrapperCategoryRevenue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelWrapperCategoryRevenue.Location = new System.Drawing.Point(498, 263);
+            this.panelWrapperCategoryRevenue.Location = new System.Drawing.Point(498, 262);
             this.panelWrapperCategoryRevenue.Name = "panelWrapperCategoryRevenue";
-            this.panelWrapperCategoryRevenue.Size = new System.Drawing.Size(476, 255);
+            this.panelWrapperCategoryRevenue.Size = new System.Drawing.Size(476, 254);
             this.panelWrapperCategoryRevenue.TabIndex = 3;
             // 
             // chartCategoryRevenue
@@ -515,7 +515,7 @@
             this.chartCategoryRevenue.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chartCategoryRevenue.Location = new System.Drawing.Point(0, 16);
             this.chartCategoryRevenue.Name = "chartCategoryRevenue";
-            this.chartCategoryRevenue.Size = new System.Drawing.Size(476, 239);
+            this.chartCategoryRevenue.Size = new System.Drawing.Size(476, 238);
             this.chartCategoryRevenue.TabIndex = 3;
             this.chartCategoryRevenue.Text = "pieChart1";
             // 
@@ -536,9 +536,9 @@
             this.panelWrapperEmployeePerf.Controls.Add(this.chartEmployeePerformance);
             this.panelWrapperEmployeePerf.Controls.Add(this.label9);
             this.panelWrapperEmployeePerf.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelWrapperEmployeePerf.Location = new System.Drawing.Point(3, 263);
+            this.panelWrapperEmployeePerf.Location = new System.Drawing.Point(3, 262);
             this.panelWrapperEmployeePerf.Name = "panelWrapperEmployeePerf";
-            this.panelWrapperEmployeePerf.Size = new System.Drawing.Size(489, 255);
+            this.panelWrapperEmployeePerf.Size = new System.Drawing.Size(489, 254);
             this.panelWrapperEmployeePerf.TabIndex = 2;
             // 
             // chartEmployeePerformance
@@ -546,7 +546,7 @@
             this.chartEmployeePerformance.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chartEmployeePerformance.Location = new System.Drawing.Point(0, 16);
             this.chartEmployeePerformance.Name = "chartEmployeePerformance";
-            this.chartEmployeePerformance.Size = new System.Drawing.Size(489, 239);
+            this.chartEmployeePerformance.Size = new System.Drawing.Size(489, 238);
             this.chartEmployeePerformance.TabIndex = 2;
             this.chartEmployeePerformance.Text = "cartesianChart1";
             // 
@@ -569,7 +569,7 @@
             this.panelWrapperTopProducts.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelWrapperTopProducts.Location = new System.Drawing.Point(498, 3);
             this.panelWrapperTopProducts.Name = "panelWrapperTopProducts";
-            this.panelWrapperTopProducts.Size = new System.Drawing.Size(476, 254);
+            this.panelWrapperTopProducts.Size = new System.Drawing.Size(476, 253);
             this.panelWrapperTopProducts.TabIndex = 1;
             this.panelWrapperTopProducts.Paint += new System.Windows.Forms.PaintEventHandler(this.panelWrapperTopProducts_Paint);
             // 
@@ -578,7 +578,7 @@
             this.chartTopProducts.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chartTopProducts.Location = new System.Drawing.Point(0, 16);
             this.chartTopProducts.Name = "chartTopProducts";
-            this.chartTopProducts.Size = new System.Drawing.Size(476, 238);
+            this.chartTopProducts.Size = new System.Drawing.Size(476, 237);
             this.chartTopProducts.TabIndex = 2;
             this.chartTopProducts.Text = "cartesianChart1";
             // 
@@ -601,7 +601,7 @@
             this.panelWrapperRevenueTime.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelWrapperRevenueTime.Location = new System.Drawing.Point(3, 3);
             this.panelWrapperRevenueTime.Name = "panelWrapperRevenueTime";
-            this.panelWrapperRevenueTime.Size = new System.Drawing.Size(489, 254);
+            this.panelWrapperRevenueTime.Size = new System.Drawing.Size(489, 253);
             this.panelWrapperRevenueTime.TabIndex = 0;
             // 
             // chartRevenueOverTime
@@ -609,7 +609,7 @@
             this.chartRevenueOverTime.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chartRevenueOverTime.Location = new System.Drawing.Point(0, 16);
             this.chartRevenueOverTime.Name = "chartRevenueOverTime";
-            this.chartRevenueOverTime.Size = new System.Drawing.Size(489, 238);
+            this.chartRevenueOverTime.Size = new System.Drawing.Size(489, 237);
             this.chartRevenueOverTime.TabIndex = 1;
             this.chartRevenueOverTime.Text = "cartesianChart1";
             // 
@@ -630,10 +630,10 @@
             this.tpQuickView.BackColor = System.Drawing.Color.WhiteSmoke;
             this.tpQuickView.Controls.Add(this.groupBox5);
             this.tpQuickView.Controls.Add(this.groupBox4);
-            this.tpQuickView.Location = new System.Drawing.Point(4, 27);
+            this.tpQuickView.Location = new System.Drawing.Point(4, 29);
             this.tpQuickView.Margin = new System.Windows.Forms.Padding(4);
             this.tpQuickView.Name = "tpQuickView";
-            this.tpQuickView.Size = new System.Drawing.Size(985, 529);
+            this.tpQuickView.Size = new System.Drawing.Size(985, 527);
             this.tpQuickView.TabIndex = 2;
             this.tpQuickView.Text = "Quick View/ Alert Section";
             // 
@@ -877,7 +877,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGray;
-            this.ClientSize = new System.Drawing.Size(1350, 674);
+            this.ClientSize = new System.Drawing.Size(1350, 676);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));

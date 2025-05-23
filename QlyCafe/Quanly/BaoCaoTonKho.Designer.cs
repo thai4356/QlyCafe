@@ -29,49 +29,49 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnXuatExcel = new System.Windows.Forms.Button();
+            this.txtNguongSapHet = new System.Windows.Forms.TextBox();
+            this.btnLamMoiDuLieu = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnApDungLoc = new System.Windows.Forms.Button();
             this.cboLoaiSanPhamFilter = new System.Windows.Forms.ComboBox();
             this.chkHienThiHangSapHet = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtNguongSapHet = new System.Windows.Forms.TextBox();
-            this.btnApDungLoc = new System.Windows.Forms.Button();
-            this.btnLamMoiDuLieu = new System.Windows.Forms.Button();
-            this.btnXuatExcel = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panelBaoCao = new System.Windows.Forms.Panel();
             this.tabCtrlBaoCaoTonKho = new System.Windows.Forms.TabControl();
             this.tpChiTiettonKho = new System.Windows.Forms.TabPage();
-            this.tpCharts = new System.Windows.Forms.TabPage();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dgvBaoCaoTonKho = new System.Windows.Forms.DataGridView();
             this.panelTongKetChiTiet = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.lblTongSoMatHang = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.lblTongGiaTriTonKho = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.tpCharts = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.panelBieuDoTron = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
             this.panelBieuDoCot = new System.Windows.Forms.Panel();
-            this.label6 = new System.Windows.Forms.Label();
             this.chartTopSPGiaTriTon = new LiveCharts.WinForms.CartesianChart();
+            this.label6 = new System.Windows.Forms.Label();
+            this.panelBieuDoTron = new System.Windows.Forms.Panel();
             this.pieChartGiaTriTheoLoai = new LiveCharts.WinForms.PieChart();
+            this.label5 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panelBaoCao.SuspendLayout();
             this.tabCtrlBaoCaoTonKho.SuspendLayout();
             this.tpChiTiettonKho.SuspendLayout();
-            this.tpCharts.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBaoCaoTonKho)).BeginInit();
             this.panelTongKetChiTiet.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.tpCharts.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            this.panelBieuDoTron.SuspendLayout();
             this.panelBieuDoCot.SuspendLayout();
+            this.panelBieuDoTron.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -83,6 +83,51 @@
             this.panel1.Size = new System.Drawing.Size(1173, 155);
             this.panel1.TabIndex = 0;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.btnXuatExcel);
+            this.groupBox1.Controls.Add(this.txtNguongSapHet);
+            this.groupBox1.Controls.Add(this.btnLamMoiDuLieu);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.btnApDungLoc);
+            this.groupBox1.Controls.Add(this.cboLoaiSanPhamFilter);
+            this.groupBox1.Controls.Add(this.chkHienThiHangSapHet);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox1.Location = new System.Drawing.Point(0, 0);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(1173, 155);
+            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Lọc và thao tác";
+            // 
+            // btnXuatExcel
+            // 
+            this.btnXuatExcel.Location = new System.Drawing.Point(715, 100);
+            this.btnXuatExcel.Name = "btnXuatExcel";
+            this.btnXuatExcel.Size = new System.Drawing.Size(137, 39);
+            this.btnXuatExcel.TabIndex = 7;
+            this.btnXuatExcel.Text = "Xuất Excel";
+            this.btnXuatExcel.UseVisualStyleBackColor = true;
+            this.btnXuatExcel.Click += new System.EventHandler(this.btnXuatExcel_Click);
+            // 
+            // txtNguongSapHet
+            // 
+            this.txtNguongSapHet.Location = new System.Drawing.Point(919, 41);
+            this.txtNguongSapHet.Name = "txtNguongSapHet";
+            this.txtNguongSapHet.Size = new System.Drawing.Size(175, 27);
+            this.txtNguongSapHet.TabIndex = 4;
+            // 
+            // btnLamMoiDuLieu
+            // 
+            this.btnLamMoiDuLieu.Location = new System.Drawing.Point(505, 100);
+            this.btnLamMoiDuLieu.Name = "btnLamMoiDuLieu";
+            this.btnLamMoiDuLieu.Size = new System.Drawing.Size(137, 39);
+            this.btnLamMoiDuLieu.TabIndex = 6;
+            this.btnLamMoiDuLieu.Text = "Làm mới";
+            this.btnLamMoiDuLieu.UseVisualStyleBackColor = true;
+            this.btnLamMoiDuLieu.Click += new System.EventHandler(this.btnLamMoiDuLieu_Click);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -91,6 +136,16 @@
             this.label1.Size = new System.Drawing.Size(138, 20);
             this.label1.TabIndex = 0;
             this.label1.Text = "Lọc theo Loại SP";
+            // 
+            // btnApDungLoc
+            // 
+            this.btnApDungLoc.Location = new System.Drawing.Point(292, 100);
+            this.btnApDungLoc.Name = "btnApDungLoc";
+            this.btnApDungLoc.Size = new System.Drawing.Size(137, 39);
+            this.btnApDungLoc.TabIndex = 5;
+            this.btnApDungLoc.Text = "Áp dụng lọc";
+            this.btnApDungLoc.UseVisualStyleBackColor = true;
+            this.btnApDungLoc.Click += new System.EventHandler(this.btnApDungLoc_Click);
             // 
             // cboLoaiSanPhamFilter
             // 
@@ -120,58 +175,6 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Ngưỡng Sắp hết";
             // 
-            // txtNguongSapHet
-            // 
-            this.txtNguongSapHet.Location = new System.Drawing.Point(919, 41);
-            this.txtNguongSapHet.Name = "txtNguongSapHet";
-            this.txtNguongSapHet.Size = new System.Drawing.Size(175, 27);
-            this.txtNguongSapHet.TabIndex = 4;
-            // 
-            // btnApDungLoc
-            // 
-            this.btnApDungLoc.Location = new System.Drawing.Point(292, 100);
-            this.btnApDungLoc.Name = "btnApDungLoc";
-            this.btnApDungLoc.Size = new System.Drawing.Size(137, 39);
-            this.btnApDungLoc.TabIndex = 5;
-            this.btnApDungLoc.Text = "Áp dụng lọc";
-            this.btnApDungLoc.UseVisualStyleBackColor = true;
-            // 
-            // btnLamMoiDuLieu
-            // 
-            this.btnLamMoiDuLieu.Location = new System.Drawing.Point(505, 100);
-            this.btnLamMoiDuLieu.Name = "btnLamMoiDuLieu";
-            this.btnLamMoiDuLieu.Size = new System.Drawing.Size(137, 39);
-            this.btnLamMoiDuLieu.TabIndex = 6;
-            this.btnLamMoiDuLieu.Text = "Làm mới";
-            this.btnLamMoiDuLieu.UseVisualStyleBackColor = true;
-            // 
-            // btnXuatExcel
-            // 
-            this.btnXuatExcel.Location = new System.Drawing.Point(715, 100);
-            this.btnXuatExcel.Name = "btnXuatExcel";
-            this.btnXuatExcel.Size = new System.Drawing.Size(137, 39);
-            this.btnXuatExcel.TabIndex = 7;
-            this.btnXuatExcel.Text = "Xuất Excel";
-            this.btnXuatExcel.UseVisualStyleBackColor = true;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.btnXuatExcel);
-            this.groupBox1.Controls.Add(this.txtNguongSapHet);
-            this.groupBox1.Controls.Add(this.btnLamMoiDuLieu);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.btnApDungLoc);
-            this.groupBox1.Controls.Add(this.cboLoaiSanPhamFilter);
-            this.groupBox1.Controls.Add(this.chkHienThiHangSapHet);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Location = new System.Drawing.Point(0, 0);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1173, 155);
-            this.groupBox1.TabIndex = 1;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Lọc và thao tác";
-            // 
             // panelBaoCao
             // 
             this.panelBaoCao.Controls.Add(this.tabCtrlBaoCaoTonKho);
@@ -198,21 +201,10 @@
             this.tpChiTiettonKho.Location = new System.Drawing.Point(4, 29);
             this.tpChiTiettonKho.Name = "tpChiTiettonKho";
             this.tpChiTiettonKho.Padding = new System.Windows.Forms.Padding(3);
-            this.tpChiTiettonKho.Size = new System.Drawing.Size(1201, 517);
+            this.tpChiTiettonKho.Size = new System.Drawing.Size(1165, 520);
             this.tpChiTiettonKho.TabIndex = 0;
             this.tpChiTiettonKho.Text = "Báo cáo chi tiết";
             this.tpChiTiettonKho.UseVisualStyleBackColor = true;
-            // 
-            // tpCharts
-            // 
-            this.tpCharts.Controls.Add(this.tableLayoutPanel1);
-            this.tpCharts.Location = new System.Drawing.Point(4, 29);
-            this.tpCharts.Name = "tpCharts";
-            this.tpCharts.Padding = new System.Windows.Forms.Padding(3);
-            this.tpCharts.Size = new System.Drawing.Size(1165, 520);
-            this.tpCharts.TabIndex = 1;
-            this.tpCharts.Text = "Biểu đồ phân tích";
-            this.tpCharts.UseVisualStyleBackColor = true;
             // 
             // flowLayoutPanel1
             // 
@@ -222,7 +214,7 @@
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1195, 511);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1159, 514);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // groupBox2
@@ -250,41 +242,13 @@
             // 
             // panelTongKetChiTiet
             // 
+            this.panelTongKetChiTiet.BackColor = System.Drawing.Color.SkyBlue;
             this.panelTongKetChiTiet.Controls.Add(this.lblTongSoMatHang);
             this.panelTongKetChiTiet.Controls.Add(this.label3);
             this.panelTongKetChiTiet.Location = new System.Drawing.Point(3, 223);
             this.panelTongKetChiTiet.Name = "panelTongKetChiTiet";
-            this.panelTongKetChiTiet.Size = new System.Drawing.Size(1184, 116);
+            this.panelTongKetChiTiet.Size = new System.Drawing.Size(1151, 116);
             this.panelTongKetChiTiet.TabIndex = 2;
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.lblTongGiaTriTonKho);
-            this.panel2.Controls.Add(this.label4);
-            this.panel2.Location = new System.Drawing.Point(3, 345);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1184, 116);
-            this.panel2.TabIndex = 3;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(46, 37);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(346, 42);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "Tổng số mặt hàng:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(46, 38);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(376, 42);
-            this.label4.TabIndex = 2;
-            this.label4.Text = "Tổng Giá trị tồn kho:";
             // 
             // lblTongSoMatHang
             // 
@@ -296,6 +260,26 @@
             this.lblTongSoMatHang.TabIndex = 2;
             this.lblTongSoMatHang.Text = "Giá trị";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(46, 37);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(419, 42);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "Tổng số loại mặt hàng:";
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.panel2.Controls.Add(this.lblTongGiaTriTonKho);
+            this.panel2.Controls.Add(this.label4);
+            this.panel2.Location = new System.Drawing.Point(3, 345);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(1151, 116);
+            this.panel2.TabIndex = 3;
+            // 
             // lblTongGiaTriTonKho
             // 
             this.lblTongGiaTriTonKho.AutoSize = true;
@@ -305,6 +289,27 @@
             this.lblTongGiaTriTonKho.Size = new System.Drawing.Size(123, 42);
             this.lblTongGiaTriTonKho.TabIndex = 3;
             this.lblTongGiaTriTonKho.Text = "Giá trị";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(46, 38);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(376, 42);
+            this.label4.TabIndex = 2;
+            this.label4.Text = "Tổng Giá trị tồn kho:";
+            // 
+            // tpCharts
+            // 
+            this.tpCharts.Controls.Add(this.tableLayoutPanel1);
+            this.tpCharts.Location = new System.Drawing.Point(4, 29);
+            this.tpCharts.Name = "tpCharts";
+            this.tpCharts.Padding = new System.Windows.Forms.Padding(3);
+            this.tpCharts.Size = new System.Drawing.Size(1165, 520);
+            this.tpCharts.TabIndex = 1;
+            this.tpCharts.Text = "Biểu đồ phân tích";
+            this.tpCharts.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel1
             // 
@@ -321,26 +326,6 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1159, 514);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // panelBieuDoTron
-            // 
-            this.panelBieuDoTron.Controls.Add(this.pieChartGiaTriTheoLoai);
-            this.panelBieuDoTron.Controls.Add(this.label5);
-            this.panelBieuDoTron.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelBieuDoTron.Location = new System.Drawing.Point(3, 3);
-            this.panelBieuDoTron.Name = "panelBieuDoTron";
-            this.panelBieuDoTron.Size = new System.Drawing.Size(561, 508);
-            this.panelBieuDoTron.TabIndex = 0;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label5.Location = new System.Drawing.Point(0, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(331, 20);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "Cơ cấu Giá trị Tồn kho theo Loại Sản phẩm";
-            // 
             // panelBieuDoCot
             // 
             this.panelBieuDoCot.Controls.Add(this.chartTopSPGiaTriTon);
@@ -350,6 +335,15 @@
             this.panelBieuDoCot.Name = "panelBieuDoCot";
             this.panelBieuDoCot.Size = new System.Drawing.Size(586, 508);
             this.panelBieuDoCot.TabIndex = 1;
+            // 
+            // chartTopSPGiaTriTon
+            // 
+            this.chartTopSPGiaTriTon.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chartTopSPGiaTriTon.Location = new System.Drawing.Point(0, 20);
+            this.chartTopSPGiaTriTon.Name = "chartTopSPGiaTriTon";
+            this.chartTopSPGiaTriTon.Size = new System.Drawing.Size(586, 488);
+            this.chartTopSPGiaTriTon.TabIndex = 2;
+            this.chartTopSPGiaTriTon.Text = "cartesianChart2";
             // 
             // label6
             // 
@@ -361,14 +355,15 @@
             this.label6.TabIndex = 0;
             this.label6.Text = "Top 5 SP giá trị tồn cao nhất";
             // 
-            // chartTopSPGiaTriTon
+            // panelBieuDoTron
             // 
-            this.chartTopSPGiaTriTon.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.chartTopSPGiaTriTon.Location = new System.Drawing.Point(0, 20);
-            this.chartTopSPGiaTriTon.Name = "chartTopSPGiaTriTon";
-            this.chartTopSPGiaTriTon.Size = new System.Drawing.Size(586, 488);
-            this.chartTopSPGiaTriTon.TabIndex = 2;
-            this.chartTopSPGiaTriTon.Text = "cartesianChart2";
+            this.panelBieuDoTron.Controls.Add(this.pieChartGiaTriTheoLoai);
+            this.panelBieuDoTron.Controls.Add(this.label5);
+            this.panelBieuDoTron.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelBieuDoTron.Location = new System.Drawing.Point(3, 3);
+            this.panelBieuDoTron.Name = "panelBieuDoTron";
+            this.panelBieuDoTron.Size = new System.Drawing.Size(561, 508);
+            this.panelBieuDoTron.TabIndex = 0;
             // 
             // pieChartGiaTriTheoLoai
             // 
@@ -379,6 +374,16 @@
             this.pieChartGiaTriTheoLoai.TabIndex = 1;
             this.pieChartGiaTriTheoLoai.Text = "pieChart1";
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label5.Location = new System.Drawing.Point(0, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(331, 20);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "Cơ cấu Giá trị Tồn kho theo Loại Sản phẩm";
+            // 
             // BaoCaoTonKho
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
@@ -387,16 +392,16 @@
             this.Controls.Add(this.panelBaoCao);
             this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "BaoCaoTonKho";
             this.Text = "BaoCaoTonKho";
+            this.Load += new System.EventHandler(this.BaoCaoTonKho_Load);
             this.panel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.panelBaoCao.ResumeLayout(false);
             this.tabCtrlBaoCaoTonKho.ResumeLayout(false);
             this.tpChiTiettonKho.ResumeLayout(false);
-            this.tpCharts.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvBaoCaoTonKho)).EndInit();
@@ -404,11 +409,12 @@
             this.panelTongKetChiTiet.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.tpCharts.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.panelBieuDoTron.ResumeLayout(false);
-            this.panelBieuDoTron.PerformLayout();
             this.panelBieuDoCot.ResumeLayout(false);
             this.panelBieuDoCot.PerformLayout();
+            this.panelBieuDoTron.ResumeLayout(false);
+            this.panelBieuDoTron.PerformLayout();
             this.ResumeLayout(false);
 
         }
