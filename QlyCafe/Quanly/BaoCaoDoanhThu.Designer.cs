@@ -30,6 +30,7 @@
         {
             this.panelFilters = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnLamMoi = new System.Windows.Forms.Button();
             this.btnInBaoCao = new System.Windows.Forms.Button();
             this.btnXuatExcel = new System.Windows.Forms.Button();
             this.btnXemBaoCao = new System.Windows.Forms.Button();
@@ -73,7 +74,6 @@
             this.cboLoaiBieuDo = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.btnLamMoi = new System.Windows.Forms.Button();
             this.panelFilters.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -126,6 +126,17 @@
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Lọc tùy chọn";
+            // 
+            // btnLamMoi
+            // 
+            this.btnLamMoi.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLamMoi.Location = new System.Drawing.Point(831, 72);
+            this.btnLamMoi.Margin = new System.Windows.Forms.Padding(4);
+            this.btnLamMoi.Name = "btnLamMoi";
+            this.btnLamMoi.Size = new System.Drawing.Size(150, 45);
+            this.btnLamMoi.TabIndex = 12;
+            this.btnLamMoi.Text = "Làm mới";
+            this.btnLamMoi.UseVisualStyleBackColor = true;
             // 
             // btnInBaoCao
             // 
@@ -578,10 +589,10 @@
             // 
             this.cboLoaiBieuDo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboLoaiBieuDo.FormattingEnabled = true;
-            this.cboLoaiBieuDo.Location = new System.Drawing.Point(361, 40);
+            this.cboLoaiBieuDo.Location = new System.Drawing.Point(249, 40);
             this.cboLoaiBieuDo.Margin = new System.Windows.Forms.Padding(4);
             this.cboLoaiBieuDo.Name = "cboLoaiBieuDo";
-            this.cboLoaiBieuDo.Size = new System.Drawing.Size(150, 28);
+            this.cboLoaiBieuDo.Size = new System.Drawing.Size(249, 28);
             this.cboLoaiBieuDo.TabIndex = 10;
             // 
             // label11
@@ -599,23 +610,12 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(225, 45);
+            this.label12.Location = new System.Drawing.Point(135, 44);
             this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(103, 20);
             this.label12.TabIndex = 8;
             this.label12.Text = "Loại Biểu đồ";
-            // 
-            // btnLamMoi
-            // 
-            this.btnLamMoi.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLamMoi.Location = new System.Drawing.Point(831, 72);
-            this.btnLamMoi.Margin = new System.Windows.Forms.Padding(4);
-            this.btnLamMoi.Name = "btnLamMoi";
-            this.btnLamMoi.Size = new System.Drawing.Size(150, 45);
-            this.btnLamMoi.TabIndex = 12;
-            this.btnLamMoi.Text = "Làm mới";
-            this.btnLamMoi.UseVisualStyleBackColor = true;
             // 
             // BaoCaoDoanhThu
             // 
