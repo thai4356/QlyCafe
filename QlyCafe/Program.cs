@@ -16,6 +16,9 @@ namespace QlyCafe
         [STAThread]
         static void Main()
         {
+            // ĐĂNG KÝ CODE PAGES ENCODING PROVIDER (THÊM DÒNG NÀY)
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
             // --- Thiết lập Encoding cho Console để hiển thị tiếng Việt ---
             Console.OutputEncoding = Encoding.UTF8;
             // ----------------------------------------------------------
@@ -31,11 +34,8 @@ namespace QlyCafe
         }
 
         static void test() {
-            //FormQuanLy form3 = new FormQuanLy();
-            //Application.Run(form3);
-
-            BaoCaoDoanhThu form4 = new BaoCaoDoanhThu();
-            Application.Run(form4);
+            BaoCaoDoanhThu form3 = new BaoCaoDoanhThu();
+            Application.Run(form3);
         }
     }
 }

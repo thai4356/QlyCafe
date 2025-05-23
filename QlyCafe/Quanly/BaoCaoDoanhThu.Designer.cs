@@ -31,7 +31,6 @@
             this.panelFilters = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnLamMoi = new System.Windows.Forms.Button();
-            this.btnInBaoCao = new System.Windows.Forms.Button();
             this.btnXuatExcel = new System.Windows.Forms.Button();
             this.btnXemBaoCao = new System.Windows.Forms.Button();
             this.cboSanPham = new System.Windows.Forms.ComboBox();
@@ -107,7 +106,6 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.btnLamMoi);
-            this.groupBox2.Controls.Add(this.btnInBaoCao);
             this.groupBox2.Controls.Add(this.btnXuatExcel);
             this.groupBox2.Controls.Add(this.btnXemBaoCao);
             this.groupBox2.Controls.Add(this.cboSanPham);
@@ -130,35 +128,26 @@
             // btnLamMoi
             // 
             this.btnLamMoi.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLamMoi.Location = new System.Drawing.Point(831, 72);
+            this.btnLamMoi.Location = new System.Drawing.Point(666, 74);
             this.btnLamMoi.Margin = new System.Windows.Forms.Padding(4);
             this.btnLamMoi.Name = "btnLamMoi";
             this.btnLamMoi.Size = new System.Drawing.Size(150, 45);
             this.btnLamMoi.TabIndex = 12;
             this.btnLamMoi.Text = "Làm mới";
             this.btnLamMoi.UseVisualStyleBackColor = true;
-            // 
-            // btnInBaoCao
-            // 
-            this.btnInBaoCao.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnInBaoCao.Location = new System.Drawing.Point(655, 72);
-            this.btnInBaoCao.Margin = new System.Windows.Forms.Padding(4);
-            this.btnInBaoCao.Name = "btnInBaoCao";
-            this.btnInBaoCao.Size = new System.Drawing.Size(150, 45);
-            this.btnInBaoCao.TabIndex = 11;
-            this.btnInBaoCao.Text = "In Báo Cáo";
-            this.btnInBaoCao.UseVisualStyleBackColor = true;
+            this.btnLamMoi.Click += new System.EventHandler(this.btnLamMoi_Click);
             // 
             // btnXuatExcel
             // 
             this.btnXuatExcel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnXuatExcel.Location = new System.Drawing.Point(461, 74);
+            this.btnXuatExcel.Location = new System.Drawing.Point(466, 74);
             this.btnXuatExcel.Margin = new System.Windows.Forms.Padding(4);
             this.btnXuatExcel.Name = "btnXuatExcel";
             this.btnXuatExcel.Size = new System.Drawing.Size(150, 45);
             this.btnXuatExcel.TabIndex = 10;
             this.btnXuatExcel.Text = "Xuất Excel";
             this.btnXuatExcel.UseVisualStyleBackColor = true;
+            this.btnXuatExcel.Click += new System.EventHandler(this.btnXuatExcel_Click);
             // 
             // btnXemBaoCao
             // 
@@ -673,7 +662,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox cboSanPham;
-        private System.Windows.Forms.Button btnInBaoCao;
         private System.Windows.Forms.Button btnXuatExcel;
         private System.Windows.Forms.Button btnXemBaoCao;
         private System.Windows.Forms.GroupBox groupBox3;

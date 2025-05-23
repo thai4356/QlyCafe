@@ -11,6 +11,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using LiveCharts.Wpf;
 using LiveCharts;
+using ClosedXML.Excel;
+
+
+using System.IO;
+using System.Drawing.Imaging; // Để làm việc với hình ảnh (biểu đồ)
+
 
 namespace QlyCafe.Quanly
 {
@@ -726,6 +732,178 @@ namespace QlyCafe.Quanly
                 chartRevenue.AxisX.Clear();
                 chartRevenue.AxisY.Clear();
             }
+        }
+
+        private void btnLamMoi_Click(object sender, EventArgs e)
+        {
+            // 1. Đặt lại các ComboBox lọc
+            if (cboNhanVien.Items.Count > 0)
+                cboNhanVien.SelectedIndex = 0; // "Tất cả nhân viên"
+
+            if (cboLoaiSanPham.Items.Count > 0)
+                cboLoaiSanPham.SelectedIndex = 0; // "Tất cả loại" 
+                                                  // Sự kiện CboLoaiSanPham_SelectedIndexChanged sẽ tự động gọi LoadSanPhamComboBox
+
+            // Nếu LoadSanPhamComboBox không tự động được gọi đúng cách hoặc bạn muốn chắc chắn:
+            // LoadSanPhamComboBox(); // Để reset cboSanPham về "Tất cả sản phẩm"
+            // Hoặc nếu cboSanPham không phụ thuộc vào cboLoaiSanPham một cách trực tiếp khi reset:
+            if (cboSanPham.Items.Count > 0)
+                cboSanPham.SelectedIndex = 0;
+
+
+            // 2. Đặt lại DateTimePicker
+            SetDefaultDates();
+
+            // 3. Đặt lại ComboBox của biểu đồ
+            if (cboLoaiBieuDo.Items.Count > 0)
+                cboLoaiBieuDo.SelectedIndex = 0;
+            if (cboHienThiTheo.Items.Count > 0)
+                cboHienThiTheo.SelectedIndex = 0;
+
+            // 4. Gọi lại hàm xem báo cáo để tải lại dữ liệu với bộ lọc mặc định
+            btnXemBaoCao_Click(this, EventArgs.Empty);
+        }
+
+        private void btnXuatExcel_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // 1. Lấy toàn bộ dữ liệu chi tiết (không áp dụng bộ lọc hiện tại trên form)
+                string sqlAllDetails = $@"
+                    SELECT 
+                        hdb.MaHDB AS [Mã HĐ],
+                        hdb.NgayBan AS [Ngày Bán],
+                        nv.TenNV AS [Nhân Viên],
+                        ISNULL(kh.tenKH, N'Khách vãng lai') AS [Khách Hàng],
+                        sp.TenSP AS [Sản Phẩm],
+                        l.TenLoai AS [Loại SP],
+                        ct.SoLuong AS [SL],
+                        (CASE WHEN ct.SoLuong <> 0 THEN ct.ThanhTien / ct.SoLuong ELSE 0 END) AS [Đơn Giá],
+                        ct.ThanhTien AS [Thành Tiền],
+                        ISNULL(km.TenKM, N'Không có') AS [Khuyến Mãi]
+                    FROM HoaDonBan hdb
+                    INNER JOIN ChiTietHDB ct ON hdb.MaHDB = ct.MaHDB
+                    INNER JOIN SanPham sp ON ct.MaSP = sp.MaSP
+                    INNER JOIN NhanVien nv ON hdb.MaNV = nv.MaNV
+                    LEFT JOIN KhachHang kh ON hdb.MaKH = kh.MaKH
+                    LEFT JOIN Loai l ON sp.MaLoai = l.MaLoai
+                    LEFT JOIN KhuyenMai km ON ct.MaKM = km.MaKM
+                    WHERE hdb.IsDeleted = 0 
+                    ORDER BY hdb.NgayBan DESC, hdb.MaHDB DESC, sp.TenSP ASC";
+
+                DataTable dtAllDetails = Function.GetDataToTable(sqlAllDetails);
+
+                if (dtAllDetails == null || dtAllDetails.Rows.Count == 0)
+                {
+                    MessageBox.Show("Không có dữ liệu để xuất.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                using (var workbook = new XLWorkbook())
+                {
+                    var worksheet = workbook.Worksheets.Add("ChiTietDoanhThu");
+
+                    // 3. Thêm tiêu đề báo cáo và thông tin chung
+                    worksheet.Cell("A1").Value = "BÁO CÁO CHI TIẾT DOANH THU";
+                    var titleCell = worksheet.Cell("A1");
+                    titleCell.Style.Font.Bold = true;
+                    titleCell.Style.Font.FontSize = 16;
+                    titleCell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    // Merge cho tiêu đề (điều chỉnh số cột nếu cần, ở đây giả sử là 10 cột dữ liệu)
+                    worksheet.Range(1, 1, 1, dtAllDetails.Columns.Count).Merge();
+
+
+                    worksheet.Cell("A2").Value = $"Ngày xuất báo cáo: {DateTime.Now:dd/MM/yyyy HH:mm:ss}";
+                    worksheet.Range(2, 1, 2, dtAllDetails.Columns.Count).Merge().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+
+                    int currentRow = 4; // Bắt đầu ghi header từ dòng 4
+
+                    // 4. Ghi Header từ DataTable vào Excel
+                    for (int i = 0; i < dtAllDetails.Columns.Count; i++)
+                    {
+                        worksheet.Cell(currentRow, i + 1).Value = dtAllDetails.Columns[i].ColumnName;
+                    }
+
+                    // Style đơn giản cho Header
+                    var headerRange = worksheet.Range(currentRow, 1, currentRow, dtAllDetails.Columns.Count);
+                    headerRange.Style.Font.Bold = true;
+                    headerRange.Style.Fill.SetBackgroundColor(XLColor.LightGray); // Màu nền xám nhạt
+                    headerRange.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    // Áp dụng border cho header
+                    headerRange.Style.Border.SetTopBorder(XLBorderStyleValues.Thin);
+                    headerRange.Style.Border.SetBottomBorder(XLBorderStyleValues.Thin);
+                    headerRange.Style.Border.SetLeftBorder(XLBorderStyleValues.Thin);
+                    headerRange.Style.Border.SetRightBorder(XLBorderStyleValues.Thin);
+
+
+                    // 5. Ghi dữ liệu từ DataTable vào Excel
+                    currentRow++;
+                    if (dtAllDetails.Rows.Count > 0) // Kiểm tra có dữ liệu trước khi chèn
+                    {
+                        worksheet.Cell(currentRow, 1).InsertData(dtAllDetails.AsEnumerable());
+                    }
+
+
+                    // 6. Định dạng cơ bản cho các cột số và ngày tháng
+                    if (dtAllDetails.Columns.Contains("Ngày Bán"))
+                        worksheet.Column("B").Style.DateFormat.Format = "dd/MM/yyyy HH:mm"; // Giả sử Ngày Bán ở cột B
+
+                    if (dtAllDetails.Columns.Contains("SL"))
+                        worksheet.Column("G").Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right; // Giả sử SL ở cột G
+
+                    if (dtAllDetails.Columns.Contains("Đơn Giá"))
+                    {
+                        worksheet.Column("H").Style.NumberFormat.Format = "#,##0"; // Giả sử Đơn Giá ở cột H
+                        worksheet.Column("H").Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
+                    }
+                    if (dtAllDetails.Columns.Contains("Thành Tiền"))
+                    {
+                        worksheet.Column("I").Style.NumberFormat.Format = "#,##0"; // Giả sử Thành Tiền ở cột I
+                        worksheet.Column("I").Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
+                    }
+
+                    // Áp dụng border cho toàn bộ vùng dữ liệu (bao gồm cả header đã style ở trên)
+                    if (dtAllDetails.Rows.Count > 0)
+                    {
+                        var allDataRange = worksheet.Range(4, 1, currentRow + dtAllDetails.Rows.Count - 1, dtAllDetails.Columns.Count);
+                        allDataRange.Style.Border.SetInsideBorder(XLBorderStyleValues.Thin);
+                        allDataRange.Style.Border.SetOutsideBorder(XLBorderStyleValues.Thin);
+                    }
+
+
+                    // 7. Tự động điều chỉnh độ rộng cột
+                    worksheet.Columns().AdjustToContents();
+                    // Hoặc đặt một vài độ rộng cụ thể nếu AdjustToContents không như ý
+                    if (worksheet.Column(1).CellsUsed().Any()) worksheet.Column(1).Width = 15; // Mã HĐ
+                    if (worksheet.Column(2).CellsUsed().Any()) worksheet.Column(2).Width = 18; // Ngày Bán
+                    if (worksheet.Column(5).CellsUsed().Any()) worksheet.Column(5).Width = 30; // Sản Phẩm
+                    // ... thêm cho các cột khác nếu cần
+
+
+                    // 8. Hiển thị SaveFileDialog
+                    using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+                    {
+                        saveFileDialog.Filter = "Excel Files|*.xlsx";
+                        saveFileDialog.Title = "Lưu Báo Cáo Doanh Thu";
+                        saveFileDialog.FileName = $"BaoCaoChiTietDoanhThu_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+
+                        if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                        {
+                            workbook.SaveAs(saveFileDialog.FileName);
+                            MessageBox.Show("Xuất báo cáo thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Có lỗi xảy ra khi xuất Excel: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnInBaoCao_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
