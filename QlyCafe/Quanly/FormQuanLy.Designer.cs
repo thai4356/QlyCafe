@@ -65,6 +65,19 @@
             this.lblSoMatHangHetHang = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tpChart = new System.Windows.Forms.TabPage();
+            this.panelCharts = new System.Windows.Forms.TableLayoutPanel();
+            this.panelWrapperCategoryRevenue = new System.Windows.Forms.Panel();
+            this.chartCategoryRevenue = new LiveCharts.WinForms.PieChart();
+            this.label10 = new System.Windows.Forms.Label();
+            this.panelWrapperEmployeePerf = new System.Windows.Forms.Panel();
+            this.chartEmployeePerformance = new LiveCharts.WinForms.CartesianChart();
+            this.label9 = new System.Windows.Forms.Label();
+            this.panelWrapperTopProducts = new System.Windows.Forms.Panel();
+            this.chartTopProducts = new LiveCharts.WinForms.CartesianChart();
+            this.label8 = new System.Windows.Forms.Label();
+            this.panelWrapperRevenueTime = new System.Windows.Forms.Panel();
+            this.chartRevenueOverTime = new LiveCharts.WinForms.CartesianChart();
+            this.label7 = new System.Windows.Forms.Label();
             this.tpQuickView = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.dvgSPSapHetHang = new System.Windows.Forms.DataGridView();
@@ -85,19 +98,6 @@
             this.btnTKHDN = new System.Windows.Forms.Button();
             this.btnBCDT = new System.Windows.Forms.Button();
             this.btnBCTK = new System.Windows.Forms.Button();
-            this.panelCharts = new System.Windows.Forms.TableLayoutPanel();
-            this.panelWrapperRevenueTime = new System.Windows.Forms.Panel();
-            this.panelWrapperTopProducts = new System.Windows.Forms.Panel();
-            this.panelWrapperEmployeePerf = new System.Windows.Forms.Panel();
-            this.panelWrapperCategoryRevenue = new System.Windows.Forms.Panel();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.chartRevenueOverTime = new LiveCharts.WinForms.CartesianChart();
-            this.chartTopProducts = new LiveCharts.WinForms.CartesianChart();
-            this.chartEmployeePerformance = new LiveCharts.WinForms.CartesianChart();
-            this.chartCategoryRevenue = new LiveCharts.WinForms.PieChart();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -110,6 +110,11 @@
             this.panelSanPhamBanChayNhatHomNay.SuspendLayout();
             this.panelSoMatHangSapHetHang.SuspendLayout();
             this.tpChart.SuspendLayout();
+            this.panelCharts.SuspendLayout();
+            this.panelWrapperCategoryRevenue.SuspendLayout();
+            this.panelWrapperEmployeePerf.SuspendLayout();
+            this.panelWrapperTopProducts.SuspendLayout();
+            this.panelWrapperRevenueTime.SuspendLayout();
             this.tpQuickView.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dvgSPSapHetHang)).BeginInit();
@@ -118,11 +123,6 @@
             this.groupBox2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
-            this.panelCharts.SuspendLayout();
-            this.panelWrapperRevenueTime.SuspendLayout();
-            this.panelWrapperTopProducts.SuspendLayout();
-            this.panelWrapperEmployeePerf.SuspendLayout();
-            this.panelWrapperCategoryRevenue.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -136,7 +136,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1350, 30);
+            this.menuStrip1.Size = new System.Drawing.Size(1350, 28);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -145,7 +145,7 @@
             this.mnuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuDangXuat});
             this.mnuFile.Name = "mnuFile";
-            this.mnuFile.Size = new System.Drawing.Size(46, 26);
+            this.mnuFile.Size = new System.Drawing.Size(46, 24);
             this.mnuFile.Text = "File";
             // 
             // mnuDangXuat
@@ -165,7 +165,7 @@
             this.mnuNhaCungCap,
             this.mnuTaiKhoan});
             this.mnuQuanLy.Name = "mnuQuanLy";
-            this.mnuQuanLy.Size = new System.Drawing.Size(75, 26);
+            this.mnuQuanLy.Size = new System.Drawing.Size(75, 24);
             this.mnuQuanLy.Text = "Quản Lý";
             // 
             // mnuHDBan
@@ -216,7 +216,7 @@
             this.mnuTKHDBan,
             this.mnuTKHDNhap});
             this.tìmKiếmToolStripMenuItem.Name = "tìmKiếmToolStripMenuItem";
-            this.tìmKiếmToolStripMenuItem.Size = new System.Drawing.Size(86, 26);
+            this.tìmKiếmToolStripMenuItem.Size = new System.Drawing.Size(86, 24);
             this.tìmKiếmToolStripMenuItem.Text = "Tìm Kiếm";
             // 
             // mnuTKHDBan
@@ -239,7 +239,7 @@
             this.mnuDoanhThu,
             this.mnuHangTonKho});
             this.mnuBaoCao.Name = "mnuBaoCao";
-            this.mnuBaoCao.Size = new System.Drawing.Size(79, 26);
+            this.mnuBaoCao.Size = new System.Drawing.Size(79, 24);
             this.mnuBaoCao.Text = "Báo Cáo";
             // 
             // mnuDoanhThu
@@ -307,6 +307,7 @@
             // 
             // panelKPI
             // 
+            this.panelKPI.BackColor = System.Drawing.Color.WhiteSmoke;
             this.panelKPI.Controls.Add(this.panelDoanhThuHomNay);
             this.panelKPI.Controls.Add(this.panelTongSoHoaDonHomNay);
             this.panelKPI.Controls.Add(this.panelSoBanDangPhucVu);
@@ -471,6 +472,7 @@
             // 
             // tpChart
             // 
+            this.tpChart.BackColor = System.Drawing.Color.WhiteSmoke;
             this.tpChart.Controls.Add(this.panelCharts);
             this.tpChart.Location = new System.Drawing.Point(4, 27);
             this.tpChart.Margin = new System.Windows.Forms.Padding(4);
@@ -479,10 +481,153 @@
             this.tpChart.Size = new System.Drawing.Size(985, 529);
             this.tpChart.TabIndex = 1;
             this.tpChart.Text = "Chart Section";
-            this.tpChart.UseVisualStyleBackColor = true;
+            // 
+            // panelCharts
+            // 
+            this.panelCharts.ColumnCount = 2;
+            this.panelCharts.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.74627F));
+            this.panelCharts.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.25373F));
+            this.panelCharts.Controls.Add(this.panelWrapperCategoryRevenue, 1, 1);
+            this.panelCharts.Controls.Add(this.panelWrapperEmployeePerf, 0, 1);
+            this.panelCharts.Controls.Add(this.panelWrapperTopProducts, 1, 0);
+            this.panelCharts.Controls.Add(this.panelWrapperRevenueTime, 0, 0);
+            this.panelCharts.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelCharts.Location = new System.Drawing.Point(4, 4);
+            this.panelCharts.Name = "panelCharts";
+            this.panelCharts.RowCount = 2;
+            this.panelCharts.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.panelCharts.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.panelCharts.Size = new System.Drawing.Size(977, 521);
+            this.panelCharts.TabIndex = 0;
+            // 
+            // panelWrapperCategoryRevenue
+            // 
+            this.panelWrapperCategoryRevenue.Controls.Add(this.chartCategoryRevenue);
+            this.panelWrapperCategoryRevenue.Controls.Add(this.label10);
+            this.panelWrapperCategoryRevenue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelWrapperCategoryRevenue.Location = new System.Drawing.Point(498, 263);
+            this.panelWrapperCategoryRevenue.Name = "panelWrapperCategoryRevenue";
+            this.panelWrapperCategoryRevenue.Size = new System.Drawing.Size(476, 255);
+            this.panelWrapperCategoryRevenue.TabIndex = 3;
+            // 
+            // chartCategoryRevenue
+            // 
+            this.chartCategoryRevenue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chartCategoryRevenue.Location = new System.Drawing.Point(0, 16);
+            this.chartCategoryRevenue.Name = "chartCategoryRevenue";
+            this.chartCategoryRevenue.Size = new System.Drawing.Size(476, 239);
+            this.chartCategoryRevenue.TabIndex = 3;
+            this.chartCategoryRevenue.Text = "pieChart1";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(0, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(317, 16);
+            this.label10.TabIndex = 2;
+            this.label10.Text = "Tỷ Lệ Doanh Thu Theo Loại Sản Phẩm (Tháng Này)";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panelWrapperEmployeePerf
+            // 
+            this.panelWrapperEmployeePerf.Controls.Add(this.chartEmployeePerformance);
+            this.panelWrapperEmployeePerf.Controls.Add(this.label9);
+            this.panelWrapperEmployeePerf.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelWrapperEmployeePerf.Location = new System.Drawing.Point(3, 263);
+            this.panelWrapperEmployeePerf.Name = "panelWrapperEmployeePerf";
+            this.panelWrapperEmployeePerf.Size = new System.Drawing.Size(489, 255);
+            this.panelWrapperEmployeePerf.TabIndex = 2;
+            // 
+            // chartEmployeePerformance
+            // 
+            this.chartEmployeePerformance.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chartEmployeePerformance.Location = new System.Drawing.Point(0, 16);
+            this.chartEmployeePerformance.Name = "chartEmployeePerformance";
+            this.chartEmployeePerformance.Size = new System.Drawing.Size(489, 239);
+            this.chartEmployeePerformance.TabIndex = 2;
+            this.chartEmployeePerformance.Text = "cartesianChart1";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(0, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(271, 16);
+            this.label9.TabIndex = 1;
+            this.label9.Text = "Hiệu Suất Bán Hàng Nhân Viên (Tháng Này)";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panelWrapperTopProducts
+            // 
+            this.panelWrapperTopProducts.Controls.Add(this.chartTopProducts);
+            this.panelWrapperTopProducts.Controls.Add(this.label8);
+            this.panelWrapperTopProducts.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelWrapperTopProducts.Location = new System.Drawing.Point(498, 3);
+            this.panelWrapperTopProducts.Name = "panelWrapperTopProducts";
+            this.panelWrapperTopProducts.Size = new System.Drawing.Size(476, 254);
+            this.panelWrapperTopProducts.TabIndex = 1;
+            this.panelWrapperTopProducts.Paint += new System.Windows.Forms.PaintEventHandler(this.panelWrapperTopProducts_Paint);
+            // 
+            // chartTopProducts
+            // 
+            this.chartTopProducts.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chartTopProducts.Location = new System.Drawing.Point(0, 16);
+            this.chartTopProducts.Name = "chartTopProducts";
+            this.chartTopProducts.Size = new System.Drawing.Size(476, 238);
+            this.chartTopProducts.TabIndex = 2;
+            this.chartTopProducts.Text = "cartesianChart1";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(0, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(277, 16);
+            this.label8.TabIndex = 1;
+            this.label8.Text = "Top 5 Sản Phẩm Bán Chạy Nhất (Tháng Này)";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panelWrapperRevenueTime
+            // 
+            this.panelWrapperRevenueTime.Controls.Add(this.chartRevenueOverTime);
+            this.panelWrapperRevenueTime.Controls.Add(this.label7);
+            this.panelWrapperRevenueTime.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelWrapperRevenueTime.Location = new System.Drawing.Point(3, 3);
+            this.panelWrapperRevenueTime.Name = "panelWrapperRevenueTime";
+            this.panelWrapperRevenueTime.Size = new System.Drawing.Size(489, 254);
+            this.panelWrapperRevenueTime.TabIndex = 0;
+            // 
+            // chartRevenueOverTime
+            // 
+            this.chartRevenueOverTime.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chartRevenueOverTime.Location = new System.Drawing.Point(0, 16);
+            this.chartRevenueOverTime.Name = "chartRevenueOverTime";
+            this.chartRevenueOverTime.Size = new System.Drawing.Size(489, 238);
+            this.chartRevenueOverTime.TabIndex = 1;
+            this.chartRevenueOverTime.Text = "cartesianChart1";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(0, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(251, 16);
+            this.label7.TabIndex = 0;
+            this.label7.Text = "Doanh Thu Theo Thời Gian (7 Ngày Qua)";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tpQuickView
             // 
+            this.tpQuickView.BackColor = System.Drawing.Color.WhiteSmoke;
             this.tpQuickView.Controls.Add(this.groupBox5);
             this.tpQuickView.Controls.Add(this.groupBox4);
             this.tpQuickView.Location = new System.Drawing.Point(4, 27);
@@ -491,7 +636,6 @@
             this.tpQuickView.Size = new System.Drawing.Size(985, 529);
             this.tpQuickView.TabIndex = 2;
             this.tpQuickView.Text = "Quick View/ Alert Section";
-            this.tpQuickView.UseVisualStyleBackColor = true;
             // 
             // groupBox5
             // 
@@ -500,7 +644,7 @@
             this.groupBox5.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox5.Size = new System.Drawing.Size(860, 261);
+            this.groupBox5.Size = new System.Drawing.Size(973, 259);
             this.groupBox5.TabIndex = 1;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Sản phẩm sắp hết hàng";
@@ -508,12 +652,13 @@
             // dvgSPSapHetHang
             // 
             this.dvgSPSapHetHang.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dvgSPSapHetHang.Location = new System.Drawing.Point(8, 23);
+            this.dvgSPSapHetHang.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dvgSPSapHetHang.Location = new System.Drawing.Point(4, 21);
             this.dvgSPSapHetHang.Margin = new System.Windows.Forms.Padding(4);
             this.dvgSPSapHetHang.Name = "dvgSPSapHetHang";
             this.dvgSPSapHetHang.RowHeadersWidth = 51;
             this.dvgSPSapHetHang.RowTemplate.Height = 24;
-            this.dvgSPSapHetHang.Size = new System.Drawing.Size(846, 223);
+            this.dvgSPSapHetHang.Size = new System.Drawing.Size(965, 234);
             this.dvgSPSapHetHang.TabIndex = 1;
             // 
             // groupBox4
@@ -523,7 +668,7 @@
             this.groupBox4.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox4.Size = new System.Drawing.Size(860, 254);
+            this.groupBox4.Size = new System.Drawing.Size(977, 254);
             this.groupBox4.TabIndex = 0;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Các hóa đơn bán gần đây";
@@ -531,16 +676,18 @@
             // dgvHDBanGanDay
             // 
             this.dgvHDBanGanDay.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvHDBanGanDay.Location = new System.Drawing.Point(8, 25);
+            this.dgvHDBanGanDay.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvHDBanGanDay.Location = new System.Drawing.Point(4, 21);
             this.dgvHDBanGanDay.Margin = new System.Windows.Forms.Padding(4);
             this.dgvHDBanGanDay.Name = "dgvHDBanGanDay";
             this.dgvHDBanGanDay.RowHeadersWidth = 51;
             this.dgvHDBanGanDay.RowTemplate.Height = 24;
-            this.dgvHDBanGanDay.Size = new System.Drawing.Size(846, 223);
+            this.dgvHDBanGanDay.Size = new System.Drawing.Size(969, 229);
             this.dgvHDBanGanDay.TabIndex = 0;
             // 
             // groupBox2
             // 
+            this.groupBox2.BackColor = System.Drawing.Color.Cornsilk;
             this.groupBox2.Controls.Add(this.panel1);
             this.groupBox2.Controls.Add(this.flowLayoutPanel1);
             this.groupBox2.Location = new System.Drawing.Point(8, 25);
@@ -590,13 +737,14 @@
             // 
             // btnThoat
             // 
+            this.btnThoat.BackColor = System.Drawing.Color.Orange;
             this.btnThoat.Location = new System.Drawing.Point(0, 129);
             this.btnThoat.Margin = new System.Windows.Forms.Padding(4);
             this.btnThoat.Name = "btnThoat";
             this.btnThoat.Size = new System.Drawing.Size(288, 37);
             this.btnThoat.TabIndex = 8;
             this.btnThoat.Text = "Thoát";
-            this.btnThoat.UseVisualStyleBackColor = true;
+            this.btnThoat.UseVisualStyleBackColor = false;
             this.btnThoat.Click += new System.EventHandler(this.btnThoat_Click);
             // 
             // label1
@@ -630,239 +778,105 @@
             // 
             // btnSP
             // 
+            this.btnSP.BackColor = System.Drawing.Color.Orange;
             this.btnSP.Location = new System.Drawing.Point(4, 4);
             this.btnSP.Margin = new System.Windows.Forms.Padding(4);
             this.btnSP.Name = "btnSP";
             this.btnSP.Size = new System.Drawing.Size(288, 37);
             this.btnSP.TabIndex = 2;
             this.btnSP.Text = "Quản Lý Sản Phẩm";
-            this.btnSP.UseVisualStyleBackColor = true;
+            this.btnSP.UseVisualStyleBackColor = false;
             this.btnSP.Click += new System.EventHandler(this.btnSP_Click);
             // 
             // btnKM
             // 
+            this.btnKM.BackColor = System.Drawing.Color.Orange;
             this.btnKM.Location = new System.Drawing.Point(4, 49);
             this.btnKM.Margin = new System.Windows.Forms.Padding(4);
             this.btnKM.Name = "btnKM";
             this.btnKM.Size = new System.Drawing.Size(288, 37);
             this.btnKM.TabIndex = 3;
             this.btnKM.Text = "Quản Lý Khuyến Mãi";
-            this.btnKM.UseVisualStyleBackColor = true;
+            this.btnKM.UseVisualStyleBackColor = false;
             this.btnKM.Click += new System.EventHandler(this.btnKM_Click);
             // 
             // btnNCC
             // 
+            this.btnNCC.BackColor = System.Drawing.Color.Orange;
             this.btnNCC.Location = new System.Drawing.Point(4, 94);
             this.btnNCC.Margin = new System.Windows.Forms.Padding(4);
             this.btnNCC.Name = "btnNCC";
             this.btnNCC.Size = new System.Drawing.Size(288, 37);
             this.btnNCC.TabIndex = 4;
             this.btnNCC.Text = "Quản Lý Nhà Cung Cấp";
-            this.btnNCC.UseVisualStyleBackColor = true;
+            this.btnNCC.UseVisualStyleBackColor = false;
             this.btnNCC.Click += new System.EventHandler(this.btnNCC_Click);
             // 
             // btnTK
             // 
+            this.btnTK.BackColor = System.Drawing.Color.Orange;
             this.btnTK.Location = new System.Drawing.Point(4, 139);
             this.btnTK.Margin = new System.Windows.Forms.Padding(4);
             this.btnTK.Name = "btnTK";
             this.btnTK.Size = new System.Drawing.Size(288, 37);
             this.btnTK.TabIndex = 5;
             this.btnTK.Text = "Quản Lý Tài Khoản";
-            this.btnTK.UseVisualStyleBackColor = true;
+            this.btnTK.UseVisualStyleBackColor = false;
             this.btnTK.Click += new System.EventHandler(this.btnTK_Click);
             // 
             // btnTKHDB
             // 
+            this.btnTKHDB.BackColor = System.Drawing.Color.Orange;
             this.btnTKHDB.Location = new System.Drawing.Point(4, 184);
             this.btnTKHDB.Margin = new System.Windows.Forms.Padding(4);
             this.btnTKHDB.Name = "btnTKHDB";
             this.btnTKHDB.Size = new System.Drawing.Size(288, 37);
             this.btnTKHDB.TabIndex = 6;
             this.btnTKHDB.Text = "Tìm Kiếm Hóa Đơn Bán";
-            this.btnTKHDB.UseVisualStyleBackColor = true;
+            this.btnTKHDB.UseVisualStyleBackColor = false;
             this.btnTKHDB.Click += new System.EventHandler(this.btnTKHDB_Click);
             // 
             // btnTKHDN
             // 
+            this.btnTKHDN.BackColor = System.Drawing.Color.Orange;
             this.btnTKHDN.Location = new System.Drawing.Point(4, 229);
             this.btnTKHDN.Margin = new System.Windows.Forms.Padding(4);
             this.btnTKHDN.Name = "btnTKHDN";
             this.btnTKHDN.Size = new System.Drawing.Size(288, 37);
             this.btnTKHDN.TabIndex = 7;
             this.btnTKHDN.Text = "Tìm Kiếm Hóa Đơn Nhập";
-            this.btnTKHDN.UseVisualStyleBackColor = true;
+            this.btnTKHDN.UseVisualStyleBackColor = false;
             this.btnTKHDN.Click += new System.EventHandler(this.btnTKHDN_Click);
             // 
             // btnBCDT
             // 
+            this.btnBCDT.BackColor = System.Drawing.Color.Orange;
             this.btnBCDT.Location = new System.Drawing.Point(4, 274);
             this.btnBCDT.Margin = new System.Windows.Forms.Padding(4);
             this.btnBCDT.Name = "btnBCDT";
             this.btnBCDT.Size = new System.Drawing.Size(288, 37);
             this.btnBCDT.TabIndex = 8;
             this.btnBCDT.Text = "Báo cáo doanh thu";
-            this.btnBCDT.UseVisualStyleBackColor = true;
+            this.btnBCDT.UseVisualStyleBackColor = false;
             this.btnBCDT.Click += new System.EventHandler(this.btnBCDT_Click);
             // 
             // btnBCTK
             // 
+            this.btnBCTK.BackColor = System.Drawing.Color.Orange;
             this.btnBCTK.Location = new System.Drawing.Point(4, 319);
             this.btnBCTK.Margin = new System.Windows.Forms.Padding(4);
             this.btnBCTK.Name = "btnBCTK";
             this.btnBCTK.Size = new System.Drawing.Size(288, 37);
             this.btnBCTK.TabIndex = 9;
             this.btnBCTK.Text = "Báo cáo tồn kho";
-            this.btnBCTK.UseVisualStyleBackColor = true;
+            this.btnBCTK.UseVisualStyleBackColor = false;
             this.btnBCTK.Click += new System.EventHandler(this.btnBCTK_Click);
-            // 
-            // panelCharts
-            // 
-            this.panelCharts.ColumnCount = 2;
-            this.panelCharts.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.74627F));
-            this.panelCharts.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.25373F));
-            this.panelCharts.Controls.Add(this.panelWrapperCategoryRevenue, 1, 1);
-            this.panelCharts.Controls.Add(this.panelWrapperEmployeePerf, 0, 1);
-            this.panelCharts.Controls.Add(this.panelWrapperTopProducts, 1, 0);
-            this.panelCharts.Controls.Add(this.panelWrapperRevenueTime, 0, 0);
-            this.panelCharts.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelCharts.Location = new System.Drawing.Point(4, 4);
-            this.panelCharts.Name = "panelCharts";
-            this.panelCharts.RowCount = 2;
-            this.panelCharts.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.panelCharts.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.panelCharts.Size = new System.Drawing.Size(977, 521);
-            this.panelCharts.TabIndex = 0;
-            // 
-            // panelWrapperRevenueTime
-            // 
-            this.panelWrapperRevenueTime.Controls.Add(this.chartRevenueOverTime);
-            this.panelWrapperRevenueTime.Controls.Add(this.label7);
-            this.panelWrapperRevenueTime.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelWrapperRevenueTime.Location = new System.Drawing.Point(3, 3);
-            this.panelWrapperRevenueTime.Name = "panelWrapperRevenueTime";
-            this.panelWrapperRevenueTime.Size = new System.Drawing.Size(489, 254);
-            this.panelWrapperRevenueTime.TabIndex = 0;
-            // 
-            // panelWrapperTopProducts
-            // 
-            this.panelWrapperTopProducts.Controls.Add(this.chartTopProducts);
-            this.panelWrapperTopProducts.Controls.Add(this.label8);
-            this.panelWrapperTopProducts.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelWrapperTopProducts.Location = new System.Drawing.Point(498, 3);
-            this.panelWrapperTopProducts.Name = "panelWrapperTopProducts";
-            this.panelWrapperTopProducts.Size = new System.Drawing.Size(476, 254);
-            this.panelWrapperTopProducts.TabIndex = 1;
-            this.panelWrapperTopProducts.Paint += new System.Windows.Forms.PaintEventHandler(this.panelWrapperTopProducts_Paint);
-            // 
-            // panelWrapperEmployeePerf
-            // 
-            this.panelWrapperEmployeePerf.Controls.Add(this.chartEmployeePerformance);
-            this.panelWrapperEmployeePerf.Controls.Add(this.label9);
-            this.panelWrapperEmployeePerf.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelWrapperEmployeePerf.Location = new System.Drawing.Point(3, 263);
-            this.panelWrapperEmployeePerf.Name = "panelWrapperEmployeePerf";
-            this.panelWrapperEmployeePerf.Size = new System.Drawing.Size(489, 255);
-            this.panelWrapperEmployeePerf.TabIndex = 2;
-            // 
-            // panelWrapperCategoryRevenue
-            // 
-            this.panelWrapperCategoryRevenue.Controls.Add(this.chartCategoryRevenue);
-            this.panelWrapperCategoryRevenue.Controls.Add(this.label10);
-            this.panelWrapperCategoryRevenue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelWrapperCategoryRevenue.Location = new System.Drawing.Point(498, 263);
-            this.panelWrapperCategoryRevenue.Name = "panelWrapperCategoryRevenue";
-            this.panelWrapperCategoryRevenue.Size = new System.Drawing.Size(476, 255);
-            this.panelWrapperCategoryRevenue.TabIndex = 3;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(0, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(251, 16);
-            this.label7.TabIndex = 0;
-            this.label7.Text = "Doanh Thu Theo Thời Gian (7 Ngày Qua)";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(0, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(277, 16);
-            this.label8.TabIndex = 1;
-            this.label8.Text = "Top 5 Sản Phẩm Bán Chạy Nhất (Tháng Này)";
-            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(0, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(271, 16);
-            this.label9.TabIndex = 1;
-            this.label9.Text = "Hiệu Suất Bán Hàng Nhân Viên (Tháng Này)";
-            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(0, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(317, 16);
-            this.label10.TabIndex = 2;
-            this.label10.Text = "Tỷ Lệ Doanh Thu Theo Loại Sản Phẩm (Tháng Này)";
-            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // chartRevenueOverTime
-            // 
-            this.chartRevenueOverTime.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.chartRevenueOverTime.Location = new System.Drawing.Point(0, 16);
-            this.chartRevenueOverTime.Name = "chartRevenueOverTime";
-            this.chartRevenueOverTime.Size = new System.Drawing.Size(489, 238);
-            this.chartRevenueOverTime.TabIndex = 1;
-            this.chartRevenueOverTime.Text = "cartesianChart1";
-            // 
-            // chartTopProducts
-            // 
-            this.chartTopProducts.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.chartTopProducts.Location = new System.Drawing.Point(0, 16);
-            this.chartTopProducts.Name = "chartTopProducts";
-            this.chartTopProducts.Size = new System.Drawing.Size(476, 238);
-            this.chartTopProducts.TabIndex = 2;
-            this.chartTopProducts.Text = "cartesianChart1";
-            // 
-            // chartEmployeePerformance
-            // 
-            this.chartEmployeePerformance.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.chartEmployeePerformance.Location = new System.Drawing.Point(0, 16);
-            this.chartEmployeePerformance.Name = "chartEmployeePerformance";
-            this.chartEmployeePerformance.Size = new System.Drawing.Size(489, 239);
-            this.chartEmployeePerformance.TabIndex = 2;
-            this.chartEmployeePerformance.Text = "cartesianChart1";
-            // 
-            // chartCategoryRevenue
-            // 
-            this.chartCategoryRevenue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.chartCategoryRevenue.Location = new System.Drawing.Point(0, 16);
-            this.chartCategoryRevenue.Name = "chartCategoryRevenue";
-            this.chartCategoryRevenue.Size = new System.Drawing.Size(476, 239);
-            this.chartCategoryRevenue.TabIndex = 3;
-            this.chartCategoryRevenue.Text = "pieChart1";
             // 
             // FormQuanLy
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.LightGray;
             this.ClientSize = new System.Drawing.Size(1350, 674);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.menuStrip1);
@@ -889,6 +903,15 @@
             this.panelSoMatHangSapHetHang.ResumeLayout(false);
             this.panelSoMatHangSapHetHang.PerformLayout();
             this.tpChart.ResumeLayout(false);
+            this.panelCharts.ResumeLayout(false);
+            this.panelWrapperCategoryRevenue.ResumeLayout(false);
+            this.panelWrapperCategoryRevenue.PerformLayout();
+            this.panelWrapperEmployeePerf.ResumeLayout(false);
+            this.panelWrapperEmployeePerf.PerformLayout();
+            this.panelWrapperTopProducts.ResumeLayout(false);
+            this.panelWrapperTopProducts.PerformLayout();
+            this.panelWrapperRevenueTime.ResumeLayout(false);
+            this.panelWrapperRevenueTime.PerformLayout();
             this.tpQuickView.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dvgSPSapHetHang)).EndInit();
@@ -898,15 +921,6 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
-            this.panelCharts.ResumeLayout(false);
-            this.panelWrapperRevenueTime.ResumeLayout(false);
-            this.panelWrapperRevenueTime.PerformLayout();
-            this.panelWrapperTopProducts.ResumeLayout(false);
-            this.panelWrapperTopProducts.PerformLayout();
-            this.panelWrapperEmployeePerf.ResumeLayout(false);
-            this.panelWrapperEmployeePerf.PerformLayout();
-            this.panelWrapperCategoryRevenue.ResumeLayout(false);
-            this.panelWrapperCategoryRevenue.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

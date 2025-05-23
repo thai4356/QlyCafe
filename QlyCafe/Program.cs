@@ -31,11 +31,11 @@ namespace QlyCafe
         }
 
         static void test() {
+            //FormQuanLy form3 = new FormQuanLy();
+            //Application.Run(form3);
 
-
-            FormQuanLy form3 = new FormQuanLy();
-            Application.Run(form3);
-
+            BaoCaoDoanhThu form4 = new BaoCaoDoanhThu();
+            Application.Run(form4);
         }
     }
 }
