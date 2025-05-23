@@ -191,6 +191,12 @@
     <Compile Include="Quanly\BaoCaoDoanhThu.Designer.cs">
       <DependentUpon>BaoCaoDoanhThu.cs</DependentUpon>
     </Compile>
+    <Compile Include="Quanly\BaoCaoTonKho.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Quanly\BaoCaoTonKho.Designer.cs">
+      <DependentUpon>BaoCaoTonKho.cs</DependentUpon>
+    </Compile>
     <Compile Include="Quanly\FormQuanLy.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -284,6 +290,9 @@
     </Compile>
     <EmbeddedResource Include="Quanly\BaoCaoDoanhThu.resx">
       <DependentUpon>BaoCaoDoanhThu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Quanly\BaoCaoTonKho.resx">
+      <DependentUpon>BaoCaoTonKho.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Quanly\FormQuanLy.resx">
       <DependentUpon>FormQuanLy.cs</DependentUpon>

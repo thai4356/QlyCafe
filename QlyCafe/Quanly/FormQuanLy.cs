@@ -532,12 +532,14 @@ namespace QlyCafe.Quanly
 
         private void mnuDoanhThu_Click(object sender, EventArgs e)
         {
-
+            BaoCaoDoanhThu form = new BaoCaoDoanhThu();
+            form.Show();
         }
 
         private void mnuHangTonKho_Click(object sender, EventArgs e)
         {
-
+            BaoCaoTonKho form = new BaoCaoTonKho();
+            form.Show();
         }
 
         private void btnSP_Click(object sender, EventArgs e)
@@ -584,7 +586,8 @@ namespace QlyCafe.Quanly
 
         private void btnBCTK_Click(object sender, EventArgs e)
         {
-
+            BaoCaoTonKho form = new BaoCaoTonKho();
+            form.Show();
         }
 
         private void btnThoat_Click(object sender, EventArgs e)
