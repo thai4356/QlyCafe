@@ -578,7 +578,8 @@ namespace QlyCafe.Quanly
 
         private void btnBCDT_Click(object sender, EventArgs e)
         {
-
+            BaoCaoDoanhThu form = new BaoCaoDoanhThu();
+            form.Show();
         }
 
         private void btnBCTK_Click(object sender, EventArgs e)
