@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using LiveCharts.Wpf;
+using LiveCharts;
 
 namespace QlyCafe.Quanly
 {
@@ -29,6 +31,7 @@ namespace QlyCafe.Quanly
         private void FormQuanLy_Load(object sender, EventArgs e)
         {
             LoadKPIs();
+            LoadAllCharts();
             // Bạn có thể thêm Timer ở đây để refresh KPIs định kỳ nếu muốn
             Timer kpiTimer = new Timer();
             kpiTimer.Interval = 60000; // Ví dụ: cập nhật mỗi 60 giây
@@ -39,6 +42,7 @@ namespace QlyCafe.Quanly
         private void KpiTimer_Tick(object sender, EventArgs e)
         {
             LoadKPIs();
+            LoadAllCharts();
         }
 
         private void LoadKPIs()
@@ -124,7 +128,213 @@ namespace QlyCafe.Quanly
             }
         }
 
+        private void LoadAllCharts()
+        {
+            LoadRevenueOverTimeChart();
+            LoadTopProductsChart();
+            LoadEmployeePerformanceChart();
+            LoadCategoryRevenueChart();
+        }
 
+        // --- BIỂU ĐỒ 1: DOANH THU THEO THỜI GIAN (LINE CHART) ---
+        private void LoadRevenueOverTimeChart()
+        {
+            // Tham chiếu trực tiếp đến control chart đã đặt tên trong Designer
+            LiveCharts.WinForms.CartesianChart currentChart = this.chartRevenueOverTime;
+            if (currentChart != null)
+            {
+                try
+                {
+                    string sql = @"
+                        SELECT CONVERT(date, NgayBan) AS Ngay, SUM(TongTien) AS TongDoanhThu
+                        FROM HoaDonBan
+                        WHERE IsDeleted = 0 AND NgayBan >= DATEADD(day, -6, CONVERT(date, GETDATE())) 
+                              AND NgayBan < DATEADD(day, 1, CONVERT(date, GETDATE()))
+                        GROUP BY CONVERT(date, NgayBan)
+                        ORDER BY Ngay ASC"; //
+                    DataTable dt = Function.GetDataToTable(sql);
+
+                    var dayLabels = new List<string>();
+                    var revenueValues = new ChartValues<decimal>();
+
+                    // Tạo dữ liệu cho 7 ngày, kể cả ngày không có doanh thu
+                    Dictionary<DateTime, decimal> dailyRevenue = new Dictionary<DateTime, decimal>();
+                    for (int i = 0; i <= 6; i++)
+                    {
+                        dailyRevenue[DateTime.Today.AddDays(-i)] = 0;
+                    }
+
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            dailyRevenue[Convert.ToDateTime(row["Ngay"])] = Convert.ToDecimal(row["TongDoanhThu"]);
+                        }
+                    }
+
+                    foreach (var item in dailyRevenue.OrderBy(kvp => kvp.Key))
+                    {
+                        dayLabels.Add(item.Key.ToString("dd/MM"));
+                        revenueValues.Add(item.Value);
+                    }
+
+                    currentChart.Series = new SeriesCollection
+                    {
+                        new LineSeries
+                        {
+                            Title = "Doanh thu",
+                            Values = revenueValues,
+                            DataLabels = true,
+                            PointGeometrySize = 10
+                        }
+                    };
+                    currentChart.AxisX.Clear();
+                    currentChart.AxisX.Add(new Axis { Title = "Ngày", Labels = dayLabels, Separator = new Separator { Step = 1, IsEnabled = false } });
+                    currentChart.AxisY.Clear();
+                    currentChart.AxisY.Add(new Axis { Title = "Doanh thu (VNĐ)", LabelFormatter = value => value.ToString("N0") });
+                }
+                catch (Exception ex) { Console.WriteLine("Error LoadRevenueOverTimeChart: " + ex.Message); currentChart.Series.Clear(); }
+            }
+        }
+
+        // --- BIỂU ĐỒ 2: TOP 5 SẢN PHẨM BÁN CHẠY (HORIZONTAL BAR CHART) ---
+        private void LoadTopProductsChart()
+        {
+            LiveCharts.WinForms.CartesianChart currentChart = this.chartTopProducts;
+            if (currentChart != null)
+            {
+                try
+                {
+                    string sql = @"
+                        SELECT TOP 5 sp.TenSP, SUM(ct.ThanhTien) AS TongDoanhThuSP
+                        FROM ChiTietHDB ct
+                        JOIN SanPham sp ON ct.MaSP = sp.MaSP
+                        JOIN HoaDonBan hdb ON ct.MaHDB = hdb.MaHDB
+                        WHERE hdb.IsDeleted = 0 AND hdb.NgayBan >= DATEADD(month, -1, CONVERT(date, GETDATE())) -- Doanh thu trong vòng 1 tháng gần nhất
+                        GROUP BY sp.MaSP, sp.TenSP
+                        HAVING SUM(ct.ThanhTien) > 0
+                        ORDER BY TongDoanhThuSP DESC"; //
+                    DataTable dt = Function.GetDataToTable(sql);
+
+                    var productLabels = new List<string>();
+                    var productValues = new ChartValues<decimal>();
+
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            productLabels.Add(row["TenSP"].ToString());
+                            productValues.Add(Convert.ToDecimal(row["TongDoanhThuSP"]));
+                        }
+                    }
+
+                    currentChart.Series = new SeriesCollection
+                    {
+                        new RowSeries
+                        {
+                            Title = "Doanh thu",
+                            Values = productValues,
+                            DataLabels = true
+                        }
+                    };
+                    currentChart.AxisY.Clear();
+                    currentChart.AxisY.Add(new Axis { Labels = productLabels });
+                    currentChart.AxisX.Clear();
+                    currentChart.AxisX.Add(new Axis { Title = "Doanh thu (VNĐ)", LabelFormatter = value => value.ToString("N0"), MinValue = 0 });
+                }
+                catch (Exception ex) { Console.WriteLine("Error LoadTopProductsChart: " + ex.Message); currentChart.Series.Clear(); }
+            }
+        }
+
+        // --- BIỂU ĐỒ 3: HIỆU SUẤT NHÂN VIÊN (COLUMN CHART) ---
+        private void LoadEmployeePerformanceChart()
+        {
+            LiveCharts.WinForms.CartesianChart currentChart = this.chartEmployeePerformance;
+            if (currentChart != null)
+            {
+                try
+                {
+                    string sql = @"
+                        SELECT nv.TenNV, SUM(hdb.TongTien) AS TongDoanhThuNV
+                        FROM HoaDonBan hdb
+                        JOIN NhanVien nv ON hdb.MaNV = nv.MaNV
+                        WHERE hdb.IsDeleted = 0 AND hdb.NgayBan >= DATEADD(month, -1, CONVERT(date, GETDATE())) -- Doanh thu trong vòng 1 tháng gần nhất
+                        GROUP BY nv.MaNV, nv.TenNV
+                        HAVING SUM(hdb.TongTien) > 0
+                        ORDER BY TongDoanhThuNV DESC"; //
+                    DataTable dt = Function.GetDataToTable(sql);
+
+                    var employeeLabels = new List<string>();
+                    var employeeSalesValues = new ChartValues<decimal>();
+
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            employeeLabels.Add(row["TenNV"].ToString());
+                            employeeSalesValues.Add(Convert.ToDecimal(row["TongDoanhThuNV"]));
+                        }
+                    }
+
+                    currentChart.Series = new SeriesCollection
+                    {
+                        new ColumnSeries
+                        {
+                            Title = "Doanh thu",
+                            Values = employeeSalesValues,
+                            DataLabels = true
+                        }
+                    };
+                    currentChart.AxisX.Clear();
+                    currentChart.AxisX.Add(new Axis { Title = "Nhân viên", Labels = employeeLabels, LabelsRotation = 10, Separator = new Separator { Step = 1, IsEnabled = false } });
+                    currentChart.AxisY.Clear();
+                    currentChart.AxisY.Add(new Axis { Title = "Doanh thu (VNĐ)", LabelFormatter = value => value.ToString("N0"), MinValue = 0 });
+                }
+                catch (Exception ex) { Console.WriteLine("Error LoadEmployeePerformanceChart: " + ex.Message); currentChart.Series.Clear(); }
+            }
+        }
+
+        // --- BIỂU ĐỒ 4: TỶ LỆ DOANH THU THEO LOẠI SẢN PHẨM (PIE CHART) ---
+        private void LoadCategoryRevenueChart()
+        {
+            LiveCharts.WinForms.PieChart currentChart = this.chartCategoryRevenue;
+            if (currentChart != null)
+            {
+                try
+                {
+                    string sql = @"
+                        SELECT l.TenLoai, SUM(ct.ThanhTien) AS DoanhThuLoai
+                        FROM ChiTietHDB ct
+                        JOIN SanPham sp ON ct.MaSP = sp.MaSP
+                        JOIN Loai l ON sp.MaLoai = l.MaLoai
+                        JOIN HoaDonBan hdb ON ct.MaHDB = hdb.MaHDB
+                        WHERE hdb.IsDeleted = 0 AND hdb.NgayBan >= DATEADD(month, -1, CONVERT(date, GETDATE())) -- Doanh thu trong vòng 1 tháng gần nhất
+                        GROUP BY l.MaLoai, l.TenLoai
+                        HAVING SUM(ct.ThanhTien) > 0
+                        ORDER BY DoanhThuLoai DESC"; //
+                    DataTable dt = Function.GetDataToTable(sql);
+
+                    SeriesCollection pieSeriesCollection = new SeriesCollection();
+
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            pieSeriesCollection.Add(new PieSeries
+                            {
+                                Title = row["TenLoai"].ToString(),
+                                Values = new ChartValues<decimal> { Convert.ToDecimal(row["DoanhThuLoai"]) },
+                                DataLabels = true,
+                                //LabelPoint = chartPoint => string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation) // Hiển thị giá trị và %
+                            });
+                        }
+                    }
+                    currentChart.Series = pieSeriesCollection;
+                    currentChart.LegendLocation = LegendLocation.Right;
+                }
+                catch (Exception ex) { Console.WriteLine("Error LoadCategoryRevenueChart: " + ex.Message); currentChart.Series.Clear(); }
+            }
+        }
 
         private void UpdateDateTimeLabels()
         {
@@ -270,6 +480,11 @@ namespace QlyCafe.Quanly
             {
                 Application.Exit(); // Hoặc quay về form Login nếu có
             }
+        }
+
+        private void panelWrapperTopProducts_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

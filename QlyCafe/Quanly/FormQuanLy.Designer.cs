@@ -86,6 +86,18 @@
             this.btnBCDT = new System.Windows.Forms.Button();
             this.btnBCTK = new System.Windows.Forms.Button();
             this.panelCharts = new System.Windows.Forms.TableLayoutPanel();
+            this.panelWrapperRevenueTime = new System.Windows.Forms.Panel();
+            this.panelWrapperTopProducts = new System.Windows.Forms.Panel();
+            this.panelWrapperEmployeePerf = new System.Windows.Forms.Panel();
+            this.panelWrapperCategoryRevenue = new System.Windows.Forms.Panel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.chartRevenueOverTime = new LiveCharts.WinForms.CartesianChart();
+            this.chartTopProducts = new LiveCharts.WinForms.CartesianChart();
+            this.chartEmployeePerformance = new LiveCharts.WinForms.CartesianChart();
+            this.chartCategoryRevenue = new LiveCharts.WinForms.PieChart();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -106,6 +118,11 @@
             this.groupBox2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
+            this.panelCharts.SuspendLayout();
+            this.panelWrapperRevenueTime.SuspendLayout();
+            this.panelWrapperTopProducts.SuspendLayout();
+            this.panelWrapperEmployeePerf.SuspendLayout();
+            this.panelWrapperCategoryRevenue.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -119,7 +136,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1350, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1350, 30);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -128,7 +145,7 @@
             this.mnuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuDangXuat});
             this.mnuFile.Name = "mnuFile";
-            this.mnuFile.Size = new System.Drawing.Size(46, 24);
+            this.mnuFile.Size = new System.Drawing.Size(46, 26);
             this.mnuFile.Text = "File";
             // 
             // mnuDangXuat
@@ -148,7 +165,7 @@
             this.mnuNhaCungCap,
             this.mnuTaiKhoan});
             this.mnuQuanLy.Name = "mnuQuanLy";
-            this.mnuQuanLy.Size = new System.Drawing.Size(75, 24);
+            this.mnuQuanLy.Size = new System.Drawing.Size(75, 26);
             this.mnuQuanLy.Text = "Quản Lý";
             // 
             // mnuHDBan
@@ -199,7 +216,7 @@
             this.mnuTKHDBan,
             this.mnuTKHDNhap});
             this.tìmKiếmToolStripMenuItem.Name = "tìmKiếmToolStripMenuItem";
-            this.tìmKiếmToolStripMenuItem.Size = new System.Drawing.Size(86, 24);
+            this.tìmKiếmToolStripMenuItem.Size = new System.Drawing.Size(86, 26);
             this.tìmKiếmToolStripMenuItem.Text = "Tìm Kiếm";
             // 
             // mnuTKHDBan
@@ -222,7 +239,7 @@
             this.mnuDoanhThu,
             this.mnuHangTonKho});
             this.mnuBaoCao.Name = "mnuBaoCao";
-            this.mnuBaoCao.Size = new System.Drawing.Size(79, 24);
+            this.mnuBaoCao.Size = new System.Drawing.Size(79, 26);
             this.mnuBaoCao.Text = "Báo Cáo";
             // 
             // mnuDoanhThu
@@ -702,15 +719,145 @@
             // panelCharts
             // 
             this.panelCharts.ColumnCount = 2;
-            this.panelCharts.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.89339F));
-            this.panelCharts.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.10661F));
-            this.panelCharts.Location = new System.Drawing.Point(24, 22);
+            this.panelCharts.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.74627F));
+            this.panelCharts.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.25373F));
+            this.panelCharts.Controls.Add(this.panelWrapperCategoryRevenue, 1, 1);
+            this.panelCharts.Controls.Add(this.panelWrapperEmployeePerf, 0, 1);
+            this.panelCharts.Controls.Add(this.panelWrapperTopProducts, 1, 0);
+            this.panelCharts.Controls.Add(this.panelWrapperRevenueTime, 0, 0);
+            this.panelCharts.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelCharts.Location = new System.Drawing.Point(4, 4);
             this.panelCharts.Name = "panelCharts";
             this.panelCharts.RowCount = 2;
-            this.panelCharts.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 51.8595F));
-            this.panelCharts.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 48.1405F));
-            this.panelCharts.Size = new System.Drawing.Size(938, 484);
+            this.panelCharts.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.panelCharts.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.panelCharts.Size = new System.Drawing.Size(977, 521);
             this.panelCharts.TabIndex = 0;
+            // 
+            // panelWrapperRevenueTime
+            // 
+            this.panelWrapperRevenueTime.Controls.Add(this.chartRevenueOverTime);
+            this.panelWrapperRevenueTime.Controls.Add(this.label7);
+            this.panelWrapperRevenueTime.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelWrapperRevenueTime.Location = new System.Drawing.Point(3, 3);
+            this.panelWrapperRevenueTime.Name = "panelWrapperRevenueTime";
+            this.panelWrapperRevenueTime.Size = new System.Drawing.Size(489, 254);
+            this.panelWrapperRevenueTime.TabIndex = 0;
+            // 
+            // panelWrapperTopProducts
+            // 
+            this.panelWrapperTopProducts.Controls.Add(this.chartTopProducts);
+            this.panelWrapperTopProducts.Controls.Add(this.label8);
+            this.panelWrapperTopProducts.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelWrapperTopProducts.Location = new System.Drawing.Point(498, 3);
+            this.panelWrapperTopProducts.Name = "panelWrapperTopProducts";
+            this.panelWrapperTopProducts.Size = new System.Drawing.Size(476, 254);
+            this.panelWrapperTopProducts.TabIndex = 1;
+            this.panelWrapperTopProducts.Paint += new System.Windows.Forms.PaintEventHandler(this.panelWrapperTopProducts_Paint);
+            // 
+            // panelWrapperEmployeePerf
+            // 
+            this.panelWrapperEmployeePerf.Controls.Add(this.chartEmployeePerformance);
+            this.panelWrapperEmployeePerf.Controls.Add(this.label9);
+            this.panelWrapperEmployeePerf.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelWrapperEmployeePerf.Location = new System.Drawing.Point(3, 263);
+            this.panelWrapperEmployeePerf.Name = "panelWrapperEmployeePerf";
+            this.panelWrapperEmployeePerf.Size = new System.Drawing.Size(489, 255);
+            this.panelWrapperEmployeePerf.TabIndex = 2;
+            // 
+            // panelWrapperCategoryRevenue
+            // 
+            this.panelWrapperCategoryRevenue.Controls.Add(this.chartCategoryRevenue);
+            this.panelWrapperCategoryRevenue.Controls.Add(this.label10);
+            this.panelWrapperCategoryRevenue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelWrapperCategoryRevenue.Location = new System.Drawing.Point(498, 263);
+            this.panelWrapperCategoryRevenue.Name = "panelWrapperCategoryRevenue";
+            this.panelWrapperCategoryRevenue.Size = new System.Drawing.Size(476, 255);
+            this.panelWrapperCategoryRevenue.TabIndex = 3;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(0, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(251, 16);
+            this.label7.TabIndex = 0;
+            this.label7.Text = "Doanh Thu Theo Thời Gian (7 Ngày Qua)";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(0, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(277, 16);
+            this.label8.TabIndex = 1;
+            this.label8.Text = "Top 5 Sản Phẩm Bán Chạy Nhất (Tháng Này)";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(0, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(271, 16);
+            this.label9.TabIndex = 1;
+            this.label9.Text = "Hiệu Suất Bán Hàng Nhân Viên (Tháng Này)";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(0, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(317, 16);
+            this.label10.TabIndex = 2;
+            this.label10.Text = "Tỷ Lệ Doanh Thu Theo Loại Sản Phẩm (Tháng Này)";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // chartRevenueOverTime
+            // 
+            this.chartRevenueOverTime.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chartRevenueOverTime.Location = new System.Drawing.Point(0, 16);
+            this.chartRevenueOverTime.Name = "chartRevenueOverTime";
+            this.chartRevenueOverTime.Size = new System.Drawing.Size(489, 238);
+            this.chartRevenueOverTime.TabIndex = 1;
+            this.chartRevenueOverTime.Text = "cartesianChart1";
+            // 
+            // chartTopProducts
+            // 
+            this.chartTopProducts.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chartTopProducts.Location = new System.Drawing.Point(0, 16);
+            this.chartTopProducts.Name = "chartTopProducts";
+            this.chartTopProducts.Size = new System.Drawing.Size(476, 238);
+            this.chartTopProducts.TabIndex = 2;
+            this.chartTopProducts.Text = "cartesianChart1";
+            // 
+            // chartEmployeePerformance
+            // 
+            this.chartEmployeePerformance.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chartEmployeePerformance.Location = new System.Drawing.Point(0, 16);
+            this.chartEmployeePerformance.Name = "chartEmployeePerformance";
+            this.chartEmployeePerformance.Size = new System.Drawing.Size(489, 239);
+            this.chartEmployeePerformance.TabIndex = 2;
+            this.chartEmployeePerformance.Text = "cartesianChart1";
+            // 
+            // chartCategoryRevenue
+            // 
+            this.chartCategoryRevenue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chartCategoryRevenue.Location = new System.Drawing.Point(0, 16);
+            this.chartCategoryRevenue.Name = "chartCategoryRevenue";
+            this.chartCategoryRevenue.Size = new System.Drawing.Size(476, 239);
+            this.chartCategoryRevenue.TabIndex = 3;
+            this.chartCategoryRevenue.Text = "pieChart1";
             // 
             // FormQuanLy
             // 
@@ -751,6 +898,15 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
+            this.panelCharts.ResumeLayout(false);
+            this.panelWrapperRevenueTime.ResumeLayout(false);
+            this.panelWrapperRevenueTime.PerformLayout();
+            this.panelWrapperTopProducts.ResumeLayout(false);
+            this.panelWrapperTopProducts.PerformLayout();
+            this.panelWrapperEmployeePerf.ResumeLayout(false);
+            this.panelWrapperEmployeePerf.PerformLayout();
+            this.panelWrapperCategoryRevenue.ResumeLayout(false);
+            this.panelWrapperCategoryRevenue.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -816,5 +972,17 @@
         private System.Windows.Forms.Label lblSPBanChay;
         private System.Windows.Forms.Label lblSoMatHangHetHang;
         private System.Windows.Forms.TableLayoutPanel panelCharts;
+        private System.Windows.Forms.Panel panelWrapperCategoryRevenue;
+        private System.Windows.Forms.Panel panelWrapperEmployeePerf;
+        private System.Windows.Forms.Panel panelWrapperTopProducts;
+        private System.Windows.Forms.Panel panelWrapperRevenueTime;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
+        private LiveCharts.WinForms.PieChart chartCategoryRevenue;
+        private LiveCharts.WinForms.CartesianChart chartEmployeePerformance;
+        private LiveCharts.WinForms.CartesianChart chartTopProducts;
+        private LiveCharts.WinForms.CartesianChart chartRevenueOverTime;
     }
 }
