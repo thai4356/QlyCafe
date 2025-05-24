@@ -11,7 +11,7 @@ namespace QlyCafe
 {
     internal class Function
     {
-        private static string connString = "Data Source=DESKTOP-6P76JI8\\SQLEXPRESS;Initial Catalog=qlyCafe;Integrated Security=True;TrustServerCertificate=True";
+        private static string connString = "Data Source=LAPTOP-FRNPC1AU;Initial Catalog=qlyCafe;Integrated Security=True;Encrypt=True;TrustServerCertificate=True";
         private static SqlConnection conn;
 
         public static void OpenConnection()
@@ -355,6 +355,20 @@ namespace QlyCafe
                 // Đóng form hiện tại
                 currentForm.Close();
             }
+        }
+
+        public static int LaySoLuongTonKho(string maSP)
+        {
+            string sql = "SELECT SoLuong FROM SanPham WHERE MaSP = @MaSP";
+            SqlParameter param = new SqlParameter("@MaSP", maSP);
+            DataTable dt = Function.GetDataToTable(sql, param);
+
+            if (dt.Rows.Count > 0)
+            {
+                return Convert.ToInt32(dt.Rows[0]["SoLuong"]);
+            }
+
+            return 0;
         }
 
     }
