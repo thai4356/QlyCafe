@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Data.SqlClient;
 using System.Windows.Forms;
 
 namespace QlyCafe.NguoiDung
@@ -36,8 +37,29 @@ namespace QlyCafe.NguoiDung
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.ColumnIndex >= 0 && dataGridView1.Columns[e.ColumnIndex].Name == "SoLuong")
+            {
+                var row = dataGridView1.Rows[e.RowIndex];
+                var item = row.DataBoundItem as CartItem;
+
+                if (item != null)
+                {
+                    int maxSoLuong = Function.LaySoLuongTonKho(item.MaSP);
+                    if (item.SoLuong > maxSoLuong)
+                    {
+                        MessageBox.Show($"Sản phẩm {item.TenSP} chỉ còn {maxSoLuong} sản phẩm trong kho. Số lượng đã được tự động điều chỉnh.");
+                        item.SoLuong = maxSoLuong;
+                        row.Cells["SoLuong"].Value = maxSoLuong;
+                        row.Cells["ThanhTien"].Value = item.ThanhTien;
+                    }
+
+                    dataGridView1.Refresh();
+                }
+            }
+
             dataGridView1.CommitEdit(DataGridViewDataErrorContexts.Commit);
         }
+
 
         private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
@@ -90,6 +112,9 @@ namespace QlyCafe.NguoiDung
         {
             
         }
+
+        
+
 
         private void btnXoaSP_Click_1(object sender, EventArgs e)
         {
